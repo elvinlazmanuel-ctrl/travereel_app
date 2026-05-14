@@ -18,6 +18,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/hooks/use-toast'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
@@ -50,6 +51,7 @@ interface SelectedFile {
 
 export default function CreatePost() {
   const { currentUser, addPost, setCurrentView, previousView } = useAppStore()
+  const { toast } = useToast()
   const [caption, setCaption] = useState('')
   const [location, setLocation] = useState('')
   const [latitude, setLatitude] = useState<number | null>(null)
@@ -207,6 +209,14 @@ export default function CreatePost() {
         // Clean up object URLs
         selectedFiles.forEach(f => URL.revokeObjectURL(f.preview))
         setCurrentView(previousView || 'feed')
+      } else {
+        const errorData = await res.json()
+        console.error('Post creation failed:', errorData)
+        toast({
+          title: 'Error',
+          description: errorData.error || 'Failed to create post',
+          variant: 'destructive',
+        })
       }
     } catch (error) {
       console.error('Failed to create post:', error)

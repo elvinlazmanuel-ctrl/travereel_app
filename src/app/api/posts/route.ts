@@ -165,6 +165,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const validation = validateBody(createPostSchema, body)
     if (!validation.success) {
+      console.error('Post validation error:', validation.error)
       return NextResponse.json({ error: validation.error }, { status: 400 })
     }
 
