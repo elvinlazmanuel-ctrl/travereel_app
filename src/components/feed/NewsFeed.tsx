@@ -129,7 +129,11 @@ export default function NewsFeed() {
   // Sync posts to Zustand store for components that read from it
   useEffect(() => {
     if (allPosts.length > 0) {
-      setPosts(allPosts)
+      // Only update if the posts have actually changed
+      const currentPosts = useAppStore.getState().posts
+      if (currentPosts.length !== allPosts.length) {
+        setPosts(allPosts)
+      }
     }
   }, [allPosts, setPosts])
 
