@@ -1,0 +1,26 @@
+'use client'
+
+import { useAppStore } from '@/lib/store'
+import dynamic from 'next/dynamic'
+
+// Only load auth page eagerly
+import AuthPage from '@/components/auth/AuthPage'
+
+// Load main app shell dynamically - this is the entry point after login
+const AppShell = dynamic(() => import('@/components/AppShell'), {
+  loading: () => (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="size-8 border-2 border-[#2EC4B6] border-t-transparent rounded-full animate-spin" />
+    </div>
+  ),
+})
+
+export default function Home() {
+  const { isAuthenticated } = useAppStore()
+
+  if (!isAuthenticated) {
+    return <AuthPage />
+  }
+
+  return <AppShell />
+}

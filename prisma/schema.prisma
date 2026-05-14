@@ -1,0 +1,436 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String     @id @default(cuid())
+  email          String     @unique
+  username       String     @unique
+  name           String
+  avatar         String?
+  bio            String?
+  password       String
+  isPrivate      Boolean    @default(false)
+  role           String     @default("user")
+  isBanned       Boolean    @default(false)
+  currency       String     @default("USD")
+  travelType     String     @default("solo")
+  language       String     @default("en")
+  notificationsEnabled Boolean @default(true)
+  activityStatus Boolean    @default(true)
+  darkMode       Boolean    @default(false)
+  emailVerified  Boolean    @default(false)
+  emailVerificationToken String?
+  emailVerificationExpires DateTime?
+  passwordResetToken String?
+  passwordResetExpires DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  posts          Post[]
+  stories        Story[]
+  comments       Comment[]
+  likes          Like[]
+  bookmarks      Bookmark[]
+  itineraries    Itinerary[]
+  followers      Follow[]   @relation("UserFollowers")
+  following      Follow[]   @relation("UserFollowing")
+  sentMessages   Message[]  @relation("MessageSender")
+  chatRooms      ChatRoomMember[]
+  companions     Companion[]
+  sharedPosts    SharedPost[]
+  notifications  Notification[]
+  storyViews     StoryView[]
+  reportsMade    PostReport[] @relation("ReportReporter")
+  adminActions   AdminAction[] @relation("AdminActor")
+  sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
+  communityMemberships   CommunityMember[]
+  blocksMade     Block[] @relation("UserBlocks")
+  blocksReceived Block[] @relation("UserBlocked")
+
+  @@map("users")
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower    User     @relation("UserFollowers", fields: [followerId], references: [id])
+  following   User     @relation("UserFollowing", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+  @@map("follows")
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  caption     String?
+  images      String
+  isPublic    Boolean   @default(true)
+  isMemory    Boolean   @default(false)
+  isFlagged   Boolean   @default(false)
+  location    String?
+  latitude    Float?
+  longitude   Float?
+  tags        String?
+  authorId    String
+  itineraryId String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  author      User      @relation(fields: [authorId], references: [id])
+  itinerary   Itinerary? @relation(fields: [itineraryId], references: [id])
+  comments    Comment[]
+  likes       Like[]
+  bookmarks   Bookmark[]
+  sharedTo    SharedPost[]
+  reports     PostReport[]
+
+  @@map("posts")
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  mediaUrl  String
+  mediaType String   @default("image")
+  caption   String?
+  authorId  String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  author    User     @relation(fields: [authorId], references: [id])
+  views     StoryView[]
+
+  @@map("stories")
+}
+
+model StoryView {
+  id        String   @id @default(cuid())
+  userId    String
+  storyId   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  story     Story    @relation(fields: [storyId], references: [id])
+
+  @@unique([userId, storyId])
+  @@map("story_views")
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  content    String
+  authorId   String
+  postId     String
+  parentId   String?
+  likesCount Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  author     User     @relation(fields: [authorId], references: [id])
+  post       Post     @relation(fields: [postId], references: [id])
+  parent     Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies    Comment[] @relation("CommentReplies")
+
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+
+  @@unique([userId, postId])
+  @@map("likes")
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+
+  @@unique([userId, postId])
+  @@map("bookmarks")
+}
+
+model PostReport {
+  id          String   @id @default(cuid())
+  postId      String
+  reporterId  String
+  reason      String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+
+  post        Post     @relation(fields: [postId], references: [id])
+  reporter    User     @relation("ReportReporter", fields: [reporterId], references: [id])
+
+  @@map("post_reports")
+}
+
+model SharedPost {
+  id           String   @id @default(cuid())
+  postId       String
+  userId       String
+  communityId  String
+  caption      String?
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id])
+  community    Community @relation(fields: [communityId], references: [id])
+  post         Post     @relation(fields: [postId], references: [id])
+
+  @@map("shared_posts")
+}
+
+model ChatRoom {
+  id         String   @id @default(cuid())
+  name       String?
+  isGroup    Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  members    ChatRoomMember[]
+  messages   Message[]
+
+  @@map("chat_rooms")
+}
+
+model ChatRoomMember {
+  id         String   @id @default(cuid())
+  userId     String
+  chatRoomId String
+  lastReadAt DateTime @default(now())
+  joinedAt   DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+
+  @@unique([userId, chatRoomId])
+  @@map("chat_room_members")
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  content    String
+  senderId   String
+  chatRoomId String
+  createdAt  DateTime @default(now())
+
+  sender     User     @relation("MessageSender", fields: [senderId], references: [id])
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+
+  @@map("messages")
+}
+
+model Notification {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String
+  message    String
+  fromUserId String?
+  postId     String?
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+model AdminAction {
+  id          String   @id @default(cuid())
+  adminId     String
+  action      String
+  targetType  String
+  targetId    String
+  details     String?
+  createdAt   DateTime @default(now())
+
+  admin       User     @relation("AdminActor", fields: [adminId], references: [id])
+
+  @@map("admin_actions")
+}
+
+model Itinerary {
+  id            String         @id @default(cuid())
+  title         String
+  country       String
+  location      String
+  budget        Float
+  currency      String         @default("USD")
+  days          Int
+  travelType    String         @default("solo")
+  activities    String
+  status        String         @default("pre-travel")
+  isPublic      Boolean        @default(false)
+  requirements  String?
+  authorId      String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  author        User           @relation(fields: [authorId], references: [id])
+  days_plan     ItineraryDay[]
+  budget_items  BudgetItem[]
+  companions    Companion[]
+  posts         Post[]
+
+  @@map("itineraries")
+}
+
+model ItineraryDay {
+  id           String        @id @default(cuid())
+  dayNumber    Int
+  title        String
+  description  String
+  route        String?
+  status       String        @default("pending")
+  itineraryId  String
+  createdAt    DateTime      @default(now())
+
+  itinerary    Itinerary     @relation(fields: [itineraryId], references: [id])
+  activities   DayActivity[]
+
+  @@map("itinerary_days")
+}
+
+model DayActivity {
+  id              String        @id @default(cuid())
+  title           String
+  description     String?
+  location        String?
+  latitude        Float?
+  longitude       Float?
+  startTime       String?
+  endTime         String?
+  cost            Float         @default(0)
+  status          String        @default("pending")
+  itineraryDayId  String
+  order           Int           @default(0)
+  createdAt       DateTime      @default(now())
+
+  itineraryDay    ItineraryDay  @relation(fields: [itineraryDayId], references: [id])
+
+  @@map("day_activities")
+}
+
+model BudgetItem {
+  id              String      @id @default(cuid())
+  name            String
+  amount          Float
+  category        String
+  paidBy          String
+  splitAmong      String
+  itineraryId     String
+  createdAt       DateTime    @default(now())
+
+  itinerary       Itinerary   @relation(fields: [itineraryId], references: [id])
+
+  @@map("budget_items")
+}
+
+model Companion {
+  id            String     @id @default(cuid())
+  name          String
+  email         String?
+  userId        String?
+  itineraryId   String
+  createdAt     DateTime   @default(now())
+
+  user          User?      @relation(fields: [userId], references: [id])
+  itinerary     Itinerary  @relation(fields: [itineraryId], references: [id])
+
+  @@map("companions")
+}
+
+model Community {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  image       String?
+  members     Int      @default(0)
+  category    String?
+  createdAt   DateTime @default(now())
+
+  sharedPosts   SharedPost[]
+  communityMembers CommunityMember[]
+
+  @@map("communities")
+}
+
+model CommunityMember {
+  id          String   @id @default(cuid())
+  userId      String
+  communityId String
+  role        String   @default("member")
+  joinedAt    DateTime @default(now())
+
+  community   Community @relation(fields: [communityId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, communityId])
+  @@map("community_members")
+}
+
+model PlatformSettings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("platform_settings")
+}
+
+model FeatureToggle {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  label       String
+  description String?
+  enabled     Boolean  @default(true)
+  category    String   @default("general")
+  updatedAt   DateTime @updatedAt
+
+  @@map("feature_toggles")
+}
+
+model FriendRequest {
+  id          String   @id @default(cuid())
+  senderId    String
+  receiverId  String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sender      User     @relation("SentFriendRequests", fields: [senderId], references: [id])
+  receiver    User     @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+
+  @@unique([senderId, receiverId])
+  @@map("friend_requests")
+}
+
+model Block {
+  id          String   @id @default(cuid())
+  blockerId   String
+  blockedId   String
+  type        String   @default("block")
+  createdAt   DateTime @default(now())
+
+  blocker     User     @relation("UserBlocks", fields: [blockerId], references: [id])
+  blocked     User     @relation("UserBlocked", fields: [blockedId], references: [id])
+
+  @@unique([blockerId, blockedId, type])
+  @@map("user_blocks")
+}
