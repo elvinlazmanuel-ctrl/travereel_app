@@ -25,16 +25,16 @@ export const registerSchema = z.object({
 
 // Post schemas
 export const createPostSchema = z.object({
-  caption: z.string().max(2000).optional(),
+  caption: z.string().max(2000).optional().nullable(),
   images: z.array(z.string().url()).min(0).optional(),
   isPublic: z.boolean().default(true),
   isMemory: z.boolean().default(false),
-  location: z.string().max(200).optional(),
-  latitude: z.number().min(-90).max(90).optional(),
-  longitude: z.number().min(-180).max(180).optional(),
+  location: z.string().max(200).optional().nullable(),
+  latitude: z.number().min(-90).max(90).optional().nullable(),
+  longitude: z.number().min(-180).max(180).optional().nullable(),
   tags: z.array(z.string().max(50)).max(20).optional(),
   authorId: userIdSchema,
-  itineraryId: z.string().optional(),
+  itineraryId: z.string().optional().nullable(),
 })
 
 export const updatePostSchema = z.object({
