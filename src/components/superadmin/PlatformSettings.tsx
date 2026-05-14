@@ -175,7 +175,7 @@ export default function PlatformSettings() {
                   id="site_name"
                   value={branding.site_name}
                   onChange={(e) => setBranding({ ...branding, site_name: e.target.value })}
-                  placeholder="Wanderlust"
+                  placeholder="Travereel"
                 />
               </div>
               <div className="space-y-2">
@@ -291,7 +291,7 @@ export default function PlatformSettings() {
                   type="email"
                   value={contact.contact_email}
                   onChange={(e) => setContact({ ...contact, contact_email: e.target.value })}
-                  placeholder="hello@wanderlust.com"
+                  placeholder="hello@travereel.com"
                 />
               </div>
               <div className="space-y-2">
@@ -347,7 +347,7 @@ export default function PlatformSettings() {
                   id="social_twitter"
                   value={social.social_twitter}
                   onChange={(e) => setSocial({ ...social, social_twitter: e.target.value })}
-                  placeholder="@wanderlust"
+                  placeholder="@travereel"
                 />
               </div>
               <div className="space-y-2">
@@ -356,7 +356,7 @@ export default function PlatformSettings() {
                   id="social_instagram"
                   value={social.social_instagram}
                   onChange={(e) => setSocial({ ...social, social_instagram: e.target.value })}
-                  placeholder="@wanderlust"
+                  placeholder="@travereel"
                 />
               </div>
               <div className="space-y-2">
@@ -365,7 +365,7 @@ export default function PlatformSettings() {
                   id="social_facebook"
                   value={social.social_facebook}
                   onChange={(e) => setSocial({ ...social, social_facebook: e.target.value })}
-                  placeholder="wanderlust"
+                  placeholder="travereel"
                 />
               </div>
             </div>

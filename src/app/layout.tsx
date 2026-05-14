@@ -17,18 +17,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Wanderlust - Travel Social",
+  title: "Travereel - Travel Social",
   description: "Share your travel adventures, plan itineraries, and connect with fellow travelers worldwide.",
-  keywords: ["travel", "social", "itinerary", "wanderlust", "adventure"],
-  authors: [{ name: "Wanderlust" }],
+  keywords: ["travel", "social", "itinerary", "travereel", "adventure"],
+  authors: [{ name: "Travereel" }],
   openGraph: {
-    title: "Wanderlust - Travel Social",
+    title: "Travereel - Travel Social",
     description: "Share your travel adventures, plan itineraries, and connect with fellow travelers.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Wanderlust - Travel Social",
+    title: "Travereel - Travel Social",
     description: "Share your travel adventures, plan itineraries, and connect with fellow travelers.",
   },
 };

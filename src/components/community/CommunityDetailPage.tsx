@@ -211,7 +211,7 @@ export default function CommunityDetailPage() {
   const handleShare = async () => {
     const shareData = {
       title: displayCommunity.name,
-      text: displayCommunity.description || `Join ${displayCommunity.name} on Wanderlust!`,
+      text: displayCommunity.description || `Join ${displayCommunity.name} on Travereel!`,
     }
     if (navigator.share) {
       try {

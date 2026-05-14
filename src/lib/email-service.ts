@@ -55,7 +55,7 @@ async function sendProductionEmail(options: EmailOptions): Promise<boolean> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Wanderlust <noreply@yourdomain.com>',
+        from: 'Travereel <noreply@yourdomain.com>',
         to: [options.to],
         subject: options.subject,
         html: options.html,
@@ -92,7 +92,7 @@ export async function sendVerificationEmail(
   
   return sendEmail({
     to: email,
-    subject: 'Verify Your Email - Wanderlust',
+    subject: 'Verify Your Email - Travereel',
     html: emailTemplates.verification(userName, verificationLink),
     text: `Hi ${userName}!\n\nPlease verify your email by clicking: ${verificationLink}\n\nThis link expires in 24 hours.`,
   })
@@ -110,7 +110,7 @@ export async function sendPasswordResetEmail(
   
   return sendEmail({
     to: email,
-    subject: 'Password Reset Request - Wanderlust',
+    subject: 'Password Reset Request - Travereel',
     html: emailTemplates.passwordReset(userName, resetLink),
     text: `Hi ${userName}!\n\nReset your password by clicking: ${resetLink}\n\nThis link expires in 24 hours.\n\nIf you didn't request this, you can ignore this email.`,
   })

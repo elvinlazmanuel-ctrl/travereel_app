@@ -48,11 +48,11 @@ export const emailTemplates = {
     <html>
       <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #FF6B6B, #FF8C42); padding: 40px; text-align: center;">
-          <h1 style="color: white; margin: 0;">Welcome to Wanderlust! 🌍</h1>
+          <h1 style="color: white; margin: 0;">Welcome to Travereel! 🌍</h1>
         </div>
         <div style="padding: 40px; background: #f9f9f9;">
           <h2>Hi ${userName}!</h2>
-          <p>Thank you for joining Wanderlust - your travel social network.</p>
+          <p>Thank you for joining Travereel - your travel social network.</p>
           <p>Please verify your email address by clicking the button below:</p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${link}" 
@@ -86,7 +86,7 @@ export const emailTemplates = {
         </div>
         <div style="padding: 40px; background: #f9f9f9;">
           <h2>Hi ${userName}!</h2>
-          <p>We received a request to reset your password for your Wanderlust account.</p>
+          <p>We received a request to reset your password for your Travereel account.</p>
           <p>Click the button below to create a new password:</p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${link}" 

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { loginSchema, validateBody } from '@/lib/validation'
 
-const SUPERADMIN_EMAIL = 'superadmin@wanderlust.com'
+const SUPERADMIN_EMAIL = 'superadmin@travereel.com'
 const SUPERADMIN_PASSWORD = 'superadmin2024'
 
 export async function POST(request: Request) {

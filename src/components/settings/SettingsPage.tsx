@@ -448,7 +448,7 @@ export default function SettingsPage() {
 
   const avatarUrl = currentUser?.avatar || `https://picsum.photos/seed/${currentUser?.id}/200/200`
   const name = currentUser?.name || 'Traveler'
-  const email = currentUser?.email || 'traveler@wanderlust.com'
+  const email = currentUser?.email || 'traveler@travereel.com'
   const username = currentUser?.username || 'traveler'
 
   const languageLabels: Record<string, string> = {
@@ -685,7 +685,7 @@ export default function SettingsPage() {
       {/* Footer */}
       <div className="text-center pb-6 pt-2">
         <p className="text-xs text-muted-foreground">
-          Wanderlust v1.0.0 • Made with ❤ for travelers
+          Travereel v1.0.0 • Made with ❤ for travelers
         </p>
       </div>
 
@@ -918,17 +918,17 @@ export default function SettingsPage() {
           <div className="prose prose-sm max-w-none text-muted-foreground space-y-4">
             <p><strong>Last updated:</strong> March 2025</p>
             <h4 className="text-foreground font-semibold">1. Acceptance of Terms</h4>
-            <p>By using Wanderlust, you agree to these terms. If you do not agree, please do not use our service.</p>
+            <p>By using Travereel, you agree to these terms. If you do not agree, please do not use our service.</p>
             <h4 className="text-foreground font-semibold">2. User Accounts</h4>
             <p>You are responsible for maintaining the confidentiality of your account. You must provide accurate information when creating an account.</p>
             <h4 className="text-foreground font-semibold">3. Content</h4>
-            <p>You retain ownership of content you post. By posting, you grant Wanderlust a license to use, display, and distribute your content within the platform.</p>
+            <p>You retain ownership of content you post. By posting, you grant Travereel a license to use, display, and distribute your content within the platform.</p>
             <h4 className="text-foreground font-semibold">4. Community Guidelines</h4>
             <p>Be respectful, do not post harmful or illegal content, and respect other travelers. Violations may result in account suspension.</p>
             <h4 className="text-foreground font-semibold">5. Privacy</h4>
             <p>Your privacy is important to us. Please review our Privacy Policy for information on how we collect, use, and share your data.</p>
             <h4 className="text-foreground font-semibold">6. Disclaimers</h4>
-            <p>Wanderlust is provided &quot;as is&quot; without warranties. We do not guarantee the accuracy of travel information shared by users.</p>
+            <p>Travereel is provided &quot;as is&quot; without warranties. We do not guarantee the accuracy of travel information shared by users.</p>
           </div>
         </DialogContent>
       </Dialog>

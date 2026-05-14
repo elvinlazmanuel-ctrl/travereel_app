@@ -69,7 +69,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
           <Plane className="size-8 text-white" />
         </div>
         <h1 className="text-3xl font-bold bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] bg-clip-text text-transparent">
-          Wanderlust
+          Travereel
         </h1>
         <p className="text-sm text-gray-500 mt-1">
           Share your travel adventures

@@ -69,7 +69,7 @@ export default function SuperAdminDashboard({
               <Globe className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="font-bold text-sm leading-tight">Wanderlust</h2>
+              <h2 className="font-bold text-sm leading-tight">Travereel</h2>
               <p className="text-xs text-gray-400">Super Admin</p>
             </div>
           </div>

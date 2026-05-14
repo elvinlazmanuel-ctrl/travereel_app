@@ -320,7 +320,7 @@ export default function PostTravel() {
           images: selectedPhotos.map((p) => p.url),
           isPublic,
           location: selectedItinerary.location,
-          tags: ['travel', 'wanderlust', selectedItinerary.country.toLowerCase()],
+          tags: ['travel', 'travereel', selectedItinerary.country.toLowerCase()],
           authorId: currentUser.id,
           itineraryId: selectedItinerary.id,
         }),

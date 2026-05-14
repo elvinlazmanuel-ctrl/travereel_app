@@ -76,7 +76,7 @@ export default function SuperAdminAuth({ onAuth }: SuperAdminAuthProps) {
               Super Admin Access
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              Wanderlust Platform Administration
+              Travereel Platform Administration
             </CardDescription>
           </CardHeader>
 
@@ -91,7 +91,7 @@ export default function SuperAdminAuth({ onAuth }: SuperAdminAuthProps) {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="superadmin@wanderlust.com"
+                    placeholder="superadmin@travereel.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 h-11"

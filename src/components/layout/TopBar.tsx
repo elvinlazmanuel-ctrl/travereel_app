@@ -20,7 +20,7 @@ export default function TopBar() {
     return (
       <header className="sticky top-0 z-40 w-full h-14 bg-background border-b border-border flex items-center justify-between px-4">
         <h1 className="text-xl font-bold bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] bg-clip-text text-transparent">
-          Wanderlust
+          Travereel
         </h1>
         <div className="flex items-center gap-2">
           <Button
