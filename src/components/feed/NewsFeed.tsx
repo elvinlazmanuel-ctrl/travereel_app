@@ -237,8 +237,8 @@ export default function NewsFeed() {
 
   return (
     <div className="max-w-md mx-auto">
-      {/* Refresh button */}
-      <div className="flex justify-center py-2">
+      {/* Refresh button - Hidden */}
+      <div className="flex justify-center py-2 hidden">
         <motion.button
           whileTap={{ scale: 0.9, rotate: 180 }}
           onClick={handleRefresh}
