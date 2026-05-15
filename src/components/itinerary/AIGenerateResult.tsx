@@ -113,6 +113,8 @@ export default function AIGenerateResult() {
           title: wizardData.title || `${wizardData.location} Trip`,
           country: wizardData.country,
           location: wizardData.location,
+          departureDate: wizardData.departureDate || null,
+          returnDate: wizardData.returnDate || null,
           budget: wizardData.budget,
           currency: wizardData.currency,
           days: wizardData.days,

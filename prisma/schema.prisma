@@ -270,6 +270,8 @@ model Itinerary {
   title         String
   country       String
   location      String
+  departureDate DateTime?
+  returnDate    DateTime?
   budget        Float
   currency      String         @default("USD")
   days          Int

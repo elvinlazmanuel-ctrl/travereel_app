@@ -216,6 +216,8 @@ export interface WizardData {
   title: string
   country: string
   location: string
+  departureDate: string
+  returnDate: string
   budget: number
   currency: string
   days: number
@@ -228,6 +230,8 @@ export const defaultWizardData: WizardData = {
   title: '',
   country: '',
   location: '',
+  departureDate: '',
+  returnDate: '',
   budget: 0,
   currency: 'USD',
   days: 1,

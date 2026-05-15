@@ -168,6 +168,8 @@ export default function ManualInputForm() {
           title: wizardData.title || `${wizardData.location} Trip`,
           country: wizardData.country,
           location: wizardData.location,
+          departureDate: wizardData.departureDate || null,
+          returnDate: wizardData.returnDate || null,
           budget: wizardData.budget,
           currency: wizardData.currency,
           days: days.length,

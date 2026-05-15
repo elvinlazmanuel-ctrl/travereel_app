@@ -6,6 +6,7 @@ import { ArrowLeft, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import StepCountry from './StepCountry'
 import StepLocation from './StepLocation'
+import StepTravelDates from './StepTravelDates'
 import StepBudget from './StepBudget'
 import StepDays from './StepDays'
 import StepTravelType from './StepTravelType'
@@ -17,6 +18,7 @@ import ManualInputForm from './ManualInputForm'
 const stepLabels = [
   'Country',
   'Location',
+  'Dates',
   'Budget',
   'Days',
   'Travel',
@@ -34,57 +36,59 @@ export default function ItineraryWizard() {
     setCurrentView,
   } = useAppStore()
 
-  const totalSteps = 7 // 0-6
+  const totalSteps = 8 // 0-7
 
   // Determine which content to show
   const getStepContent = () => {
     // After mode selection, show result forms
-    if (wizardStep >= 7) {
+    if (wizardStep >= 8) {
       return isAIGenerate ? <AIGenerateResult /> : <ManualInputForm />
     }
     switch (wizardStep) {
       case 0: return <StepCountry />
       case 1: return <StepLocation />
-      case 2: return <StepBudget />
-      case 3: return <StepDays />
-      case 4: return <StepTravelType />
-      case 5: return <StepActivities />
-      case 6: return <StepModeSelection />
+      case 2: return <StepTravelDates />
+      case 3: return <StepBudget />
+      case 4: return <StepDays />
+      case 5: return <StepTravelType />
+      case 6: return <StepActivities />
+      case 7: return <StepModeSelection />
       default: return <StepCountry />
     }
   }
 
   const canGoNext = (): boolean => {
-    if (wizardStep >= 7) return false
+    if (wizardStep >= 8) return false
     switch (wizardStep) {
       case 0: return !!(wizardData.title.trim() && wizardData.country)
       case 1: return !!wizardData.location
-      case 2: return wizardData.budget > 0
-      case 3: return wizardData.days > 0
-      case 4:
+      case 2: return !!(wizardData.departureDate && wizardData.returnDate)
+      case 3: return wizardData.budget > 0
+      case 4: return wizardData.days > 0
+      case 5:
         if (wizardData.travelType === 'solo') return true
         return wizardData.companions.length > 0
-      case 5: return wizardData.activities.length > 0
-      case 6: return true // Mode selection handles its own navigation
+      case 6: return wizardData.activities.length > 0
+      case 7: return true // Mode selection handles its own navigation
       default: return true
     }
   }
 
   const canGoBack = (): boolean => {
-    return wizardStep > 0 && wizardStep < 7
+    return wizardStep > 0 && wizardStep < 8
   }
 
   const handleNext = () => {
-    if (wizardStep === 6) {
-      // After mode selection, go to step 7 (result form)
-      setWizardStep(7)
-    } else if (wizardStep < 6) {
+    if (wizardStep === 7) {
+      // After mode selection, go to step 8 (result form)
+      setWizardStep(8)
+    } else if (wizardStep < 7) {
       setWizardStep(wizardStep + 1)
     }
   }
 
   const handleBack = () => {
-    if (wizardStep > 0 && wizardStep < 7) {
+    if (wizardStep > 0 && wizardStep < 8) {
       setWizardStep(wizardStep - 1)
     }
   }
@@ -99,7 +103,7 @@ export default function ItineraryWizard() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
-      {wizardStep < 7 && (
+      {wizardStep < 8 && (
         <div className="sticky top-0 z-30 bg-white border-b border-gray-100">
           <div className="max-w-md mx-auto px-4">
             {/* Navigation row */}
@@ -181,7 +185,7 @@ export default function ItineraryWizard() {
       </div>
 
       {/* Bottom Navigation */}
-      {wizardStep < 7 && (
+      {wizardStep < 8 && (
         <div className="sticky bottom-0 bg-white border-t border-gray-100 p-4">
           <div className="max-w-md mx-auto flex gap-3">
             {canGoBack() && (
@@ -193,7 +197,7 @@ export default function ItineraryWizard() {
                 Back
               </Button>
             )}
-            {wizardStep < 6 && (
+            {wizardStep < 7 && (
               <Button
                 onClick={handleNext}
                 disabled={!canGoNext()}
@@ -202,7 +206,7 @@ export default function ItineraryWizard() {
                 Next
               </Button>
             )}
-            {wizardStep === 6 && (
+            {wizardStep === 7 && (
               <div className="flex-1" />
             )}
           </div>
