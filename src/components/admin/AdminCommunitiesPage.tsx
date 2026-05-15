@@ -92,6 +92,27 @@ export default function AdminCommunitiesPage() {
   const [editImage, setEditImage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
+  // Member management state
+  const [memberDialog, setMemberDialog] = useState<{
+    open: boolean
+    community: CommunityType | null
+    members: Array<{
+      id: string
+      userId: string
+      role: string
+      user: {
+        id: string
+        username: string
+        name: string
+        avatar: string | null
+      }
+    }>
+  }>({ open: false, community: null, members: [] })
+  const [addMemberUserId, setAddMemberUserId] = useState('')
+  const [addMemberRole, setAddMemberRole] = useState<'admin' | 'member'>('member')
+  const [isAddingMember, setIsAddingMember] = useState(false)
+  const [isLoadingMembers, setIsLoadingMembers] = useState(false)
+
   const logAdminAction = async (action: string, targetType: string, targetId: string, details?: string) => {
     try {
       await fetch('/api/admin', {
@@ -233,6 +254,120 @@ export default function AdminCommunitiesPage() {
     }
   }
 
+  const handleManageMembers = async (community: CommunityType) => {
+    setMemberDialog({ open: true, community, members: [] })
+    setIsLoadingMembers(true)
+    try {
+      const res = await fetch(`/api/communities?id=${community.id}`)
+      if (res.ok) {
+        const data = await res.json()
+        setMemberDialog({
+          open: true,
+          community,
+          members: data.community?.communityMembers || [],
+        })
+      }
+    } catch {
+      toast.error('Failed to load members')
+    } finally {
+      setIsLoadingMembers(false)
+    }
+  }
+
+  const handleAddMember = async () => {
+    if (!memberDialog.community || !addMemberUserId.trim()) return
+    setIsAddingMember(true)
+    try {
+      const res = await fetch('/api/community-members', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          communityId: memberDialog.community.id,
+          userId: addMemberUserId,
+          role: addMemberRole,
+          requestingUserId: currentUser!.id,
+        }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setMemberDialog({
+          ...memberDialog,
+          members: [...memberDialog.members, data.member],
+        })
+        setAddMemberUserId('')
+        setAddMemberRole('member')
+        toast.success('Member added')
+        logAdminAction('added_member', 'community', memberDialog.community.id, addMemberUserId)
+      } else {
+        const error = await res.json()
+        toast.error(error.error || 'Failed to add member')
+      }
+    } catch {
+      toast.error('Failed to add member')
+    } finally {
+      setIsAddingMember(false)
+    }
+  }
+
+  const handleRemoveMember = async (memberUserId: string) => {
+    if (!memberDialog.community) return
+    try {
+      const res = await fetch('/api/community-members', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          communityId: memberDialog.community.id,
+          userId: memberUserId,
+          requestingUserId: currentUser!.id,
+        }),
+      })
+      if (res.ok) {
+        setMemberDialog({
+          ...memberDialog,
+          members: memberDialog.members.filter((m) => m.userId !== memberUserId),
+        })
+        toast.success('Member removed')
+        logAdminAction('removed_member', 'community', memberDialog.community.id, memberUserId)
+      } else {
+        const error = await res.json()
+        toast.error(error.error || 'Failed to remove member')
+      }
+    } catch {
+      toast.error('Failed to remove member')
+    }
+  }
+
+  const handleChangeRole = async (memberUserId: string, newRole: 'admin' | 'member') => {
+    if (!memberDialog.community) return
+    try {
+      const res = await fetch('/api/community-members', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          communityId: memberDialog.community.id,
+          userId: memberUserId,
+          role: newRole,
+          requestingUserId: currentUser!.id,
+        }),
+      })
+      if (res.ok) {
+        setMemberDialog({
+          ...memberDialog,
+          members: memberDialog.members.map((m) =>
+            m.userId === memberUserId ? { ...m, role: newRole } : m
+          ),
+        })
+        toast.success('Member role updated')
+        logAdminAction('changed_role', 'community', memberDialog.community.id, `${memberUserId} -> ${newRole}`)
+      } else {
+        const error = await res.json()
+        toast.error(error.error || 'Failed to update role')
+      }
+    } catch {
+      toast.error('Failed to update role')
+    }
+  }
+
   const getCategoryBadge = (category: string | null) => {
     if (!category) return null
     const colors: Record<string, string> = {
@@ -368,6 +503,10 @@ export default function AdminCommunitiesPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
+                          <DropdownMenuItem onClick={() => handleManageMembers(community)}>
+                            <Users className="size-4 mr-2" />
+                            Manage Members
+                          </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleFeature(community)}>
                             <Star className="size-4 mr-2" />
                             Feature Community
@@ -481,6 +620,153 @@ export default function AdminCommunitiesPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Manage Members Dialog */}
+      <Dialog open={memberDialog.open} onOpenChange={(open) => setMemberDialog({ ...memberDialog, open })}>
+        <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Manage Members - {memberDialog.community?.name}</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto space-y-4 py-2">
+            {/* Add Member Section */}
+            <div className="p-4 bg-muted/50 rounded-lg space-y-3">
+              <h3 className="text-sm font-semibold text-foreground">Add New Member</h3>
+              <div className="space-y-2">
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">User ID</label>
+                  <Input
+                    value={addMemberUserId}
+                    onChange={(e) => setAddMemberUserId(e.target.value)}
+                    placeholder="Enter user ID..."
+                    className="rounded-lg text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Role</label>
+                  <Select value={addMemberRole} onValueChange={(v) => setAddMemberRole(v as 'admin' | 'member')}>
+                    <SelectTrigger className="rounded-lg text-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="member">Member</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button
+                  onClick={handleAddMember}
+                  disabled={isAddingMember || !addMemberUserId.trim()}
+                  className="w-full rounded-lg bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white text-sm"
+                  size="sm"
+                >
+                  {isAddingMember ? (
+                    <Loader2 className="size-4 animate-spin mr-1" />
+                  ) : (
+                    <Plus className="size-4 mr-1" />
+                  )}
+                  Add Member
+                </Button>
+              </div>
+            </div>
+
+            {/* Members List */}
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-2">
+                Current Members ({memberDialog.members.length})
+              </h3>
+              {isLoadingMembers ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="size-6 text-muted-foreground animate-spin" />
+                </div>
+              ) : memberDialog.members.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">No members yet</p>
+              ) : (
+                <div className="space-y-2">
+                  {memberDialog.members.map((member) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between p-3 bg-card border border-border rounded-lg"
+                    >
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <Avatar className="size-10">
+                          <AvatarImage src={member.user.avatar || undefined} />
+                          <AvatarFallback className="bg-gradient-to-br from-[#2EC4B6]/20 to-[#2EC4B6]/10 text-[#2EC4B6] text-sm font-semibold">
+                            {member.user.name?.charAt(0) || member.user.username?.charAt(0) || 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground truncate">
+                            {member.user.name || member.user.username}
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            @{member.user.username}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 ml-2">
+                        <Badge
+                          variant={member.role === 'admin' ? 'default' : 'secondary'}
+                          className={`text-xs ${
+                            member.role === 'admin'
+                              ? 'bg-[#2EC4B6] text-white'
+                              : 'bg-muted text-muted-foreground'
+                          }`}
+                        >
+                          {member.role}
+                        </Badge>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="size-7">
+                              <MoreHorizontal className="size-4 text-muted-foreground" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-40">
+                            {member.role === 'member' && (
+                              <DropdownMenuItem onClick={() => handleChangeRole(member.userId, 'admin')}>
+                                <Shield className="size-4 mr-2" />
+                                Make Admin
+                              </DropdownMenuItem>
+                            )}
+                            {member.role === 'admin' && (
+                              <DropdownMenuItem onClick={() => handleChangeRole(member.userId, 'member')}>
+                                <Users className="size-4 mr-2" />
+                                Make Member
+                              </DropdownMenuItem>
+                            )}
+                            {member.role !== 'admin' && (
+                              <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  className="text-red-600 focus:text-red-600"
+                                  onClick={() => handleRemoveMember(member.userId)}
+                                >
+                                  <Trash2 className="size-4 mr-2" />
+                                  Remove
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setMemberDialog({ open: false, community: null, members: [] })}
+              className="rounded-xl"
+            >
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

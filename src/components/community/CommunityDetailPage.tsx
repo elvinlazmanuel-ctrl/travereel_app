@@ -249,13 +249,13 @@ export default function CommunityDetailPage() {
         toast.success('Post shared!')
         fetchCommunityData()
       } else {
-        // Quick post needs a real post - create one first
+        // Quick post needs a real post - create one first (text-only, no images)
         const postRes = await fetch('/api/posts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             caption: quickPostText,
-            images: [`https://picsum.photos/seed/${Date.now()}/600/400`],
+            images: [],  // Text-only post, no seeded images
             isPublic: true,
             authorId: currentUser.id,
           }),
