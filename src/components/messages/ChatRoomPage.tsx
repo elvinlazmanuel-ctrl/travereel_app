@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Send, MoreVertical } from 'lucide-react'
+import { ArrowLeft, Send, MoreVertical, Mic } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
@@ -10,6 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useAppStore, type MessageType, type ChatRoomType, type User } from '@/lib/store'
 import { getSocket } from '@/lib/socket'
 import type { Socket } from 'socket.io-client'
+import { VoiceMessageRecorder } from './VoiceMessageRecorder'
 
 function formatMessageTime(dateStr: string): string {
   const date = new Date(dateStr)
@@ -39,6 +40,7 @@ export default function ChatRoomPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [isOtherTyping, setIsOtherTyping] = useState(false)
   const [otherTypingUsername, setOtherTypingUsername] = useState('')
+  const [showVoiceRecorder, setShowVoiceRecorder] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const hasFetched = useRef(false)
   const lastMessageCountRef = useRef(0)
@@ -333,6 +335,40 @@ export default function ChatRoomPage() {
     }
   }
 
+  const handleSendVoice = async (audioBlob: Blob, duration: number) => {
+    if (!currentUser || !selectedChatRoom) return
+    
+    const formData = new FormData()
+    formData.append('audio', audioBlob, `voice-${Date.now()}.webm`)
+    formData.append('chatRoomId', selectedChatRoom.id)
+    formData.append('senderId', currentUser.id)
+    formData.append('duration', duration.toString())
+
+    try {
+      const response = await fetch('/api/voice-messages', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        addMessage({
+          id: data.message?.id || Date.now().toString(),
+          content: '',
+          senderId: currentUser.id,
+          chatRoomId: selectedChatRoom.id,
+          type: 'text',
+          audioUrl: data.audioUrl,
+          duration,
+          createdAt: new Date().toISOString(),
+        } as any)
+        setShowVoiceRecorder(false)
+      }
+    } catch (error) {
+      console.error('Failed to send voice message:', error)
+    }
+  }
+
   return (
     <div className="max-w-md mx-auto flex flex-col h-full min-h-[calc(100vh-8rem)]">
       {/* Header */}
@@ -508,23 +544,40 @@ export default function ChatRoomPage() {
       </AnimatePresence>
 
       {/* Message Input */}
-      <div className="border-t border-border p-3 flex items-center gap-2 bg-card">
-        <Input
-          value={newMessage}
-          onChange={(e) => handleTyping(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Type a message..."
-          className="flex-1 h-10 text-sm rounded-full border-border bg-muted focus:bg-card focus:border-[#2EC4B6] focus:ring-[#2EC4B6]/20"
-          disabled={isSending}
-        />
-        <Button
-          size="icon"
-          onClick={handleSend}
-          disabled={!newMessage.trim() || isSending}
-          className="size-10 rounded-full bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white shrink-0"
-        >
-          <Send className="size-4 -rotate-12" />
-        </Button>
+      <div className="border-t border-border p-3 bg-card">
+        {showVoiceRecorder ? (
+          <VoiceMessageRecorder
+            onSend={handleSendVoice}
+            onCancel={() => setShowVoiceRecorder(false)}
+          />
+        ) : (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowVoiceRecorder(true)}
+              className="size-10 rounded-full"
+            >
+              <Mic className="size-5" />
+            </Button>
+            <Input
+              value={newMessage}
+              onChange={(e) => handleTyping(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Type a message..."
+              className="flex-1 h-10 text-sm rounded-full border-border bg-muted focus:bg-card focus:border-[#2EC4B6] focus:ring-[#2EC4B6]/20"
+              disabled={isSending}
+            />
+            <Button
+              size="icon"
+              onClick={handleSend}
+              disabled={!newMessage.trim() || isSending}
+              className="size-10 rounded-full bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white shrink-0"
+            >
+              <Send className="size-4 -rotate-12" />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

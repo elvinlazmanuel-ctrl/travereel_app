@@ -23,6 +23,7 @@ import FollowSheet from './FollowSheet'
 import { TravelStatsDashboard } from '@/components/itinerary/TravelStatsDashboard'
 import { AchievementSystem } from '@/components/itinerary/AchievementSystem'
 import { YearInReview } from '@/components/itinerary/YearInReview'
+import { PhotoAlbums } from './PhotoAlbums'
 import { Badge } from '@/components/ui/badge'
 
 export default function ProfilePage() {
@@ -555,6 +556,13 @@ export default function ProfilePage() {
                 <span className="text-lg">🏆</span>
                 <span className="text-xs">Badges</span>
               </TabsTrigger>
+              <TabsTrigger
+                value="albums"
+                className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
+              >
+                <span className="text-lg">📸</span>
+                <span className="text-xs">Albums</span>
+              </TabsTrigger>
             </>
           )}
           <TabsTrigger
@@ -639,6 +647,13 @@ export default function ProfilePage() {
         {isOwnProfile && profileUserId && (
           <TabsContent value="achievements" className="mt-0 px-4 py-4">
             <AchievementSystem userId={profileUserId} />
+          </TabsContent>
+        )}
+
+        {/* Phase 4: Photo Albums Tab */}
+        {isOwnProfile && profileUserId && (
+          <TabsContent value="albums" className="mt-0 px-4 py-4">
+            <PhotoAlbums userId={profileUserId} isOwnProfile={isOwnProfile} />
           </TabsContent>
         )}
 

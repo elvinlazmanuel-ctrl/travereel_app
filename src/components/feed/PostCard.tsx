@@ -57,6 +57,7 @@ import { useAppStore, type Post } from '@/lib/store'
 import { toast } from 'sonner'
 import CommentSheet from './CommentSheet'
 import ShareToCommunitySheet from './ShareToCommunitySheet'
+import { ReactionPicker, type ReactionType } from './ReactionPicker'
 
 function formatTimeAgo(dateStr: string): string {
   const now = new Date()
@@ -88,6 +89,7 @@ export default function PostCard({ post }: PostCardProps) {
   const [showReportDialog, setShowReportDialog] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [showEditDialog, setShowEditDialog] = useState(false)
+  const [userReaction, setUserReaction] = useState<ReactionType | null>(null)
   const [showMapDialog, setShowMapDialog] = useState(false)
   const [reportReason, setReportReason] = useState('')
   const [isReporting, setIsReporting] = useState(false)
@@ -146,6 +148,40 @@ export default function PostCard({ post }: PostCardProps) {
     }
     lastTapRef.current = now
   }, [handleDoubleTap])
+
+  const handleReaction = async (type: ReactionType) => {
+    if (!currentUser) return
+    
+    setUserReaction(type)
+    
+    try {
+      await fetch('/api/reactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          postId: post.id,
+          userId: currentUser.id,
+          type,
+        }),
+      })
+    } catch (error) {
+      console.error('Failed to react:', error)
+    }
+  }
+
+  const handleRemoveReaction = async () => {
+    if (!currentUser) return
+    
+    setUserReaction(null)
+    
+    try {
+      await fetch(`/api/reactions?postId=${post.id}&userId=${currentUser.id}`, {
+        method: 'DELETE',
+      })
+    } catch (error) {
+      console.error('Failed to remove reaction:', error)
+    }
+  }
 
   const handleBookmark = useCallback(async () => {
     if (!currentUser) return
@@ -502,21 +538,11 @@ export default function PostCard({ post }: PostCardProps) {
       {/* Action Row */}
       <div className="flex items-center justify-between px-4 py-2.5">
         <div className="flex items-center gap-4">
-          <motion.button
-            whileTap={{ scale: 0.8 }}
-            onClick={handleLike}
-            className="outline-none"
-            aria-label={isLiked ? 'Unlike' : 'Like'}
-          >
-            <Heart
-              className={`size-6 transition-colors ${
-                isLiked
-                  ? 'text-[#FF6B6B] fill-[#FF6B6B]'
-                  : 'text-foreground'
-              }`}
-              strokeWidth={isLiked ? 0 : 2}
-            />
-          </motion.button>
+          <ReactionPicker
+            currentReaction={userReaction}
+            onReact={handleReaction}
+            onRemoveReaction={handleRemoveReaction}
+          />
           <motion.button
             whileTap={{ scale: 0.85 }}
             className="outline-none"
