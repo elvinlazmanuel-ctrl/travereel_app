@@ -15,6 +15,7 @@ import {
   Pencil,
   FileText,
   Loader2,
+  Megaphone,
 } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -51,6 +52,7 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { useAppStore, type Post } from '@/lib/store'
@@ -357,9 +359,15 @@ export default function PostCard({ post }: PostCardProps) {
           <div className="flex flex-col">
             <button
               onClick={handleAuthorClick}
-              className="text-sm font-semibold text-foreground text-left hover:text-[#FF6B6B] transition-colors"
+              className="text-sm font-semibold text-foreground text-left hover:text-[#FF6B6B] transition-colors flex items-center gap-2"
             >
               {authorUsername}
+              {post.isSponsored && (
+                <Badge variant="secondary" className="text-[9px] bg-amber-50 text-amber-700 border-amber-200 gap-1 px-1.5 py-0">
+                  <Megaphone className="size-2.5" />
+                  Sponsored{post.sponsoredBy ? ` by ${post.sponsoredBy}` : ''}
+                </Badge>
+              )}
             </button>
             {post.location && (
               <button
@@ -532,6 +540,21 @@ export default function PostCard({ post }: PostCardProps) {
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Sponsored Post CTA */}
+      {post.isSponsored && post.sponsoredUrl && (
+        <div className="px-4 pb-3">
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs"
+            onClick={() => window.open(post.sponsoredUrl, '_blank')}
+          >
+            <Megaphone className="size-3.5 mr-1.5" />
+            Learn More
+          </Button>
         </div>
       )}
 

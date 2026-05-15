@@ -64,6 +64,8 @@ import { ItineraryMap } from './ItineraryMap'
 import { CurrencyConverter } from './CurrencyConverter'
 import { WeatherForecast } from './WeatherForecast'
 import { HotelBookingWidget } from './HotelBookingWidget'
+import { TravelInsuranceRecommendations } from './TravelInsuranceRecommendations'
+import { PremiumAddons } from './PremiumAddons'
 
 // Country flag emoji mapping
 const countryFlags: Record<string, string> = {
@@ -1044,6 +1046,41 @@ export default function ItineraryDetail() {
           </Card>
         </motion.div>
       )}
+
+      {/* Travel Insurance Recommendations - Monetization */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+      >
+        <Card className="border-gray-100 shadow-sm">
+          <CardContent className="p-4">
+            <TravelInsuranceRecommendations
+              country={itinerary.country}
+              departureDate={itinerary.departureDate || ''}
+              returnDate={itinerary.returnDate || ''}
+            />
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Premium Add-ons - Monetization */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.18 }}
+      >
+        <Card className="border-gray-100 shadow-sm">
+          <CardContent className="p-4">
+            <PremiumAddons
+              location={itinerary.location}
+              country={itinerary.country}
+              language="Local"
+              days={itinerary.days || 1}
+            />
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* Smart Packing List */}
       <motion.div

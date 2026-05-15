@@ -64,6 +64,9 @@ export interface Post {
   isLiked: boolean
   isBookmarked?: boolean
   reportCount?: number
+  isSponsored?: boolean      // NEW: Monetization - Sponsored posts
+  sponsoredBy?: string       // NEW: Monetization - Brand/advertiser name
+  sponsoredUrl?: string      // NEW: Monetization - Click-through URL
 }
 
 export interface Story {
