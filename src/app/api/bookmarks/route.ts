@@ -87,7 +87,7 @@ export async function POST(request: Request) {
 
     const { userId, postId } = validation.data
 
-    // Check if already bookmarked
+    // Check if already bookmarked - use upsert for toggle behavior
     const existing = await db.bookmark.findUnique({
       where: {
         userId_postId: { userId, postId },
@@ -95,17 +95,19 @@ export async function POST(request: Request) {
     })
 
     if (existing) {
-      return NextResponse.json(
-        { error: 'Already bookmarked' },
-        { status: 409 }
-      )
+      // Already bookmarked, so remove it (toggle off)
+      await db.bookmark.delete({
+        where: { id: existing.id },
+      })
+      
+      return NextResponse.json({ bookmark: null, action: 'removed' }, { status: 200 })
     }
 
     const bookmark = await db.bookmark.create({
       data: { userId, postId },
     })
 
-    return NextResponse.json({ bookmark }, { status: 201 })
+    return NextResponse.json({ bookmark, action: 'added' }, { status: 201 })
   } catch (error) {
     console.error('Create bookmark error:', error)
     return NextResponse.json(

@@ -208,8 +208,8 @@ export const createNotificationSchema = z.object({
 // Story schemas
 export const createStorySchema = z.object({
   mediaUrl: z.string().min(1, 'Media URL is required'),
-  mediaType: z.enum(['image', 'video']).default('image'),
-  caption: z.string().max(500).optional(),
+  mediaType: z.enum(['image', 'video', 'text']).default('image'),
+  caption: z.string().max(500).optional().nullable(),
   authorId: userIdSchema,
 })
 

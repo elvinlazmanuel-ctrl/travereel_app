@@ -78,7 +78,7 @@ export async function POST(request: Request) {
       data: {
         mediaUrl,
         mediaType: mediaType || 'image',
-        caption: caption || null,
+        caption: caption || undefined,
         authorId,
         expiresAt,
       },
