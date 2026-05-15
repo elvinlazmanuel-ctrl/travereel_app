@@ -46,13 +46,23 @@ export default function AIGenerateResult() {
   const [loading, setLoading] = useState(true)
   const [result, setResult] = useState<AIResult | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isTimeout, setIsTimeout] = useState(false)
   const [expandedDay, setExpandedDay] = useState<number>(0)
   const [saving, setSaving] = useState(false)
+  const [elapsedTime, setElapsedTime] = useState(0)
 
   const generateItinerary = useCallback(async () => {
     setLoading(true)
     setError(null)
     setResult(null)
+    setIsTimeout(false)
+    setElapsedTime(0)
+
+    // Start elapsed time counter
+    const startTime = Date.now()
+    const timerInterval = setInterval(() => {
+      setElapsedTime(Math.floor((Date.now() - startTime) / 1000))
+    }, 1000)
 
     try {
       const response = await fetch('/api/ai/generate-itinerary', {
@@ -71,6 +81,10 @@ export default function AIGenerateResult() {
       const data = await response.json()
 
       if (!response.ok) {
+        // Check if it's a timeout error
+        if (data.timeout) {
+          setIsTimeout(true)
+        }
         throw new Error(data.error || 'Failed to generate itinerary')
       }
 
@@ -78,6 +92,7 @@ export default function AIGenerateResult() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
     } finally {
+      clearInterval(timerInterval)
       setLoading(false)
     }
   }, [wizardData])
@@ -183,6 +198,12 @@ export default function AIGenerateResult() {
         <p className="text-sm text-gray-500 mb-4 text-center max-w-[250px]">
           Creating a personalized itinerary for {wizardData.location}, {wizardData.country}
         </p>
+        <div className="flex items-center gap-2 mb-4">
+          <Clock className="size-4 text-[#FF8C42]" />
+          <span className="text-sm font-medium text-gray-700">
+            {elapsedTime}s elapsed
+          </span>
+        </div>
         <div className="flex gap-1">
           {[0, 1, 2].map((i) => (
             <motion.div
@@ -209,11 +230,19 @@ export default function AIGenerateResult() {
           <AlertCircle className="size-8 text-[#FF6B6B]" />
         </div>
         <h3 className="text-lg font-bold text-gray-900 mb-2">
-          Something went wrong
+          {isTimeout ? 'Request Timed Out' : 'Something went wrong'}
         </h3>
-        <p className="text-sm text-gray-500 mb-6 text-center max-w-[250px]">
-          {error}
+        <p className="text-sm text-gray-500 mb-2 text-center max-w-[250px]">
+          {isTimeout 
+            ? 'The AI service took longer than 60 seconds. Please try again.'
+            : error
+          }
         </p>
+        {isTimeout && (
+          <p className="text-xs text-gray-400 mb-6 text-center max-w-[250px]">
+            Free AI models may experience delays during peak times. You can retry or switch to manual planning.
+          </p>
+        )}
         <div className="flex gap-3">
           <Button
             onClick={generateItinerary}

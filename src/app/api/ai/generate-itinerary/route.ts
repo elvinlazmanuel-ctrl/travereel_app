@@ -35,6 +35,10 @@ Preferred activities: ${activities || 'general sightseeing'}
 
 Please provide a comprehensive day-by-day itinerary.`
 
+    // Create an AbortController for timeout
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout
+
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -44,7 +48,7 @@ Please provide a comprehensive day-by-day itinerary.`
         'X-Title': 'Travereel',
       },
       body: JSON.stringify({
-        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        model: 'open-inference/int8',
         messages: [
           {
             role: 'system',
@@ -94,7 +98,11 @@ Important rules:
           },
         ],
       }),
+      signal: controller.signal,
     })
+
+    // Clear the timeout since we got a response
+    clearTimeout(timeoutId)
 
     console.log('OpenRouter response status:', response.status)
     
@@ -136,6 +144,19 @@ Important rules:
 
     return NextResponse.json({ itinerary: parsedItinerary })
   } catch (error) {
+    // Handle timeout errors specifically
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error('AI itinerary generation timed out after 60 seconds')
+      return NextResponse.json(
+        { 
+          error: 'Request timed out', 
+          details: 'AI service took too long to respond. Please try again.',
+          timeout: true
+        },
+        { status: 504 }
+      )
+    }
+    
     console.error('Generate itinerary error:', error)
     return NextResponse.json(
       { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
