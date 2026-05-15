@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft,
@@ -22,6 +22,8 @@ import {
   LogOut,
   Loader2,
   Send,
+  ImagePlus,
+  X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -114,6 +116,10 @@ export default function CommunityDetailPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [quickPostText, setQuickPostText] = useState('')
   const [isPosting, setIsPosting] = useState(false)
+  const [quickPostImage, setQuickPostImage] = useState<File | null>(null)
+  const [quickPostImagePreview, setQuickPostImagePreview] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const fetchCommunityData = useCallback(async () => {
     if (!selectedCommunity) return
@@ -172,20 +178,10 @@ export default function CommunityDetailPage() {
     if (isJoined) {
       setShowLeaveConfirm(true)
     } else {
-      try {
-        const res = await fetch('/api/communities', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: displayCommunity.id, joinCommunity: true, userId: currentUser.id }),
-        })
-        if (res.ok) {
-          joinCommunity(displayCommunity.id)
-          toast.success('Joined community!')
-          fetchCommunityData()
-        }
-      } catch {
-        toast.error('Failed to join community')
-      }
+      await joinCommunity(displayCommunity.id)
+      toast.success('Joined community!')
+      // Refresh community data
+      fetchCommunityData()
     }
   }
 
@@ -230,53 +226,95 @@ export default function CommunityDetailPage() {
     }
   }
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file')
+      return
+    }
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB')
+      return
+    }
+
+    setQuickPostImage(file)
+
+    // Create preview
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setQuickPostImagePreview(reader.result as string)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const removeImage = () => {
+    setQuickPostImage(null)
+    setQuickPostImagePreview(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
   const handleQuickPost = async () => {
-    if (!quickPostText.trim() || !currentUser) return
+    if (!quickPostText.trim() && !quickPostImage || !currentUser) return
     setIsPosting(true)
     try {
-      const res = await fetch('/api/share', {
+      let images: string[] = []
+
+      // Upload image if provided
+      if (quickPostImage) {
+        setIsUploading(true)
+        const formData = new FormData()
+        formData.append('file', quickPostImage)
+        formData.append('userId', currentUser.id)
+
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json()
+          images = [uploadData.url]
+        }
+        setIsUploading(false)
+      }
+
+      // Create post (with or without images)
+      const postRes = await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          postId: 'quick-post',
-          userId: currentUser.id,
-          communityId: displayCommunity.id,
           caption: quickPostText,
+          images: images,  // Empty array for text-only, or uploaded image URL
+          isPublic: true,
+          authorId: currentUser.id,
         }),
       })
-      if (res.ok) {
-        setQuickPostText('')
-        toast.success('Post shared!')
-        fetchCommunityData()
-      } else {
-        // Quick post needs a real post - create one first (text-only, no images)
-        const postRes = await fetch('/api/posts', {
+      
+      if (postRes.ok) {
+        const postData = await postRes.json()
+        const shareRes = await fetch('/api/share', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            postId: postData.post.id,
+            userId: currentUser.id,
+            communityId: displayCommunity.id,
             caption: quickPostText,
-            images: [],  // Text-only post, no seeded images
-            isPublic: true,
-            authorId: currentUser.id,
           }),
         })
-        if (postRes.ok) {
-          const postData = await postRes.json()
-          const shareRes = await fetch('/api/share', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              postId: postData.post.id,
-              userId: currentUser.id,
-              communityId: displayCommunity.id,
-              caption: quickPostText,
-            }),
-          })
-          if (shareRes.ok) {
-            setQuickPostText('')
-            toast.success('Post shared to community!')
-            fetchCommunityData()
-          }
+        if (shareRes.ok) {
+          setQuickPostText('')
+          setQuickPostImage(null)
+          setQuickPostImagePreview(null)
+          toast.success('Post shared to community!')
+          fetchCommunityData()
         }
       }
     } catch {
@@ -494,34 +532,77 @@ export default function CommunityDetailPage() {
                 <motion.div
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2 p-3 bg-card rounded-2xl border border-border shadow-sm"
+                  className="p-3 bg-card rounded-2xl border border-border shadow-sm"
                 >
-                  <Avatar className="size-8 flex-shrink-0">
-                    <AvatarImage src={currentUser?.avatar || undefined} alt={currentUser?.name || 'You'} />
-                    <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-[#FF8C42] text-xs font-semibold">
-                      {currentUser?.name?.charAt(0)?.toUpperCase() || 'U'}
-                    </AvatarFallback>
-                  </Avatar>
-                  <input
-                    value={quickPostText}
-                    onChange={(e) => setQuickPostText(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault()
-                        handleQuickPost()
-                      }
-                    }}
-                    placeholder={`Share something with ${displayCommunity.name}...`}
-                    className="flex-1 text-sm text-foreground placeholder:text-muted-foreground bg-transparent outline-none"
-                  />
-                  <Button
-                    size="sm"
-                    className="h-7 px-2.5 text-xs rounded-lg bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white flex-shrink-0"
-                    onClick={handleQuickPost}
-                    disabled={isPosting || !quickPostText.trim()}
-                  >
-                    {isPosting ? <Loader2 className="size-3 animate-spin" /> : <Send className="size-3" />}
-                  </Button>
+                  <div className="flex items-start gap-2">
+                    <Avatar className="size-8 flex-shrink-0 mt-1">
+                      <AvatarImage src={currentUser?.avatar || undefined} alt={currentUser?.name || 'You'} />
+                      <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-[#FF8C42] text-xs font-semibold">
+                        {currentUser?.name?.charAt(0)?.toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <input
+                        value={quickPostText}
+                        onChange={(e) => setQuickPostText(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault()
+                            handleQuickPost()
+                          }
+                        }}
+                        placeholder={`Share something with ${displayCommunity.name}...`}
+                        className="w-full text-sm text-foreground placeholder:text-muted-foreground bg-transparent outline-none resize-none"
+                      />
+                      
+                      {/* Image Preview */}
+                      {quickPostImagePreview && (
+                        <div className="mt-2 relative inline-block">
+                          <img
+                            src={quickPostImagePreview}
+                            alt="Preview"
+                            className="max-h-32 rounded-lg object-cover"
+                          />
+                          <button
+                            onClick={removeImage}
+                            className="absolute -top-2 -right-2 size-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                          >
+                            <X className="size-3" />
+                          </button>
+                        </div>
+                      )}
+                      
+                      {/* Action Buttons */}
+                      <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border">
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageSelect}
+                          className="hidden"
+                        />
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-[#2EC4B6] transition-colors"
+                        >
+                          <ImagePlus className="size-3.5" />
+                          {quickPostImage ? 'Change Image' : 'Add Image'}
+                        </button>
+                        <Button
+                          size="sm"
+                          className="ml-auto h-7 px-2.5 text-xs rounded-lg bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white"
+                          onClick={handleQuickPost}
+                          disabled={isPosting || isUploading || (!quickPostText.trim() && !quickPostImage)}
+                        >
+                          {isPosting || isUploading ? (
+                            <Loader2 className="size-3 animate-spin" />
+                          ) : (
+                            <Send className="size-3" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               )}
 

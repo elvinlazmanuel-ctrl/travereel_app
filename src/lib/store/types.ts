@@ -67,6 +67,12 @@ export interface Post {
   isSponsored?: boolean      // NEW: Monetization - Sponsored posts
   sponsoredBy?: string       // NEW: Monetization - Brand/advertiser name
   sponsoredUrl?: string      // NEW: Monetization - Click-through URL
+  // Community sharing info
+  sharedToCommunity?: {
+    id: string
+    name: string
+    image: string | null
+  }
 }
 
 export interface Story {

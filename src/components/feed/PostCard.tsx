@@ -16,6 +16,7 @@ import {
   FileText,
   Loader2,
   Megaphone,
+  Globe,
 } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -60,6 +61,7 @@ import { toast } from 'sonner'
 import CommentSheet from './CommentSheet'
 import ShareToCommunitySheet from './ShareToCommunitySheet'
 import { ReactionPicker, type ReactionType } from './ReactionPicker'
+import { useRouter } from 'next/navigation'
 
 function formatTimeAgo(dateStr: string): string {
   const now = new Date()
@@ -83,7 +85,8 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post }: PostCardProps) {
-  const { toggleLikeWithAPI, toggleBookmark, currentUser, setViewingUser, setCurrentView, followingIds, deletePost, updatePost } = useAppStore()
+  const { toggleLikeWithAPI, toggleBookmark, currentUser, setViewingUser, setCurrentView, followingIds, deletePost, updatePost, setSelectedCommunity } = useAppStore()
+  const router = useRouter()
   const [captionExpanded, setCaptionExpanded] = useState(false)
   const [showHeartAnimation, setShowHeartAnimation] = useState(false)
   const [showComments, setShowComments] = useState(false)
@@ -99,6 +102,20 @@ export default function PostCard({ post }: PostCardProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editCaption, setEditCaption] = useState('')
   const [editLocation, setEditLocation] = useState('')
+
+  // Handle community name click
+  const handleCommunityClick = (communityId: string, communityName: string, communityImage: string | null) => {
+    setSelectedCommunity({
+      id: communityId,
+      name: communityName,
+      image: communityImage,
+      members: 0,
+      category: null,
+      description: null,
+    })
+    setCurrentView('community-detail')
+    router.push('/')
+  }
   const [editTags, setEditTags] = useState('')
   const [activeSlide, setActiveSlide] = useState(0)
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null)
@@ -376,6 +393,19 @@ export default function PostCard({ post }: PostCardProps) {
               >
                 <MapPin className="size-3" />
                 {post.location}
+              </button>
+            )}
+            {post.sharedToCommunity && (
+              <button
+                onClick={() => handleCommunityClick(
+                  post.sharedToCommunity!.id,
+                  post.sharedToCommunity!.name,
+                  post.sharedToCommunity!.image
+                )}
+                className="flex items-center gap-1 text-[11px] text-[#2EC4B6] hover:text-[#2EC4B6]/80 transition-colors font-medium"
+              >
+                <Globe className="size-3" />
+                {post.sharedToCommunity.name}
               </button>
             )}
           </div>

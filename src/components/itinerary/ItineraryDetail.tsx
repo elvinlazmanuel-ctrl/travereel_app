@@ -116,7 +116,7 @@ function getStatusBadge(status: Itinerary['status']) {
     case 'post-travel':
       return { label: 'Post-Travel', bgClass: 'bg-[#FF6B6B]/15 text-[#FF6B6B] border-[#FF6B6B]/25' }
     default:
-      return { label: 'Unknown', bgClass: 'bg-gray-100 text-gray-600 border-gray-200' }
+      return { label: 'Unknown', bgClass: 'bg-muted text-muted-foreground border-border' }
   }
 }
 
@@ -850,7 +850,7 @@ export default function ItineraryDetail() {
               <div className="size-8 rounded-lg bg-gradient-to-br from-[#FF8C42]/20 to-[#FFBA49]/20 flex items-center justify-center">
                 <Wallet className="size-4 text-[#FF8C42]" />
               </div>
-              <span className="text-xs font-semibold text-gray-600">Budget</span>
+              <span className="text-xs font-semibold text-muted-foreground">Budget</span>
             </div>
             <p className="text-lg font-bold text-foreground">
               {formatCurrency(itinerary.budget, itinerary.currency)}
@@ -885,7 +885,7 @@ export default function ItineraryDetail() {
               <div className="size-8 rounded-lg bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 flex items-center justify-center">
                 <Calendar className="size-4 text-[#FF6B6B]" />
               </div>
-              <span className="text-xs font-semibold text-gray-600">Itinerary</span>
+              <span className="text-xs font-semibold text-muted-foreground">Itinerary</span>
             </div>
             <p className="text-lg font-bold text-foreground">{itinerary.days} Days</p>
             <p className="text-[10px] text-gray-400 mt-0.5">
@@ -982,34 +982,34 @@ export default function ItineraryDetail() {
 
             {showEssentialInfo && (
               <div className="mt-3 pt-3 border-t border-gray-100 space-y-2.5">
-                <div className="flex items-center gap-2 text-xs text-gray-600">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <MapPin className="size-3.5 text-[#FF6B6B]" />
                   <span className="font-medium">Destination:</span>
                   <span>{itinerary.location}, {itinerary.country}</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-600">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Clock className="size-3.5 text-[#FF8C42]" />
                   <span className="font-medium">Duration:</span>
                   <span>{itinerary.days} days</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-600">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <DollarSign className="size-3.5 text-[#2EC4B6]" />
                   <span className="font-medium">Budget:</span>
                   <span>{formatCurrency(itinerary.budget, itinerary.currency)}</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-600">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Backpack className="size-3.5 text-[#FFBA49]" />
                   <span className="font-medium">Travel Type:</span>
                   <span className="capitalize">{itinerary.travelType}</span>
                 </div>
                 {itinerary.companions.length > 0 && (
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Share2 className="size-3.5 text-[#E879A8]" />
                     <span className="font-medium">Companions:</span>
                     <span>{itinerary.companions.length + 1} travelers</span>
                   </div>
                 )}
-                <div className="mt-2 pt-2 border-t border-gray-100">
+                <div className="mt-2 pt-2 border-t border-border">
                   <a
                     href={`https://www.google.com/search?q=embassy+of+${encodeURIComponent(itinerary.country)}+contact`}
                     target="_blank"
