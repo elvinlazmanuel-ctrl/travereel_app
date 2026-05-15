@@ -53,6 +53,8 @@ model User {
   communityMemberships   CommunityMember[]
   blocksMade     Block[] @relation("UserBlocks")
   blocksReceived Block[] @relation("UserBlocked")
+  achievements  UserAchievement[]
+  travelStats   TravelStats?
 
   @@map("users")
 }
@@ -436,4 +438,59 @@ model Block {
 
   @@unique([blockerId, blockedId, type])
   @@map("user_blocks")
+}
+
+// Achievement System
+model Achievement {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  description   String
+  icon          String   // emoji or icon name
+  category      String   // travel, social, content, milestone
+  requirement   Int      // number required to unlock
+  createdAt     DateTime @default(now())
+
+  users         UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+  progress      Int      @default(0)
+
+  user          User       @relation(fields: [userId], references: [id])
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+// Travel Statistics
+model TravelStats {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  totalTrips        Int      @default(0)
+  totalCountries    Int      @default(0)
+  totalCities       Int      @default(0)
+  totalDays         Int      @default(0)
+  totalSpent        Float    @default(0)
+  favoriteCountry   String?
+  favoriteCity      String?
+  longestTrip       Int      @default(0) // in days
+  shortestTrip      Int      @default(0)
+  travelStreak      Int      @default(0) // consecutive years
+  firstTripDate     DateTime?
+  lastTripDate      DateTime?
+  countriesVisited  String   // JSON array
+  citiesVisited     String   // JSON array
+  updatedAt         DateTime @updatedAt
+
+  user              User     @relation(fields: [userId], references: [id])
+
+  @@map("travel_stats")
 }
