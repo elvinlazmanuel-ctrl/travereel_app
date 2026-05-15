@@ -54,7 +54,9 @@ Please provide a comprehensive day-by-day itinerary.`
             role: 'system',
             content: `You are an expert travel planner. Generate detailed day-by-day travel itineraries based on the user's preferences.
 
-You MUST return your response as a valid JSON object with the following structure (no markdown, no code blocks, just raw JSON):
+CRITICAL: You MUST return your response as a valid JSON object. Use ONLY straight quotes (" "), NEVER curly quotes (" " " ").
+
+The JSON must have this exact structure:
 
 {
   "days": [
@@ -90,7 +92,8 @@ Important rules:
 - Consider travel time between locations
 - Include realistic estimated costs
 - Provide practical travel advice in the route field
-- Return ONLY the JSON object, no other text`,
+- Use ONLY straight double quotes for all strings
+- Return ONLY the JSON object, no other text, no markdown formatting`,
           },
           {
             role: 'user',
@@ -131,11 +134,17 @@ Important rules:
       jsonStr = jsonMatch[1].trim()
     }
 
+    // Fix curly/smart quotes that break JSON parsing
+    // Replace curly double quotes with straight quotes
+    jsonStr = jsonStr.replace(/[\u201C\u201D]/g, '"')
+    // Replace curly single quotes with straight quotes
+    jsonStr = jsonStr.replace(/[\u2018\u2019]/g, "'")
+
     let parsedItinerary
     try {
       parsedItinerary = JSON.parse(jsonStr)
     } catch {
-      console.error('Failed to parse AI response as JSON:', content)
+      console.error('Failed to parse AI response as JSON:', jsonStr.substring(0, 500))
       return NextResponse.json(
         { error: 'Failed to parse AI-generated itinerary', raw: content },
         { status: 500 }
