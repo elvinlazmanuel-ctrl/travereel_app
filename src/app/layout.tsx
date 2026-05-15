@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "sonner";
 import { QueryProvider } from "@/lib/query-provider";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { OfflineIndicator } from "@/components/ui/OfflineIndicator";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,6 +22,22 @@ export const metadata: Metadata = {
   description: "Share your travel adventures, plan itineraries, and connect with fellow travelers worldwide.",
   keywords: ["travel", "social", "itinerary", "travereel", "adventure"],
   authors: [{ name: "Travereel" }],
+  manifest: "/manifest.json",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FF6B6B" },
+    { media: "(prefers-color-scheme: dark)", color: "#FF6B6B" },
+  ],
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Travereel",
+  },
   openGraph: {
     title: "Travereel - Travel Social",
     description: "Share your travel adventures, plan itineraries, and connect with fellow travelers.",
@@ -50,6 +67,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
+            <OfflineIndicator />
             {children}
             <Toaster />
             <SonnerToaster position="top-center" richColors />

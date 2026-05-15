@@ -22,7 +22,6 @@ export function useServiceWorker(): UseServiceWorkerReturn {
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
 
-  // Register service worker
   const registerServiceWorker = useCallback(async () => {
     if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
       console.log('[PWA] Service workers not supported')
@@ -104,11 +103,6 @@ export function useServiceWorker(): UseServiceWorkerReturn {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     }
   }, [])
-
-  // Register service worker on mount
-  useEffect(() => {
-    registerServiceWorker()
-  }, [registerServiceWorker])
 
   return {
     isOnline,
