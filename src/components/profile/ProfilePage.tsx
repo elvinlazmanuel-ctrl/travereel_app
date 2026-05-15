@@ -20,9 +20,7 @@ import { useAppStore, type Post, type Itinerary, type ChatRoomType } from '@/lib
 import { toast } from 'sonner'
 import ItineraryCard from './ItineraryCard'
 import FollowSheet from './FollowSheet'
-import { TravelStatsDashboard } from '@/components/itinerary/TravelStatsDashboard'
-import { AchievementSystem } from '@/components/itinerary/AchievementSystem'
-import { YearInReview } from '@/components/itinerary/YearInReview'
+import { TravelInsightsSection } from './TravelInsightsSection'
 import { PhotoAlbums } from './PhotoAlbums'
 import { Badge } from '@/components/ui/badge'
 
@@ -486,41 +484,9 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* Phase 3: Travel Stats & Achievements (Only on own profile) */}
+      {/* Phase 3: Travel Insights (Only on own profile) */}
       {isOwnProfile && profileUserId && (
-        <div className="px-4 py-4 space-y-6 border-b border-border">
-          {/* Year in Review Card */}
-          <YearInReview userId={profileUserId} year={new Date().getFullYear()} />
-
-          {/* Quick Stats Preview */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => setActiveTab('stats')}
-              className="p-4 rounded-xl bg-gradient-to-br from-[#FF6B6B]/10 to-[#FF8C42]/10 border border-[#FF6B6B]/20 hover:border-[#FF6B6B]/40 transition-colors text-left"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <div className="size-8 rounded-lg bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] flex items-center justify-center">
-                  <Map className="size-4 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-gray-900">Travel Stats</span>
-              </div>
-              <p className="text-xs text-gray-500">View your travel journey</p>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('achievements')}
-              className="p-4 rounded-xl bg-gradient-to-br from-[#FFBA49]/10 to-[#FFD700]/10 border border-[#FFBA49]/20 hover:border-[#FFBA49]/40 transition-colors text-left"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <div className="size-8 rounded-lg bg-gradient-to-br from-[#FFBA49] to-[#FFD700] flex items-center justify-center">
-                  <span className="text-lg">🏆</span>
-                </div>
-                <span className="text-sm font-semibold text-gray-900">Achievements</span>
-              </div>
-              <p className="text-xs text-gray-500">See your badges</p>
-            </button>
-          </div>
-        </div>
+        <TravelInsightsSection userId={profileUserId} />
       )}
 
       {/* Tab Bar */}
@@ -541,29 +507,13 @@ export default function ProfilePage() {
             <span className="text-xs">Itineraries</span>
           </TabsTrigger>
           {isOwnProfile && (
-            <>
-              <TabsTrigger
-                value="stats"
-                className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
-              >
-                <span className="text-lg">📊</span>
-                <span className="text-xs">Stats</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="achievements"
-                className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
-              >
-                <span className="text-lg">🏆</span>
-                <span className="text-xs">Badges</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="albums"
-                className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
-              >
-                <span className="text-lg">📸</span>
-                <span className="text-xs">Albums</span>
-              </TabsTrigger>
-            </>
+            <TabsTrigger
+              value="albums"
+              className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
+            >
+              <span className="text-lg">📸</span>
+              <span className="text-xs">Albums</span>
+            </TabsTrigger>
           )}
           <TabsTrigger
             value="tagged"
@@ -636,19 +586,8 @@ export default function ProfilePage() {
           )}
         </TabsContent>
 
-        {/* Phase 3: Travel Stats Tab */}
-        {isOwnProfile && profileUserId && (
-          <TabsContent value="stats" className="mt-0 px-4 py-4">
-            <TravelStatsDashboard userId={profileUserId} />
-          </TabsContent>
-        )}
-
-        {/* Phase 3: Achievements Tab */}
-        {isOwnProfile && profileUserId && (
-          <TabsContent value="achievements" className="mt-0 px-4 py-4">
-            <AchievementSystem userId={profileUserId} />
-          </TabsContent>
-        )}
+        {/* Phase 3: Travel Stats Tab - Now in TravelInsightsSection */}
+        {/* Achievements Tab - Now in TravelInsightsSection */}
 
         {/* Phase 4: Photo Albums Tab */}
         {isOwnProfile && profileUserId && (

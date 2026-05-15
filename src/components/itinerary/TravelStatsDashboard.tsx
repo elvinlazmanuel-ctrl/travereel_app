@@ -220,8 +220,8 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
                   <stat.icon className={`size-5 text-${stat.color.split(' ')[1]}`} />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</p>
-              <p className="text-xs text-gray-500">{stat.label}</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</p>
             </Card>
           </motion.div>
         ))}
@@ -235,18 +235,18 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
           transition={{ delay: 0.3 }}
         >
           <Card className="p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
               <Clock className="size-4 text-[#FF6B6B]" />
               Trip Records
             </h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="p-3 rounded-lg bg-gradient-to-br from-[#FF6B6B]/5 to-[#FF8C42]/5 border border-[#FF6B6B]/10">
-                <p className="text-xs text-gray-500 mb-1">Longest Trip</p>
-                <p className="text-xl font-bold text-gray-900">{stats.longestTrip} days</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Longest Trip</p>
+                <p className="text-xl font-bold text-gray-900 dark:text-white">{stats.longestTrip} days</p>
               </div>
               <div className="p-3 rounded-lg bg-gradient-to-br from-[#2EC4B6]/5 to-[#16B5A8]/5 border border-[#2EC4B6]/10">
-                <p className="text-xs text-gray-500 mb-1">Shortest Trip</p>
-                <p className="text-xl font-bold text-gray-900">{stats.shortestTrip} days</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Shortest Trip</p>
+                <p className="text-xl font-bold text-gray-900 dark:text-white">{stats.shortestTrip} days</p>
               </div>
             </div>
           </Card>
@@ -261,14 +261,14 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
           transition={{ delay: 0.4 }}
         >
           <Card className="p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
               <Star className="size-4 text-[#FFBA49]" />
               Destinations
             </h3>
             
             {stats.countriesVisited.length > 0 && (
               <div className="mb-4">
-                <p className="text-xs text-gray-500 mb-2">Countries</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Countries</p>
                 <div className="flex flex-wrap gap-2">
                   {stats.countriesVisited.map((country) => (
                     <Badge
