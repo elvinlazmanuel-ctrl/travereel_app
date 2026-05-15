@@ -15,6 +15,9 @@ export async function POST(request: Request) {
     // Check if OpenRouter API key is configured
     const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
     
+    console.log('API Key present:', !!apiKey)
+    console.log('API Key starts with:', apiKey?.substring(0, 10))
+    
     if (!apiKey) {
       return NextResponse.json(
         { 
@@ -93,11 +96,17 @@ Important rules:
       }),
     })
 
+    console.log('OpenRouter response status:', response.status)
+    
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
-      console.error('OpenRouter API error:', errorData)
+      console.error('OpenRouter API error:', JSON.stringify(errorData, null, 2))
       return NextResponse.json(
-        { error: 'AI service error', details: errorData.error?.message || 'Failed to generate itinerary' },
+        { 
+          error: 'AI service error', 
+          details: errorData.error?.message || errorData.message || `HTTP ${response.status}`,
+          status: response.status
+        },
         { status: 500 }
       )
     }
