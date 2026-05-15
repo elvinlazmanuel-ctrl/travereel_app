@@ -75,6 +75,11 @@ export default function AIGenerateResult() {
           days: wizardData.days,
           activities: wizardData.activities,
           travelType: wizardData.travelType,
+          departureDate: wizardData.departureDate,
+          returnDate: wizardData.returnDate,
+          departureTime: wizardData.departureTime,
+          arrivalTime: wizardData.arrivalTime,
+          hasHotel: wizardData.hasHotel,
         }),
       })
 

@@ -221,12 +221,15 @@ export interface WizardData {
   location: string
   departureDate: string
   returnDate: string
+  departureTime: string
+  arrivalTime: string
   budget: number
   currency: string
   days: number
   travelType: string
   activities: string[]
   companions: Companion[]
+  hasHotel: boolean
 }
 
 export const defaultWizardData: WizardData = {
@@ -235,10 +238,13 @@ export const defaultWizardData: WizardData = {
   location: '',
   departureDate: '',
   returnDate: '',
+  departureTime: '',
+  arrivalTime: '',
   budget: 0,
   currency: 'USD',
   days: 1,
   travelType: 'solo',
   activities: [],
   companions: [],
+  hasHotel: true,
 }

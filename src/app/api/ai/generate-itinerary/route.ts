@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { country, location, budget, days, activities, travelType } = body
+    const { country, location, budget, days, activities, travelType, departureDate, returnDate, departureTime, arrivalTime, hasHotel } = body
 
     if (!country || !location || !days) {
       return NextResponse.json(
@@ -28,12 +28,26 @@ export async function POST(request: Request) {
       )
     }
 
-    const userMessage = `Generate a detailed ${days}-day travel itinerary for ${location}, ${country}.
-Budget: ${budget || 'flexible'} USD
-Travel type: ${travelType || 'solo'}
-Preferred activities: ${activities || 'general sightseeing'}
-
-Please provide a comprehensive day-by-day itinerary.`
+    // Build user message with optional flight/hotel details
+    let userMessage = `Generate a detailed ${days}-day travel itinerary for ${location}, ${country}.`
+    
+    if (departureDate) {
+      userMessage += `\nDeparture Date: ${departureDate}`
+    }
+    if (returnDate) {
+      userMessage += `\nReturn Date: ${returnDate}`
+    }
+    if (departureTime) {
+      userMessage += `\nFlight Departure Time: ${departureTime}`
+    }
+    if (arrivalTime) {
+      userMessage += `\nFlight Arrival Time: ${arrivalTime}`
+    }
+    
+    userMessage += `\nBudget: ${budget || 'flexible'} USD`
+    userMessage += `\nTravel type: ${travelType || 'solo'}`
+    userMessage += `\nPreferred activities: ${activities || 'general sightseeing'}`
+    userMessage += `\n\nPlease provide a comprehensive day-by-day itinerary.`
 
     // Create an AbortController for timeout
     const controller = new AbortController()
@@ -53,6 +67,12 @@ Please provide a comprehensive day-by-day itinerary.`
           {
             role: 'system',
             content: `You are an expert travel planner. Generate detailed day-by-day travel itineraries based on the user's preferences.
+
+CRITICAL PRIVACY RULES:
+- NEVER include specific hotel names in the itinerary
+- Use generic terms like "Check in to Hotel", "Hotel Check-in", or "Accommodation" instead
+- If the user hasn't booked a hotel yet, you may optionally suggest a hotel AREA (not specific hotel name) with a note: "Consider staying in [area name] area - Browse hotels on Booking.com"
+- If flight times are provided, schedule activities AROUND the flight times (don't plan activities during travel)
 
 CRITICAL: You MUST return your response as a valid JSON object. Use ONLY straight quotes (" "), NEVER curly quotes (" " " ").
 
@@ -88,11 +108,14 @@ The JSON must have this exact structure:
 Important rules:
 - All costs should be in USD
 - startTime and endTime should be in HH:MM format
-- Include 3-5 activities per day
+- Include 3-5 activities per day (adjust based on arrival/departure times)
 - Consider travel time between locations
 - Include realistic estimated costs
 - Provide practical travel advice in the route field
 - Use ONLY straight double quotes for all strings
+- For accommodation: Use "Check in to Hotel" or similar generic text, NEVER specific hotel names
+- For hotel recommendations: Only suggest areas, not specific hotels. Add "Browse hotels on Booking.com" note
+- For flights: If departure/arrival times provided, plan activities around them
 - Return ONLY the JSON object, no other text, no markdown formatting`,
           },
           {

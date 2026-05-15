@@ -8,6 +8,7 @@ import StepCountry from './StepCountry'
 import StepLocation from './StepLocation'
 import StepTravelDates from './StepTravelDates'
 import StepBudget from './StepBudget'
+import StepTravelDetails from './StepTravelDetails'
 import StepDays from './StepDays'
 import StepTravelType from './StepTravelType'
 import StepActivities from './StepActivities'
@@ -20,6 +21,7 @@ const stepLabels = [
   'Location',
   'Dates',
   'Budget',
+  'Travel',
   'Days',
   'Travel',
   'Activities',
@@ -36,12 +38,12 @@ export default function ItineraryWizard() {
     setCurrentView,
   } = useAppStore()
 
-  const totalSteps = 8 // 0-7
+  const totalSteps = 9 // 0-8
 
   // Determine which content to show
   const getStepContent = () => {
     // After mode selection, show result forms
-    if (wizardStep >= 8) {
+    if (wizardStep >= 9) {
       return isAIGenerate ? <AIGenerateResult /> : <ManualInputForm />
     }
     switch (wizardStep) {
@@ -49,33 +51,35 @@ export default function ItineraryWizard() {
       case 1: return <StepLocation />
       case 2: return <StepTravelDates />
       case 3: return <StepBudget />
-      case 4: return <StepDays />
-      case 5: return <StepTravelType />
-      case 6: return <StepActivities />
-      case 7: return <StepModeSelection />
+      case 4: return <StepTravelDetails />
+      case 5: return <StepDays />
+      case 6: return <StepTravelType />
+      case 7: return <StepActivities />
+      case 8: return <StepModeSelection />
       default: return <StepCountry />
     }
   }
 
   const canGoNext = (): boolean => {
-    if (wizardStep >= 8) return false
+    if (wizardStep >= 9) return false
     switch (wizardStep) {
       case 0: return !!(wizardData.title.trim() && wizardData.country)
       case 1: return !!wizardData.location
       case 2: return !!(wizardData.departureDate && wizardData.returnDate)
       case 3: return wizardData.budget > 0
-      case 4: return wizardData.days > 0
-      case 5:
+      case 4: return true // Travel details are optional
+      case 5: return wizardData.days > 0
+      case 6:
         if (wizardData.travelType === 'solo') return true
         return wizardData.companions.length > 0
-      case 6: return wizardData.activities.length > 0
-      case 7: return true // Mode selection handles its own navigation
+      case 7: return wizardData.activities.length > 0
+      case 8: return true // Mode selection handles its own navigation
       default: return true
     }
   }
 
   const canGoBack = (): boolean => {
-    return wizardStep > 0 && wizardStep < 8
+    return wizardStep > 0 && wizardStep < 9
   }
 
   const handleNext = () => {
