@@ -44,7 +44,7 @@ Please provide a comprehensive day-by-day itinerary.`
         'X-Title': 'Travereel',
       },
       body: JSON.stringify({
-        model: 'openrouter/auto',
+        model: 'nvidia/nemotron-3-super-120b-a12b:free',
         messages: [
           {
             role: 'system',
