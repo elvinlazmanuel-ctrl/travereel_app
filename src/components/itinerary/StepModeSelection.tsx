@@ -13,7 +13,7 @@ export default function StepModeSelection() {
   const handleContinue = () => {
     if (!selectedMode) return
     setIsAIGenerate(selectedMode === 'ai')
-    setWizardStep(7)
+    setWizardStep(8) // Navigate to step 8 (AIGenerateResult or ManualInputForm)
   }
 
   return (
