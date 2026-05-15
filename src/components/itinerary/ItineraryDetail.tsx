@@ -63,6 +63,7 @@ import { ItineraryExport } from './ItineraryExport'
 import { ItineraryMap } from './ItineraryMap'
 import { CurrencyConverter } from './CurrencyConverter'
 import { WeatherForecast } from './WeatherForecast'
+import { HotelBookingWidget } from './HotelBookingWidget'
 
 // Country flag emoji mapping
 const countryFlags: Record<string, string> = {
@@ -1022,6 +1023,27 @@ export default function ItineraryDetail() {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* Hotel Booking Widget - Monetization */}
+      {!(itinerary as any).hasHotel && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+        >
+          <Card className="border-gray-100 shadow-sm">
+            <CardContent className="p-4">
+              <HotelBookingWidget
+                location={itinerary.location}
+                country={itinerary.country}
+                currency={itinerary.currency}
+                checkIn={itinerary.departureDate || undefined}
+                checkOut={itinerary.returnDate || undefined}
+              />
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Smart Packing List */}
       <motion.div
