@@ -24,6 +24,13 @@ import {
   ListChecks,
   Backpack,
   Navigation,
+  Briefcase,
+  Plane,
+  DollarSign,
+  Thermometer,
+  Languages,
+  Phone,
+  FileText,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -129,6 +136,8 @@ export default function ItineraryDetail() {
   const [isUpdatingVisibility, setIsUpdatingVisibility] = useState(false)
   const [isSendingReminder, setIsSendingReminder] = useState(false)
   const [reminderSent, setReminderSent] = useState(false)
+  const [packingList, setPackingList] = useState<Record<string, boolean>>({})
+  const [showEssentialInfo, setShowEssentialInfo] = useState(false)
 
   // Use selectedItinerary from store, or fetch if we need more details
   const itinerary = fullItinerary || selectedItinerary
@@ -317,6 +326,53 @@ export default function ItineraryDetail() {
   const toggleRequirement = (req: string) => {
     setCheckedRequirements((prev) => ({ ...prev, [req]: !prev[req] }))
   }
+
+  // Generate smart packing list based on trip type
+  const generatePackingList = () => {
+    if (!itinerary) return
+    const baseItems = [
+      'Passport/ID',
+      'Travel insurance documents',
+      'Phone charger',
+      'Toiletries',
+      'Medications',
+      'Comfortable walking shoes',
+      'Weather-appropriate clothing',
+    ]
+
+    const travelTypeItems: Record<string, string[]> = {
+      solo: ['Portable charger', 'Travel guidebook', 'Daypack'],
+      couple: ['Camera', 'Nice outfit for dinners', 'Shared travel journal'],
+      family: ['Kids activities', 'First aid kit', 'Snacks', 'Extra clothing'],
+      friends: ['Group photo album', 'Games for travel', 'Shared expense tracker'],
+      business: ['Laptop', 'Business cards', 'Formal attire', 'Presentation materials'],
+    }
+
+    const specificItems = travelTypeItems[itinerary.travelType] || []
+    const allItems = [...baseItems, ...specificItems]
+
+    const initial: Record<string, boolean> = {}
+    allItems.forEach((item) => {
+      initial[item] = false
+    })
+    setPackingList(initial)
+  }
+
+  // Toggle packing item
+  const togglePackingItem = (item: string) => {
+    setPackingList((prev) => ({ ...prev, [item]: !prev[item] }))
+  }
+
+  // Get days until departure
+  const getDaysUntilDeparture = () => {
+    if (!itinerary || !itinerary.departureDate) return null
+    const departure = new Date(itinerary.departureDate)
+    const now = new Date()
+    const diff = Math.ceil((departure.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+    return diff
+  }
+
+  const daysUntilDeparture = getDaysUntilDeparture()
 
   if (!itinerary) {
     return (
@@ -845,6 +901,203 @@ export default function ItineraryDetail() {
                 <span className="text-[10px] text-gray-400">+{itinerary.daysPlan.length - 4}</span>
               )}
             </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Smart Reminders */}
+      {daysUntilDeparture !== null && daysUntilDeparture > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.09 }}
+        >
+          <Card className={`border shadow-sm ${
+            daysUntilDeparture <= 3 ? 'border-[#FF6B6B]/30 bg-[#FF6B6B]/5' :
+            daysUntilDeparture <= 7 ? 'border-[#FF8C42]/30 bg-[#FF8C42]/5' :
+            'border-[#2EC4B6]/30 bg-[#2EC4B6]/5'
+          }`}>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className={`size-10 rounded-full flex items-center justify-center ${
+                  daysUntilDeparture <= 3 ? 'bg-[#FF6B6B]/10' :
+                  daysUntilDeparture <= 7 ? 'bg-[#FF8C42]/10' :
+                  'bg-[#2EC4B6]/10'
+                }`}>
+                  <Bell className={`size-5 ${
+                    daysUntilDeparture <= 3 ? 'text-[#FF6B6B]' :
+                    daysUntilDeparture <= 7 ? 'text-[#FF8C42]' :
+                    'text-[#2EC4B6]'
+                  }`} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    {daysUntilDeparture === 0 ? 'Departing Today!' :
+                     daysUntilDeparture === 1 ? 'Departing Tomorrow!' :
+                     `${daysUntilDeparture} Days Until Departure`}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {daysUntilDeparture > 14 && 'Start preparing for your trip'}
+                    {daysUntilDeparture > 7 && daysUntilDeparture <= 14 && 'Time to finalize plans'}
+                    {daysUntilDeparture > 3 && daysUntilDeparture <= 7 && 'Almost time! Check your requirements'}
+                    {daysUntilDeparture <= 3 && daysUntilDeparture > 0 && 'Get ready! Double-check everything'}
+                  </p>
+                </div>
+                <Badge className={`text-xs ${
+                  daysUntilDeparture <= 3 ? 'bg-[#FF6B6B]/15 text-[#FF6B6B]' :
+                  daysUntilDeparture <= 7 ? 'bg-[#FF8C42]/15 text-[#FF8C42]' :
+                  'bg-[#2EC4B6]/15 text-[#2EC4B6]'
+                }`}>
+                  {daysUntilDeparture}d
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
+      {/* Essential Info Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <Card className="border-gray-100 shadow-sm">
+          <CardContent className="p-4">
+            <button
+              onClick={() => setShowEssentialInfo(!showEssentialInfo)}
+              className="w-full flex items-center justify-between"
+            >
+              <div className="flex items-center gap-2">
+                <div className="size-8 rounded-lg bg-gradient-to-br from-[#2EC4B6]/20 to-[#FFBA49]/20 flex items-center justify-center">
+                  <FileText className="size-4 text-[#2EC4B6]" />
+                </div>
+                <span className="text-sm font-semibold text-gray-900">Essential Info</span>
+              </div>
+              <ChevronRight className={`size-4 text-gray-400 transition-transform ${showEssentialInfo ? 'rotate-90' : ''}`} />
+            </button>
+
+            {showEssentialInfo && (
+              <div className="mt-3 pt-3 border-t border-gray-100 space-y-2.5">
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <MapPin className="size-3.5 text-[#FF6B6B]" />
+                  <span className="font-medium">Destination:</span>
+                  <span>{itinerary.location}, {itinerary.country}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <Clock className="size-3.5 text-[#FF8C42]" />
+                  <span className="font-medium">Duration:</span>
+                  <span>{itinerary.days} days</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <DollarSign className="size-3.5 text-[#2EC4B6]" />
+                  <span className="font-medium">Budget:</span>
+                  <span>{formatCurrency(itinerary.budget, itinerary.currency)}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <Backpack className="size-3.5 text-[#FFBA49]" />
+                  <span className="font-medium">Travel Type:</span>
+                  <span className="capitalize">{itinerary.travelType}</span>
+                </div>
+                {itinerary.companions.length > 0 && (
+                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                    <Share2 className="size-3.5 text-[#E879A8]" />
+                    <span className="font-medium">Companions:</span>
+                    <span>{itinerary.companions.length + 1} travelers</span>
+                  </div>
+                )}
+                <div className="mt-2 pt-2 border-t border-gray-100">
+                  <a
+                    href={`https://www.google.com/search?q=embassy+of+${encodeURIComponent(itinerary.country)}+contact`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] text-[#FF8C42] font-medium hover:underline flex items-center gap-1"
+                  >
+                    <Phone className="size-3" />
+                    Find Embassy Contact
+                  </a>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Smart Packing List */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.11 }}
+      >
+        <Card className="border-gray-100 shadow-sm">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <div className="size-8 rounded-lg bg-gradient-to-br from-[#E879A8]/20 to-[#FF6B6B]/20 flex items-center justify-center">
+                  <Briefcase className="size-4 text-[#E879A8]" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900">Packing List</h3>
+                  <p className="text-[10px] text-gray-400">
+                    {Object.keys(packingList).length > 0
+                      ? `${Object.values(packingList).filter(Boolean).length}/${Object.keys(packingList).length} packed`
+                      : 'Generate your personalized list'}
+                  </p>
+                </div>
+              </div>
+              {Object.keys(packingList).length === 0 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 text-xs border-[#E879A8] text-[#E879A8] hover:bg-[#E879A8]/10"
+                  onClick={generatePackingList}
+                >
+                  Generate
+                </Button>
+              )}
+            </div>
+
+            {Object.keys(packingList).length > 0 && (
+              <>
+                {/* Progress bar */}
+                <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden mb-3">
+                  <motion.div
+                    className="h-full rounded-full bg-gradient-to-r from-[#E879A8] to-[#FF6B6B]"
+                    initial={{ width: 0 }}
+                    animate={{
+                      width: `${Object.keys(packingList).length > 0
+                        ? (Object.values(packingList).filter(Boolean).length / Object.keys(packingList).length) * 100
+                        : 0}%`,
+                    }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </div>
+
+                {/* Packing items */}
+                <div className="space-y-2 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                  {Object.entries(packingList).map(([item, checked]) => (
+                    <div
+                      key={item}
+                      className={`flex items-center gap-2 rounded-lg px-2.5 py-2 transition-colors ${
+                        checked ? 'bg-[#2EC4B6]/5' : 'bg-gray-50'
+                      }`}
+                      onClick={() => togglePackingItem(item)}
+                    >
+                      <div className={`size-4 rounded border-2 flex items-center justify-center ${
+                        checked ? 'bg-[#2EC4B6] border-[#2EC4B6]' : 'border-gray-300'
+                      }`}>
+                        {checked && <CheckCircle2 className="size-3 text-white" />}
+                      </div>
+                      <span className={`text-xs ${
+                        checked ? 'text-gray-400 line-through' : 'text-gray-700 font-medium'
+                      }`}>
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       </motion.div>

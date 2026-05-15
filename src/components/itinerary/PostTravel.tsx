@@ -23,6 +23,12 @@ import {
   Plane,
   Heart,
   Trash2,
+  Award,
+  Sparkles,
+  MessageCircle,
+  Lightbulb,
+  Target,
+  TrendingUp,
 } from 'lucide-react'
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
 import { Button } from '@/components/ui/button'
@@ -155,28 +161,26 @@ export default function PostTravel() {
   const [selectedPhotoIds, setSelectedPhotoIds] = useState<Set<number>>(new Set())
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Generate placeholder photos
+  // Trip reflections state
+  const [reflectionAnswers, setReflectionAnswers] = useState<Record<string, string>>({})
+  const [showReflections, setShowReflections] = useState(false)
+
+  // Achievements state
+  const [earnedAchievements, setEarnedAchievements] = useState<string[]>([])
+
+  // User-uploaded photos only (no seeded/placeholder photos)
   const [uploadedPhotos, setUploadedPhotos] = useState<PhotoItem[]>([])
 
-  const basePhotos = useMemo(() => {
-    const count = Math.max(6, Math.min(selectedItinerary?.daysPlan?.length || 3, 9))
-    return Array.from({ length: count }, (_, i) => ({
-      id: i,
-      url: `https://picsum.photos/seed/${selectedItinerary?.id}-photo-${i}/400/400`,
-      isUploaded: false,
-    }))
-  }, [selectedItinerary])
-
   const photos: PhotoItem[] = useMemo(() => {
-    return [...basePhotos, ...uploadedPhotos]
-  }, [basePhotos, uploadedPhotos])
+    return uploadedPhotos
+  }, [uploadedPhotos])
 
-  // Select all photos by default for sharing
+  // Auto-select first 4 photos when they're uploaded
   useEffect(() => {
     if (selectedPhotoIds.size === 0 && photos.length > 0) {
-      setSelectedPhotoIds(new Set(photos.slice(0, 4).map((p) => p.id)))
+      setSelectedPhotoIds(new Set(photos.slice(0, Math.min(4, photos.length)).map((p) => p.id)))
     }
-  }, [photos, selectedPhotoIds.size])
+  }, [photos.length])
 
   // Completed activities
   const completedActivities = useMemo(() => {
@@ -449,6 +453,48 @@ export default function PostTravel() {
     resetWizard()
     setCurrentView('itinerary')
   }
+
+  // Reflection prompts
+  const reflectionPrompts = [
+    { id: 'favorite', question: 'What was your favorite moment?', icon: Heart },
+    { id: 'surprise', question: 'What surprised you the most?', icon: Sparkles },
+    { id: 'recommend', question: 'Would you visit again?', icon: MessageCircle },
+    { id: 'learn', question: 'What did you learn?', icon: Lightbulb },
+    { id: 'food', question: 'Best food you tried?', icon: Target },
+  ]
+
+  // Calculate achievements
+  useEffect(() => {
+    if (!selectedItinerary) return
+    const achievements: string[] = []
+
+    // Trip completion
+    achievements.push('trip-completed')
+
+    // Budget master (stayed within budget)
+    if (totalSpent <= totalBudget) {
+      achievements.push('budget-master')
+    }
+
+    // Activity explorer (completed 80%+ activities)
+    const totalActivities = selectedItinerary.daysPlan.flatMap(d => d.activities).length
+    if (totalActivities > 0 && completedActivities.length / totalActivities >= 0.8) {
+      achievements.push('activity-explorer')
+    }
+
+    // Photo enthusiast (uploaded 5+ photos)
+    if (uploadedPhotos.length >= 5) {
+      achievements.push('photo-enthusiast')
+    }
+
+    // Multi-city traveler (visited 3+ cities)
+    const uniqueCities = new Set(selectedItinerary.daysPlan.map(d => d.title))
+    if (uniqueCities.size >= 3) {
+      achievements.push('multi-city')
+    }
+
+    setEarnedAchievements(achievements)
+  }, [selectedItinerary, totalSpent, totalBudget, completedActivities.length, uploadedPhotos.length])
 
   if (!selectedItinerary) {
     return (
@@ -1045,6 +1091,144 @@ export default function PostTravel() {
                 ))}
               </div>
             )}
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Trip Summary Stats */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.18 }}
+      >
+        <Card className="border-gray-100 shadow-sm">
+          <CardHeader className="pb-2 pt-4 px-4">
+            <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+              <TrendingUp className="size-4 text-[#2EC4B6]" />
+              Trip Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-lg bg-gradient-to-br from-[#FF6B6B]/10 to-[#FF8C42]/10 p-3">
+                <Calendar className="size-4 text-[#FF6B6B] mb-1" />
+                <p className="text-2xl font-bold text-gray-900">{selectedItinerary.days}</p>
+                <p className="text-[10px] text-gray-500">Days Traveled</p>
+              </div>
+              <div className="rounded-lg bg-gradient-to-br from-[#2EC4B6]/10 to-[#FFBA49]/10 p-3">
+                <CheckCircle2 className="size-4 text-[#2EC4B6] mb-1" />
+                <p className="text-2xl font-bold text-gray-900">{completedActivities.length}</p>
+                <p className="text-[10px] text-gray-500">Activities Done</p>
+              </div>
+              <div className="rounded-lg bg-gradient-to-br from-[#FFBA49]/10 to-[#FF6B6B]/10 p-3">
+                <MapPin className="size-4 text-[#FFBA49] mb-1" />
+                <p className="text-2xl font-bold text-gray-900">{new Set(selectedItinerary.daysPlan.map(d => d.title)).size}</p>
+                <p className="text-[10px] text-gray-500">Places Visited</p>
+              </div>
+              <div className="rounded-lg bg-gradient-to-br from-[#E879A8]/10 to-[#FF8C42]/10 p-3">
+                <Camera className="size-4 text-[#E879A8] mb-1" />
+                <p className="text-2xl font-bold text-gray-900">{uploadedPhotos.length}</p>
+                <p className="text-[10px] text-gray-500">Photos Uploaded</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Trip Achievements */}
+      {earnedAchievements.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <Card className="border-gray-100 shadow-sm">
+            <CardHeader className="pb-2 pt-4 px-4">
+              <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+                <Award className="size-4 text-[#FFBA49]" />
+                Trip Achievements
+                <Badge variant="secondary" className="ml-auto text-xs bg-[#FFBA49]/10 text-[#FFBA49]">
+                  {earnedAchievements.length} earned
+                </Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-4 pb-4">
+              <div className="grid grid-cols-2 gap-2">
+                {earnedAchievements.map((achievement) => {
+                  const achievementData: Record<string, { name: string; icon: string; color: string }> = {
+                    'trip-completed': { name: 'Trip Completed', icon: '🎉', color: 'from-[#FF6B6B]/10 to-[#FF8C42]/10' },
+                    'budget-master': { name: 'Budget Master', icon: '💰', color: 'from-[#2EC4B6]/10 to-[#FFBA49]/10' },
+                    'activity-explorer': { name: 'Activity Explorer', icon: '🗺️', color: 'from-[#FF8C42]/10 to-[#FFBA49]/10' },
+                    'photo-enthusiast': { name: 'Photo Enthusiast', icon: '📸', color: 'from-[#E879A8]/10 to-[#FF6B6B]/10' },
+                    'multi-city': { name: 'Multi-City Traveler', icon: '🏙️', color: 'from-[#FFBA49]/10 to-[#2EC4B6]/10' },
+                  }
+                  const data = achievementData[achievement] || { name: 'Achievement', icon: '⭐', color: 'from-gray-100 to-gray-50' }
+                  return (
+                    <div
+                      key={achievement}
+                      className={`rounded-lg bg-gradient-to-br ${data.color} p-3 border border-gray-100`}
+                    >
+                      <div className="text-2xl mb-1">{data.icon}</div>
+                      <p className="text-xs font-semibold text-gray-900">{data.name}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
+      {/* Trip Reflections */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.22 }}
+      >
+        <Card className="border-gray-100 shadow-sm">
+          <CardHeader className="pb-2 pt-4 px-4">
+            <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+              <MessageCircle className="size-4 text-[#E879A8]" />
+              Trip Reflections
+              <Badge variant="secondary" className="ml-auto text-xs bg-[#E879A8]/10 text-[#E879A8]">
+                Optional
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-4">
+            <p className="text-xs text-muted-foreground mb-3">
+              Reflect on your journey and capture your favorite memories
+            </p>
+            <div className="space-y-3">
+              {reflectionPrompts.map((prompt) => {
+                const Icon = prompt.icon
+                return (
+                  <div key={prompt.id} className="rounded-lg border border-gray-100 p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="size-6 rounded-full bg-[#E879A8]/10 flex items-center justify-center">
+                        <Icon className="size-3 text-[#E879A8]" />
+                      </div>
+                      <span className="text-xs font-medium text-gray-700">{prompt.question}</span>
+                    </div>
+                    <Textarea
+                      placeholder="Share your thoughts..."
+                      value={reflectionAnswers[prompt.id] || ''}
+                      onChange={(e) =>
+                        setReflectionAnswers((prev) => ({ ...prev, [prompt.id]: e.target.value }))
+                      }
+                      className="text-xs h-16 resize-none"
+                    />
+                  </div>
+                )
+              })}
+            </div>
+            <Button
+              variant="outline"
+              className="w-full mt-3 h-9 text-xs border-[#E879A8]/30 text-[#E879A8] hover:bg-[#E879A8]/10 hover:border-[#E879A8]/50 font-medium"
+              onClick={() => setShowReflections(!showReflections)}
+            >
+              {showReflections ? 'Hide Reflections' : 'View All Reflections'}
+            </Button>
           </CardContent>
         </Card>
       </motion.div>
