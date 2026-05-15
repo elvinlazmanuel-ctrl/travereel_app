@@ -280,6 +280,7 @@ model Itinerary {
   status        String         @default("pre-travel")
   isPublic      Boolean        @default(false)
   requirements  String?
+  collaborators  String?        // JSON array of user IDs who can edit
   authorId      String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
