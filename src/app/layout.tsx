@@ -23,6 +23,14 @@ export const metadata: Metadata = {
   keywords: ["travel", "social", "itinerary", "travereel", "adventure"],
   authors: [{ name: "Travereel" }],
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
+  },
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#FF6B6B" },
     { media: "(prefers-color-scheme: dark)", color: "#FF6B6B" },
