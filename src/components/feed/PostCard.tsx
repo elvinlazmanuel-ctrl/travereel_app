@@ -387,7 +387,7 @@ export default function PostCard({ post }: PostCardProps) {
       {/* Image Carousel - only shown when post has images */}
       {post.images.length > 0 && (
         <div
-          className="relative w-full aspect-square bg-muted select-none"
+          className="relative w-full aspect-square bg-muted select-none overflow-hidden"
           onClick={handleImageTap}
         >
           <Carousel
@@ -402,7 +402,7 @@ export default function PostCard({ post }: PostCardProps) {
                     <img
                       src={img}
                       alt={`Post image ${i + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover block"
                       draggable={false}
                     />
                   </div>
