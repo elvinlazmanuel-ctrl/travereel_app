@@ -48,7 +48,7 @@ Please provide a comprehensive day-by-day itinerary.`
         'X-Title': 'Travereel',
       },
       body: JSON.stringify({
-        model: 'open-inference/int8',
+        model: 'openai/gpt-oss-120b:free',
         messages: [
           {
             role: 'system',
