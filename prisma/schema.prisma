@@ -55,6 +55,8 @@ model User {
   blocksReceived Block[] @relation("UserBlocked")
   achievements  UserAchievement[]
   travelStats   TravelStats?
+  reactions     Reaction[]
+  albums        Album[]
 
   @@map("users")
 }
@@ -95,6 +97,7 @@ model Post {
   bookmarks   Bookmark[]
   sharedTo    SharedPost[]
   reports     PostReport[]
+  reactions   Reaction[]
 
   @@map("posts")
 }
@@ -494,3 +497,54 @@ model TravelStats {
 
   @@map("travel_stats")
 }
+
+// Phase 4: Reactions (Expanded likes)
+model Reaction {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  type      String   // like, love, wow, haha, sad, angry
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@map("reactions")
+}
+
+// Phase 4: Photo Albums
+model Album {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  authorId    String
+  coverUrl    String?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  photos      Photo[]
+  
+  @@map("albums")
+}
+
+model Photo {
+  id          String   @id @default(cuid())
+  albumId     String
+  url         String
+  caption     String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  
+  album       Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  
+  @@map("photos")
+}
+
+// Update User model with new relations
+// Add to User model (after line 57):
+// reactions  Reaction[]
+// albums     Album[]
