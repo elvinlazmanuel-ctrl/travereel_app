@@ -21,9 +21,9 @@ const stepLabels = [
   'Location',
   'Dates',
   'Budget',
-  'Travel',
+  'Details',
   'Days',
-  'Travel',
+  'Type',
   'Activities',
   'Mode',
 ]
@@ -83,10 +83,7 @@ export default function ItineraryWizard() {
   }
 
   const handleNext = () => {
-    if (wizardStep === 7) {
-      // After mode selection, go to step 8 (result form)
-      setWizardStep(8)
-    } else if (wizardStep < 7) {
+    if (wizardStep < totalSteps - 1) {
       setWizardStep(wizardStep + 1)
     }
   }
@@ -201,18 +198,13 @@ export default function ItineraryWizard() {
                 Back
               </Button>
             )}
-            {wizardStep < 7 && (
-              <Button
-                onClick={handleNext}
-                disabled={!canGoNext()}
-                className="flex-1 h-12 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white font-semibold disabled:opacity-50"
-              >
-                Next
-              </Button>
-            )}
-            {wizardStep === 7 && (
-              <div className="flex-1" />
-            )}
+            <Button
+              onClick={handleNext}
+              disabled={!canGoNext()}
+              className="flex-1 h-12 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white font-semibold disabled:opacity-50"
+            >
+              {wizardStep === 7 ? 'Continue' : 'Next'}
+            </Button>
           </div>
         </div>
       )}
