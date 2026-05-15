@@ -158,10 +158,10 @@ export default function StepLocation() {
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           Where in {wizardData.country || 'the world'}?
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Pick a destination city or region
         </p>
       </div>
@@ -179,7 +179,7 @@ export default function StepLocation() {
 
       {/* Popular Locations */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
           Popular in {wizardData.country || 'this region'}
         </p>
         <div className="grid grid-cols-2 gap-2">
@@ -194,7 +194,7 @@ export default function StepLocation() {
               }`}
             >
               <span className="text-2xl">{loc.emoji}</span>
-              <span className="text-sm font-medium text-gray-800 flex-1 text-left">
+              <span className="text-sm font-medium text-foreground flex-1 text-left">
                 {loc.name}
               </span>
               {wizardData.location === loc.name && (
@@ -244,8 +244,8 @@ export default function StepLocation() {
           <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#FF6B6B]/5 to-[#FF8C42]/5 border border-[#FF6B6B]/20">
             <MapPin className="size-5 text-[#FF6B6B]" />
             <div>
-              <p className="text-sm font-semibold text-gray-900">{wizardData.location}</p>
-              <p className="text-xs text-gray-500">{wizardData.country}</p>
+              <p className="text-sm font-semibold text-foreground">{wizardData.location}</p>
+              <p className="text-xs text-muted-foreground">{wizardData.country}</p>
             </div>
           </div>
         </div>

@@ -77,7 +77,7 @@ function getActionColor(action: string) {
   if (action.includes('ban') || action.includes('delete')) return 'text-red-500 bg-red-50'
   if (action.includes('flag')) return 'text-amber-500 bg-amber-50'
   if (action.includes('role')) return 'text-purple-500 bg-purple-50'
-  return 'text-gray-500 bg-gray-50'
+  return 'text-muted-foreground bg-gray-50'
 }
 
 function timeAgo(dateStr: string): string {
@@ -131,8 +131,8 @@ export default function AdminPage() {
         <div className="size-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
           <Shield className="size-8 text-red-400" />
         </div>
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Access Denied</h2>
-        <p className="text-sm text-gray-500 mb-4">You don&apos;t have permission to access the admin dashboard.</p>
+        <h2 className="text-xl font-bold text-foreground mb-2">Access Denied</h2>
+        <p className="text-sm text-muted-foreground mb-4">You don&apos;t have permission to access the admin dashboard.</p>
         <Button
           onClick={() => setCurrentView('settings')}
           className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white"
@@ -180,13 +180,13 @@ export default function AdminPage() {
           onClick={() => setCurrentView('settings')}
           className="size-9"
         >
-          <ArrowLeft className="size-5 text-gray-700" />
+          <ArrowLeft className="size-5 text-foreground" />
         </Button>
         <div className="flex items-center gap-2">
           <div className="size-8 rounded-lg bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] flex items-center justify-center">
             <Shield className="size-4 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
+          <h1 className="text-xl font-bold text-foreground">Admin Dashboard</h1>
         </div>
       </div>
 
@@ -210,10 +210,10 @@ export default function AdminPage() {
                   </div>
                   <BarChart3 className="size-4 text-gray-300" />
                 </div>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {isLoading ? '...' : stat.value.toLocaleString()}
                 </p>
-                <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
               </CardContent>
             </Card>
           </motion.div>
@@ -222,7 +222,7 @@ export default function AdminPage() {
 
       {/* Quick Actions */}
       <div className="mb-6">
-        <h2 className="text-sm font-semibold text-gray-900 mb-3">Quick Actions</h2>
+        <h2 className="text-sm font-semibold text-foreground mb-3">Quick Actions</h2>
         <div className="grid grid-cols-2 gap-3">
           {quickActions.map((action, index) => (
             <motion.div
@@ -238,9 +238,9 @@ export default function AdminPage() {
                 <CardContent className="p-3">
                   <div className="flex items-center gap-2 mb-1">
                     <action.icon className="size-4 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-900">{action.label}</span>
+                    <span className="text-sm font-medium text-foreground">{action.label}</span>
                   </div>
-                  <p className="text-[11px] text-gray-500">{action.description}</p>
+                  <p className="text-[11px] text-muted-foreground">{action.description}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -252,7 +252,7 @@ export default function AdminPage() {
 
       {/* Recent Activity */}
       <div className="mb-6">
-        <h2 className="text-sm font-semibold text-gray-900 mb-3">Recent Activity</h2>
+        <h2 className="text-sm font-semibold text-foreground mb-3">Recent Activity</h2>
         <Card className="border-0 shadow-sm">
           <CardContent className="p-0">
             {isLoading ? (
@@ -263,7 +263,7 @@ export default function AdminPage() {
             ) : recentActions.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8">
                 <Clock className="size-8 text-gray-300 mb-2" />
-                <p className="text-sm text-gray-500">No recent admin activity</p>
+                <p className="text-sm text-muted-foreground">No recent admin activity</p>
               </div>
             ) : (
               recentActions.map((item, index) => {
@@ -280,7 +280,7 @@ export default function AdminPage() {
                       <Icon className="size-4" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-700 truncate">
+                      <p className="text-sm text-foreground truncate">
                         <span className="font-medium">@{item.admin.username}</span> {item.action} {item.targetType}
                       </p>
                       {item.details && (
@@ -301,7 +301,7 @@ export default function AdminPage() {
 
       {/* Database Health */}
       <div>
-        <h2 className="text-sm font-semibold text-gray-900 mb-3">Database Statistics</h2>
+        <h2 className="text-sm font-semibold text-foreground mb-3">Database Statistics</h2>
         <Card className="border-0 shadow-sm">
           <CardContent className="p-4 space-y-3">
             {isLoading ? (
@@ -313,11 +313,11 @@ export default function AdminPage() {
               dbStatItems.map((item) => (
                 <div key={item.label}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-gray-700 flex items-center gap-1.5">
+                    <span className="text-sm text-foreground flex items-center gap-1.5">
                       <item.icon className="size-3.5" style={{ color: item.color }} />
                       {item.label}
                     </span>
-                    <span className="text-sm font-medium text-gray-900">{item.count.toLocaleString()}</span>
+                    <span className="text-sm font-medium text-foreground">{item.count.toLocaleString()}</span>
                   </div>
                   <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                     <div

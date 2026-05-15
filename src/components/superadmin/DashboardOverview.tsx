@@ -211,7 +211,7 @@ export default function DashboardOverview() {
                 <Badge variant="outline" className="text-blue-700 border-blue-300 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-800 dark:text-blue-400">
                   {stats?.reportsBreakdown.reviewed ?? 0} Reviewed
                 </Badge>
-                <Badge variant="outline" className="text-gray-700 border-gray-300 bg-gray-50 dark:bg-gray-950/30 dark:border-gray-700 dark:text-gray-400">
+                <Badge variant="outline" className="text-foreground border-gray-300 bg-gray-50 dark:bg-gray-950/30 dark:border-gray-700 dark:text-gray-400">
                   {stats?.reportsBreakdown.dismissed ?? 0} Dismissed
                 </Badge>
               </div>

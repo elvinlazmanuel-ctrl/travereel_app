@@ -117,13 +117,13 @@ export default function ItineraryWizard() {
                   className="size-9"
                   aria-label="Go back"
                 >
-                  <ArrowLeft className="size-5 text-gray-700" />
+                  <ArrowLeft className="size-5 text-foreground" />
                 </Button>
               ) : (
                 <div className="size-9" />
               )}
 
-              <h2 className="text-sm font-semibold text-gray-900">
+              <h2 className="text-sm font-semibold text-foreground">
                 Create Itinerary
               </h2>
 

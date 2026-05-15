@@ -46,7 +46,7 @@ function getBudgetCategory(amount: number, currency: string): { label: string; c
   }
   const usdEquiv = amount * (rates[currency] || 1)
 
-  if (usdEquiv <= 0) return { label: 'Set your budget', color: 'bg-gray-100 text-gray-500', emoji: '💰' }
+  if (usdEquiv <= 0) return { label: 'Set your budget', color: 'bg-gray-100 text-muted-foreground', emoji: '💰' }
   if (usdEquiv < 500) return { label: 'Budget', color: 'bg-green-100 text-green-700', emoji: '🌱' }
   if (usdEquiv < 1500) return { label: 'Moderate', color: 'bg-amber-100 text-amber-700', emoji: '🌿' }
   if (usdEquiv < 3000) return { label: 'Comfortable', color: 'bg-orange-100 text-orange-700', emoji: '🌺' }
@@ -82,17 +82,17 @@ export default function StepBudget() {
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           What&apos;s your budget?
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Set a budget to help plan your trip
         </p>
       </div>
 
       {/* Budget Amount */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-foreground mb-2">
           Budget Amount
         </label>
         <div className="relative">
@@ -110,7 +110,7 @@ export default function StepBudget() {
 
       {/* Currency Selector */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-foreground mb-2">
           Currency
         </label>
         <Select
@@ -137,7 +137,7 @@ export default function StepBudget() {
       {/* Visual Budget Range */}
       <div>
         <div className="flex justify-between items-center mb-2">
-          <span className="text-xs text-gray-500">Budget Range</span>
+          <span className="text-xs text-muted-foreground">Budget Range</span>
           <Badge className={`${category.color} border-0`}>
             <span className="mr-1">{category.emoji}</span>
             {category.label}
@@ -176,8 +176,8 @@ export default function StepBudget() {
             } ${cat.color}`}
           >
             <span className="text-xl">{cat.emoji}</span>
-            <p className="text-sm font-semibold text-gray-800 mt-1">{cat.label}</p>
-            <p className="text-xs text-gray-500">{cat.range}</p>
+            <p className="text-sm font-semibold text-foreground mt-1">{cat.label}</p>
+            <p className="text-xs text-muted-foreground">{cat.range}</p>
           </button>
         ))}
       </div>
@@ -187,10 +187,10 @@ export default function StepBudget() {
         <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
           <Wallet className="size-5 text-[#2EC4B6]" />
           <div>
-            <p className="text-sm font-semibold text-gray-900">
+            <p className="text-sm font-semibold text-foreground">
               {currencySymbol(wizardData.currency)}{wizardData.budget.toLocaleString()} {wizardData.currency}
             </p>
-            <p className="text-xs text-gray-500">{category.label} trip</p>
+            <p className="text-xs text-muted-foreground">{category.label} trip</p>
           </div>
         </div>
       )}

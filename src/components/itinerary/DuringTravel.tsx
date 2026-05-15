@@ -227,7 +227,7 @@ function CircularProgress({ percentage, size = 64, strokeWidth = 5 }: { percenta
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-sm font-bold text-gray-900">{Math.round(percentage)}%</span>
+        <span className="text-sm font-bold text-foreground">{Math.round(percentage)}%</span>
       </div>
     </div>
   )
@@ -240,7 +240,7 @@ function getStatusBadge(status: DayActivity['status']) {
     case 'completed':
       return { label: 'Completed', bgClass: 'bg-emerald-100 text-emerald-700' }
     case 'skipped':
-      return { label: 'Skipped', bgClass: 'bg-gray-100 text-gray-500' }
+      return { label: 'Skipped', bgClass: 'bg-gray-100 text-muted-foreground' }
     default:
       return { label: 'Pending', bgClass: 'bg-amber-100 text-amber-700' }
   }
@@ -413,8 +413,8 @@ export default function DuringTravel() {
     return (
       <div className="max-w-md mx-auto px-4 py-12 text-center">
         <Circle className="size-12 text-gray-300 mx-auto mb-3" />
-        <h3 className="text-lg font-semibold text-gray-900">No Active Trip</h3>
-        <p className="text-sm text-gray-500 mt-1">Select an itinerary to view your travel details.</p>
+        <h3 className="text-lg font-semibold text-foreground">No Active Trip</h3>
+        <p className="text-sm text-muted-foreground mt-1">Select an itinerary to view your travel details.</p>
       </div>
     )
   }
@@ -433,7 +433,7 @@ export default function DuringTravel() {
           >
             <div className="flex items-center gap-1.5 mb-1">
               <Activity className="size-3.5 text-[#FF6B6B]" />
-              <span className="text-xs font-semibold text-gray-700">Live Alerts</span>
+              <span className="text-xs font-semibold text-foreground">Live Alerts</span>
               <Badge variant="secondary" className="h-4 text-[9px] px-1.5 bg-red-100 text-red-600">
                 {visibleAlerts.length} active
               </Badge>
@@ -455,8 +455,8 @@ export default function DuringTravel() {
           <div className="flex items-center gap-2">
             <span className="text-2xl">{flag}</span>
             <div>
-              <h2 className="text-lg font-bold text-gray-900">{selectedItinerary.title}</h2>
-              <p className="text-xs text-gray-500">
+              <h2 className="text-lg font-bold text-foreground">{selectedItinerary.title}</h2>
+              <p className="text-xs text-muted-foreground">
                 Day {selectedDay} of {selectedItinerary.days} · {selectedItinerary.location}
               </p>
             </div>
@@ -473,9 +473,9 @@ export default function DuringTravel() {
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-1.5">
                 <TrendingUp className="size-3.5 text-[#2EC4B6]" />
-                <span className="text-xs font-semibold text-gray-700">Trip Progress</span>
+                <span className="text-xs font-semibold text-foreground">Trip Progress</span>
               </div>
-              <span className="text-[11px] text-gray-500">
+              <span className="text-[11px] text-muted-foreground">
                 Day {currentTravelDay} of {selectedItinerary.days}
               </span>
             </div>
@@ -497,7 +497,7 @@ export default function DuringTravel() {
                 <div className="flex items-center justify-center gap-1 mb-0.5">
                   <SkipForward className="size-3 text-gray-400" />
                 </div>
-                <p className="text-base font-bold text-gray-500">{skippedCount}</p>
+                <p className="text-base font-bold text-muted-foreground">{skippedCount}</p>
                 <p className="text-[10px] text-gray-400">Skipped</p>
               </div>
               <div className="text-center">
@@ -593,7 +593,7 @@ export default function DuringTravel() {
       {/* ── Day Title ── */}
       {currentDay && (
         <div className="px-4 pb-2">
-          <h3 className="text-sm font-semibold text-gray-800">{currentDay.title}</h3>
+          <h3 className="text-sm font-semibold text-foreground">{currentDay.title}</h3>
           {currentDay.route && (
             <p className="text-xs text-gray-400 mt-0.5">Route: {currentDay.route}</p>
           )}
@@ -606,7 +606,7 @@ export default function DuringTravel() {
           <CardContent className="p-0">
             <div className="flex items-center gap-1.5 px-3.5 pt-3 pb-2">
               <Navigation className="size-3.5 text-[#FF6B6B]" />
-              <span className="text-xs font-semibold text-gray-700">Live Location</span>
+              <span className="text-xs font-semibold text-foreground">Live Location</span>
               <Badge variant="secondary" className="h-4 text-[9px] px-1.5 bg-[#2EC4B6]/10 text-[#2EC4B6] ml-auto">
                 <Eye className="size-2.5 mr-0.5" />
                 Live
@@ -625,7 +625,7 @@ export default function DuringTravel() {
             <div className="px-3.5 py-2 flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <MapPin className="size-3 text-[#FF8C42]" />
-                <span className="text-[11px] text-gray-500">{mapLocation.label}</span>
+                <span className="text-[11px] text-muted-foreground">{mapLocation.label}</span>
               </div>
               <a
                 href={`https://www.openstreetmap.org/?mlat=${mapLocation.lat}&mlon=${mapLocation.lng}#map=${mapLocation.zoom}/${mapLocation.lat}/${mapLocation.lng}`}
@@ -646,7 +646,7 @@ export default function DuringTravel() {
           <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-3">
             <div className="flex items-center gap-1 mb-2">
               <MapPin className="size-3.5 text-[#FF6B6B]" />
-              <span className="text-xs font-medium text-gray-700">
+              <span className="text-xs font-medium text-foreground">
                 Day {selectedDay} Route
               </span>
             </div>
@@ -705,7 +705,7 @@ export default function DuringTravel() {
               className="py-10 text-center"
             >
               <Clock className="size-10 text-gray-300 mx-auto mb-2" />
-              <p className="text-sm text-gray-500">No activities planned for this day</p>
+              <p className="text-sm text-muted-foreground">No activities planned for this day</p>
             </motion.div>
           ) : (
             activities.map((activity, index) => {
@@ -732,7 +732,7 @@ export default function DuringTravel() {
                       <div className="flex items-start gap-3">
                         {/* Time Column */}
                         <div className="flex-shrink-0 text-right min-w-[48px]">
-                          <p className="text-xs font-medium text-gray-900">
+                          <p className="text-xs font-medium text-foreground">
                             {formatTime(activity.startTime)}
                           </p>
                           <p className="text-[10px] text-gray-400">
@@ -750,7 +750,7 @@ export default function DuringTravel() {
                                     ? 'text-emerald-700 line-through opacity-70'
                                     : isSkipped
                                       ? 'text-gray-400 line-through'
-                                      : 'text-gray-900'
+                                      : 'text-foreground'
                                 }`}
                               >
                                 {activity.title}
@@ -758,7 +758,7 @@ export default function DuringTravel() {
                               {activity.location && (
                                 <div className="flex items-center gap-1 mt-0.5">
                                   <MapPin className="size-3 text-gray-400 flex-shrink-0" />
-                                  <span className="text-xs text-gray-500 truncate">
+                                  <span className="text-xs text-muted-foreground truncate">
                                     {activity.location}
                                   </span>
                                 </div>
@@ -776,7 +776,7 @@ export default function DuringTravel() {
                           {activity.cost > 0 && (
                             <div className="flex items-center gap-1 mt-1">
                               <Wallet className="size-3 text-gray-400" />
-                              <span className="text-xs text-gray-500">
+                              <span className="text-xs text-muted-foreground">
                                 Est. {formatCurrency(activity.cost, currency)}
                               </span>
                             </div>
@@ -797,7 +797,7 @@ export default function DuringTravel() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="h-7 text-xs border-gray-200 text-gray-500 hover:text-gray-700 hover:bg-gray-50 px-3"
+                                className="h-7 text-xs border-gray-200 text-muted-foreground hover:text-foreground hover:bg-gray-50 px-3"
                                 disabled={isBeingUpdated}
                                 onClick={() => updateActivityStatus(activity.id, 'skipped')}
                               >
@@ -840,15 +840,15 @@ export default function DuringTravel() {
                   <Wallet className="size-4 text-[#FF8C42]" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500">Spent Today</p>
-                  <p className="text-sm font-bold text-gray-900">
+                  <p className="text-xs text-muted-foreground">Spent Today</p>
+                  <p className="text-sm font-bold text-foreground">
                     {formatCurrency(todaySpent, currency)}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xs text-gray-500">Total Budget</p>
-                <p className="text-sm font-bold text-gray-900">
+                <p className="text-xs text-muted-foreground">Total Budget</p>
+                <p className="text-sm font-bold text-foreground">
                   {formatCurrency(totalBudget, currency)}
                 </p>
               </div>

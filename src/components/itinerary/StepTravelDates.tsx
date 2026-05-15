@@ -84,10 +84,10 @@ export default function StepTravelDates() {
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           When is your trip?
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Set your departure and return dates
         </p>
       </div>
@@ -111,7 +111,7 @@ export default function StepTravelDates() {
 
       {/* Departure Date */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-foreground mb-2">
           <Plane className="size-4 inline mr-1.5 -mt-0.5" />
           Departure Date
         </label>
@@ -126,7 +126,7 @@ export default function StepTravelDates() {
           />
         </div>
         {wizardData.departureDate && (
-          <p className="text-xs text-gray-500 mt-1.5">
+          <p className="text-xs text-muted-foreground mt-1.5">
             {formatDate(wizardData.departureDate)}
           </p>
         )}
@@ -134,7 +134,7 @@ export default function StepTravelDates() {
 
       {/* Return Date */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-foreground mb-2">
           <PlaneLanding className="size-4 inline mr-1.5 -mt-0.5" />
           Return Date
         </label>
@@ -149,7 +149,7 @@ export default function StepTravelDates() {
           />
         </div>
         {wizardData.returnDate && (
-          <p className="text-xs text-gray-500 mt-1.5">
+          <p className="text-xs text-muted-foreground mt-1.5">
             {formatDate(wizardData.returnDate)}
           </p>
         )}
@@ -160,10 +160,10 @@ export default function StepTravelDates() {
         <div className="p-4 rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className="text-sm font-semibold text-foreground">
                 {tripDuration} {tripDuration === 1 ? 'day' : 'days'}
               </p>
-              <p className="text-xs text-gray-500">Trip Duration</p>
+              <p className="text-xs text-muted-foreground">Trip Duration</p>
             </div>
             <Badge className="bg-[#2EC4B6]/10 text-[#2EC4B6] border-0">
               {wizardData.departureDate && formatDate(wizardData.departureDate)}
@@ -223,7 +223,7 @@ export default function StepTravelDates() {
 
       {/* Quick Date Presets */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
           Quick Presets
         </p>
         <div className="grid grid-cols-2 gap-2">
@@ -252,7 +252,7 @@ export default function StepTravelDates() {
               >
                 <span className="text-xl">{preset.emoji}</span>
                 <p className="text-sm font-semibold text-gray-800 mt-1">{preset.label}</p>
-                <p className="text-xs text-gray-500">{preset.days} days</p>
+                <p className="text-xs text-muted-foreground">{preset.days} days</p>
               </button>
             )
           })}

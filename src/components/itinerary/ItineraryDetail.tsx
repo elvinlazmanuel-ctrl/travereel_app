@@ -381,8 +381,8 @@ export default function ItineraryDetail() {
     return (
       <div className="max-w-md mx-auto px-4 py-12 text-center">
         <MapPin className="size-12 text-gray-300 mx-auto mb-3" />
-        <h3 className="text-lg font-semibold text-gray-900">No Itinerary Selected</h3>
-        <p className="text-sm text-gray-500 mt-1">Select an itinerary to view details.</p>
+        <h3 className="text-lg font-semibold text-foreground">No Itinerary Selected</h3>
+        <p className="text-sm text-muted-foreground mt-1">Select an itinerary to view details.</p>
       </div>
     )
   }
@@ -450,7 +450,7 @@ export default function ItineraryDetail() {
                     <span
                       className={`text-[10px] font-medium mt-1 ${
                         isActive
-                          ? 'text-gray-900'
+                          ? 'text-foreground'
                           : isCompleted
                           ? 'text-[#2EC4B6]'
                           : 'text-gray-400'
@@ -561,7 +561,7 @@ export default function ItineraryDetail() {
                     <span
                       className={`text-[10px] font-medium mt-1 ${
                         isActive
-                          ? 'text-gray-900'
+                          ? 'text-foreground'
                           : isCompleted
                           ? 'text-[#2EC4B6]'
                           : 'text-gray-400'
@@ -655,7 +655,7 @@ export default function ItineraryDetail() {
                   <span
                     className={`text-[10px] font-medium mt-1 ${
                       isActive
-                        ? 'text-gray-900'
+                        ? 'text-foreground'
                         : isCompleted
                         ? 'text-[#2EC4B6]'
                         : 'text-gray-400'
@@ -687,10 +687,10 @@ export default function ItineraryDetail() {
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <h2 className="text-lg font-bold text-gray-900 truncate">{itinerary.title}</h2>
+                <h2 className="text-lg font-bold text-foreground truncate">{itinerary.title}</h2>
                 <div className="flex items-center gap-1 mt-0.5">
                   <MapPin className="size-3 text-gray-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-500 truncate">
+                  <span className="text-sm text-muted-foreground truncate">
                     {itinerary.location}, {itinerary.country}
                   </span>
                 </div>
@@ -704,17 +704,17 @@ export default function ItineraryDetail() {
             <div className="flex items-center gap-3 mt-2.5">
               <div className="flex items-center gap-1">
                 <Clock className="size-3 text-gray-400" />
-                <span className="text-xs text-gray-500">{itinerary.days} days</span>
+                <span className="text-xs text-muted-foreground">{itinerary.days} days</span>
               </div>
               <div className="flex items-center gap-1">
                 <Wallet className="size-3 text-gray-400" />
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-muted-foreground">
                   {formatCurrency(itinerary.budget, itinerary.currency)}
                 </span>
               </div>
               {itinerary.companions.length > 0 && (
                 <div className="flex items-center gap-1">
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-muted-foreground">
                     +{itinerary.companions.length} companion{itinerary.companions.length > 1 ? 's' : ''}
                   </span>
                 </div>
@@ -737,7 +737,7 @@ export default function ItineraryDetail() {
               </div>
             )}
             <div>
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-sm font-medium text-foreground">
                 {isPublic ? 'Public' : 'Private'}
               </p>
               <p className="text-[10px] text-gray-400">
@@ -852,7 +852,7 @@ export default function ItineraryDetail() {
               </div>
               <span className="text-xs font-semibold text-gray-600">Budget</span>
             </div>
-            <p className="text-lg font-bold text-gray-900">
+            <p className="text-lg font-bold text-foreground">
               {formatCurrency(itinerary.budget, itinerary.currency)}
             </p>
             {itinerary.budgetItems.length > 0 && (
@@ -887,7 +887,7 @@ export default function ItineraryDetail() {
               </div>
               <span className="text-xs font-semibold text-gray-600">Itinerary</span>
             </div>
-            <p className="text-lg font-bold text-gray-900">{itinerary.days} Days</p>
+            <p className="text-lg font-bold text-foreground">{itinerary.days} Days</p>
             <p className="text-[10px] text-gray-400 mt-0.5">
               {itinerary.daysPlan.reduce((sum, day) => sum + day.activities.length, 0)} activities planned
             </p>
@@ -934,12 +934,12 @@ export default function ItineraryDetail() {
                   }`} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-gray-900">
+                  <h3 className="text-sm font-semibold text-foreground">
                     {daysUntilDeparture === 0 ? 'Departing Today!' :
                      daysUntilDeparture === 1 ? 'Departing Tomorrow!' :
                      `${daysUntilDeparture} Days Until Departure`}
                   </h3>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     {daysUntilDeparture > 14 && 'Start preparing for your trip'}
                     {daysUntilDeparture > 7 && daysUntilDeparture <= 14 && 'Time to finalize plans'}
                     {daysUntilDeparture > 3 && daysUntilDeparture <= 7 && 'Almost time! Check your requirements'}
@@ -975,7 +975,7 @@ export default function ItineraryDetail() {
                 <div className="size-8 rounded-lg bg-gradient-to-br from-[#2EC4B6]/20 to-[#FFBA49]/20 flex items-center justify-center">
                   <FileText className="size-4 text-[#2EC4B6]" />
                 </div>
-                <span className="text-sm font-semibold text-gray-900">Essential Info</span>
+                <span className="text-sm font-semibold text-foreground">Essential Info</span>
               </div>
               <ChevronRight className={`size-4 text-gray-400 transition-transform ${showEssentialInfo ? 'rotate-90' : ''}`} />
             </button>
@@ -1096,7 +1096,7 @@ export default function ItineraryDetail() {
                   <Briefcase className="size-4 text-[#E879A8]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900">Packing List</h3>
+                  <h3 className="text-sm font-semibold text-foreground">Packing List</h3>
                   <p className="text-[10px] text-gray-400">
                     {Object.keys(packingList).length > 0
                       ? `${Object.values(packingList).filter(Boolean).length}/${Object.keys(packingList).length} packed`
@@ -1148,7 +1148,7 @@ export default function ItineraryDetail() {
                         {checked && <CheckCircle2 className="size-3 text-white" />}
                       </div>
                       <span className={`text-xs ${
-                        checked ? 'text-gray-400 line-through' : 'text-gray-700 font-medium'
+                        checked ? 'text-gray-400 line-through' : 'text-foreground font-medium'
                       }`}>
                         {item}
                       </span>
@@ -1170,7 +1170,7 @@ export default function ItineraryDetail() {
       >
         {/* Section Header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-semibold text-gray-900">Travel Tools</h3>
+          <h3 className="text-base font-semibold text-foreground">Travel Tools</h3>
           <Badge variant="secondary" className="text-[10px] bg-[#2EC4B6]/10 text-[#2EC4B6]">
             NEW
           </Badge>
@@ -1179,7 +1179,7 @@ export default function ItineraryDetail() {
         {/* Export Tools */}
         <Card className="border-gray-100 shadow-sm">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold text-gray-900 mb-3">Export & Share</h4>
+            <h4 className="text-sm font-semibold text-foreground mb-3">Export & Share</h4>
             <ItineraryExport itinerary={itinerary} />
           </CardContent>
         </Card>
@@ -1195,7 +1195,7 @@ export default function ItineraryDetail() {
         {/* Currency Converter */}
         <Card className="border-gray-100 shadow-sm">
           <CardContent className="p-4">
-            <h4 className="text-sm font-semibold text-gray-900 mb-3">Currency Converter</h4>
+            <h4 className="text-sm font-semibold text-foreground mb-3">Currency Converter</h4>
             <CurrencyConverter
               defaultFrom={itinerary.currency}
               defaultTo="USD"
@@ -1214,7 +1214,7 @@ export default function ItineraryDetail() {
         <Card className="border-gray-100 shadow-sm overflow-hidden">
           <CardContent className="p-0">
             <div className="px-4 pt-4 pb-2">
-              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <Map className="size-4 text-[#FF6B6B]" />
                 {activitiesWithLocation.length > 0 ? 'Activity Locations' : 'Destination'}
                 <Badge variant="secondary" className="text-[10px] bg-[#FF6B6B]/10 text-[#FF6B6B] ml-auto">
@@ -1232,7 +1232,7 @@ export default function ItineraryDetail() {
               <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-3">
                 <div className="flex items-center gap-1.5">
                   <MapPin className="size-3 text-[#FF6B6B]" />
-                  <span className="text-xs text-gray-500">{itinerary.location}, {itinerary.country}</span>
+                  <span className="text-xs text-muted-foreground">{itinerary.location}, {itinerary.country}</span>
                 </div>
                 {activitiesWithLocation.length > 0 && (
                   <div className="space-y-1.5">
@@ -1240,9 +1240,9 @@ export default function ItineraryDetail() {
                       day.activities
                         .filter((a) => a.latitude != null && a.longitude != null)
                         .map((activity) => (
-                          <div key={activity.id} className="flex items-center gap-2 text-xs text-gray-500">
+                          <div key={activity.id} className="flex items-center gap-2 text-xs text-muted-foreground">
                             <span className="size-1.5 rounded-full bg-[#FF6B6B] shrink-0" />
-                            <span className="font-medium text-gray-700">Day {day.dayNumber}:</span>
+                            <span className="font-medium text-foreground">Day {day.dayNumber}:</span>
                             <span>{activity.title}</span>
                             {activity.location && (
                               <span className="text-gray-400">· {activity.location}</span>
@@ -1270,7 +1270,7 @@ export default function ItineraryDetail() {
                 {itinerary.daysPlan.map((day, i) => (
                   <div key={day.id} className="flex items-center gap-1 shrink-0">
                     <div className={`size-2.5 rounded-full marker-day-${(i % 7) + 1}`} />
-                    <span className="text-[10px] text-gray-500">{day.dayNumber}</span>
+                    <span className="text-[10px] text-muted-foreground">{day.dayNumber}</span>
                   </div>
                 ))}
               </div>
@@ -1280,16 +1280,16 @@ export default function ItineraryDetail() {
             <div className="border-t border-gray-100 px-4 py-3 flex items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <Clock className="size-3 text-gray-400" />
-                <span className="text-xs text-gray-500">{itinerary.days} days trip</span>
+                <span className="text-xs text-muted-foreground">{itinerary.days} days trip</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Backpack className="size-3 text-gray-400" />
-                <span className="text-xs text-gray-500 capitalize">{itinerary.travelType}</span>
+                <span className="text-xs text-muted-foreground capitalize">{itinerary.travelType}</span>
               </div>
               {itinerary.companions.length > 0 && (
                 <div className="flex items-center gap-1.5">
                   <Share2 className="size-3 text-gray-400" />
-                  <span className="text-xs text-gray-500">{itinerary.companions.length + 1} travelers</span>
+                  <span className="text-xs text-muted-foreground">{itinerary.companions.length + 1} travelers</span>
                 </div>
               )}
             </div>
@@ -1306,10 +1306,10 @@ export default function ItineraryDetail() {
         <Card className="border-gray-100 shadow-sm">
           <CardContent className="p-0">
             <div className="px-4 pt-4 pb-2">
-              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <Calendar className="size-4 text-[#FF8C42]" />
                 Days Plan
-                <Badge variant="secondary" className="text-[10px] bg-gray-100 text-gray-500 ml-auto">
+                <Badge variant="secondary" className="text-[10px] bg-gray-100 text-muted-foreground ml-auto">
                   {itinerary.daysPlan.length} days
                 </Badge>
               </h3>
@@ -1324,7 +1324,7 @@ export default function ItineraryDetail() {
             ) : itinerary.daysPlan.length === 0 ? (
               <div className="px-4 pb-6 text-center">
                 <Circle className="size-8 text-gray-300 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">No days planned yet</p>
+                <p className="text-sm text-muted-foreground">No days planned yet</p>
               </div>
             ) : (
               <Accordion type="multiple" className="px-4 pb-2">
@@ -1339,7 +1339,7 @@ export default function ItineraryDetail() {
                             <span className="text-xs font-bold text-[#FF8C42]">D{day.dayNumber}</span>
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className="text-sm font-medium text-gray-900 truncate">
+                            <p className="text-sm font-medium text-foreground truncate">
                               {day.title}
                             </p>
                             <div className="flex items-center gap-2 mt-0.5">
@@ -1360,7 +1360,7 @@ export default function ItineraryDetail() {
                         {day.route && (
                           <div className="flex items-center gap-1.5 mb-3 px-1">
                             <MapPin className="size-3 text-[#FF6B6B]" />
-                            <span className="text-xs text-gray-500">Route: {day.route}</span>
+                            <span className="text-xs text-muted-foreground">Route: {day.route}</span>
                           </div>
                         )}
 
@@ -1375,7 +1375,7 @@ export default function ItineraryDetail() {
                                 <div className="size-2 rounded-full bg-[#FF8C42]" />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm text-gray-900">{activity.title}</p>
+                                <p className="text-sm text-foreground">{activity.title}</p>
                                 {activity.location && (
                                   <div className="flex items-center gap-1 mt-0.5">
                                     <MapPin className="size-2.5 text-gray-400 flex-shrink-0" />
@@ -1421,7 +1421,7 @@ export default function ItineraryDetail() {
           <Card className={`border shadow-sm transition-colors ${allChecked ? 'border-[#2EC4B6]/30 bg-[#2EC4B6]/5' : 'border-[#FFBA49]/30 bg-[#FFBA49]/5'}`}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-1">
-                <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
                   <ListChecks className="size-4 text-[#2EC4B6]" />
                   Trip Requirements
                 </h3>
@@ -1491,7 +1491,7 @@ export default function ItineraryDetail() {
                       />
                       <span
                         className={`text-sm transition-colors ${
-                          isChecked ? 'text-gray-400 line-through' : 'text-gray-700 font-medium'
+                          isChecked ? 'text-gray-400 line-through' : 'text-foreground font-medium'
                         }`}
                       >
                         {req}
@@ -1540,7 +1540,7 @@ export default function ItineraryDetail() {
         >
           <Card className="border-gray-100 shadow-sm">
             <CardContent className="p-4">
-              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+              <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-3">
                 <Share2 className="size-4 text-[#E879A8]" />
                 Travel Companions
               </h3>
@@ -1553,7 +1553,7 @@ export default function ItineraryDetail() {
                     <div className="size-6 rounded-full bg-[#FF8C42]/10 flex items-center justify-center text-[10px] font-medium text-[#FF8C42]">
                       {companion.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-xs font-medium text-gray-700">{companion.name}</span>
+                    <span className="text-xs font-medium text-foreground">{companion.name}</span>
                   </div>
                 ))}
                 {currentUser && (

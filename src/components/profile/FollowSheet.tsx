@@ -131,7 +131,7 @@ export default function FollowSheet({ open, onOpenChange, userId, initialTab = '
     if (users.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <p className="text-sm text-gray-500">No users found</p>
+          <p className="text-sm text-muted-foreground">No users found</p>
         </div>
       )
     }
@@ -162,8 +162,8 @@ export default function FollowSheet({ open, onOpenChange, userId, initialTab = '
                     </AvatarFallback>
                   </Avatar>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{user.username}</p>
-                    <p className="text-xs text-gray-500 truncate">{user.name}</p>
+                    <p className="text-sm font-medium text-foreground truncate">{user.username}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.name}</p>
                   </div>
                 </button>
                 {!isSelf && (
@@ -172,7 +172,7 @@ export default function FollowSheet({ open, onOpenChange, userId, initialTab = '
                     variant={isFollowing ? 'outline' : 'default'}
                     className={`h-8 rounded-lg text-xs min-w-[80px] ${
                       isFollowing
-                        ? 'border-gray-200 text-gray-700 hover:border-red-300 hover:text-red-500'
+                        ? 'border-gray-200 text-foreground hover:border-red-300 hover:text-red-500'
                         : 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:opacity-90'
                     }`}
                     onClick={() => handleFollowToggle(user)}
@@ -206,7 +206,7 @@ export default function FollowSheet({ open, onOpenChange, userId, initialTab = '
       <SheetContent side="bottom" className="h-[70vh] rounded-t-2xl p-0 flex flex-col">
         <SheetHeader className="px-4 pt-4 pb-2">
           <SheetTitle className="text-base">Connections</SheetTitle>
-          <SheetDescription className="text-xs text-gray-500">
+          <SheetDescription className="text-xs text-muted-foreground">
             {followersCount} followers · {followingCount} following
           </SheetDescription>
         </SheetHeader>

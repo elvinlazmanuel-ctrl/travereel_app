@@ -366,8 +366,8 @@ export default function BudgetTracker() {
     return (
       <div className="max-w-md mx-auto px-4 py-12 text-center">
         <Wallet className="size-12 text-gray-300 mx-auto mb-3" />
-        <h3 className="text-lg font-semibold text-gray-900">No Itinerary Selected</h3>
-        <p className="text-sm text-gray-500 mt-1">Select an itinerary to view its budget tracker.</p>
+        <h3 className="text-lg font-semibold text-foreground">No Itinerary Selected</h3>
+        <p className="text-sm text-muted-foreground mt-1">Select an itinerary to view its budget tracker.</p>
       </div>
     )
   }
@@ -378,7 +378,7 @@ export default function BudgetTracker() {
       {!isOwner && (
         <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border border-gray-200">
           <Lock className="size-3.5 text-gray-400" />
-          <span className="text-xs text-gray-500">View only — only the trip organizer can edit expenses</span>
+          <span className="text-xs text-muted-foreground">View only — only the trip organizer can edit expenses</span>
         </div>
       )}
       {/* Overview Section */}
@@ -433,7 +433,7 @@ export default function BudgetTracker() {
         >
           <Card className="border-gray-100 shadow-sm">
             <CardHeader className="pb-2 pt-4 px-4">
-              <CardTitle className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+              <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <Users className="size-4 text-[#FF8C42]" />
                 Per-Person Breakdown
               </CardTitle>
@@ -447,8 +447,8 @@ export default function BudgetTracker() {
                         {person.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{person.name}</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-sm font-medium text-foreground">{person.name}</p>
+                        <p className="text-xs text-muted-foreground">
                           Paid: {formatCurrency(person.paid, currency)}
                         </p>
                       </div>
@@ -460,7 +460,7 @@ export default function BudgetTracker() {
                             ? 'text-emerald-600'
                             : person.balance < 0
                               ? 'text-[#FF6B6B]'
-                              : 'text-gray-500'
+                              : 'text-muted-foreground'
                         }`}
                       >
                         {person.balance > 0 ? '+' : ''}
@@ -484,7 +484,7 @@ export default function BudgetTracker() {
       >
         <Card className="border-gray-100 shadow-sm">
           <CardHeader className="pb-2 pt-4 px-4">
-            <CardTitle className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
               <Receipt className="size-4 text-[#FFBA49]" />
               Spending by Category
             </CardTitle>
@@ -532,7 +532,7 @@ export default function BudgetTracker() {
                           {CATEGORY_ICONS[cat.name]} {cat.name}
                         </span>
                       </div>
-                      <span className="text-xs font-medium text-gray-900">
+                      <span className="text-xs font-medium text-foreground">
                         {formatCurrency(cat.value, currency)}
                       </span>
                     </div>
@@ -542,7 +542,7 @@ export default function BudgetTracker() {
             ) : (
               <div className="py-6 text-center">
                 <TrendingDown className="size-8 text-gray-300 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">No expenses yet</p>
+                <p className="text-sm text-muted-foreground">No expenses yet</p>
                 <p className="text-xs text-gray-400">Add your first expense to see the breakdown</p>
               </div>
             )}
@@ -558,7 +558,7 @@ export default function BudgetTracker() {
       >
         <Card className="border-gray-100 shadow-sm">
           <CardHeader className="pb-2 pt-4 px-4">
-            <CardTitle className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
               <Receipt className="size-4 text-[#2EC4B6]" />
               Expenses
               <Badge variant="secondary" className="ml-auto text-xs bg-gray-100 text-gray-600">
@@ -576,7 +576,7 @@ export default function BudgetTracker() {
             ) : budgetItems.length === 0 ? (
               <div className="py-6 text-center">
                 <Receipt className="size-8 text-gray-300 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">No expenses recorded</p>
+                <p className="text-sm text-muted-foreground">No expenses recorded</p>
               </div>
             ) : (
               <div className="space-y-2 max-h-80 overflow-y-auto pr-1 custom-scrollbar">
@@ -595,15 +595,15 @@ export default function BudgetTracker() {
                             className="size-3 rounded-full flex-shrink-0"
                             style={{ backgroundColor: CATEGORY_COLORS[category] || CATEGORY_COLORS.Other }}
                           />
-                          <span className="text-sm font-medium text-gray-900">
+                          <span className="text-sm font-medium text-foreground">
                             {CATEGORY_ICONS[category]} {category}
                           </span>
-                          <Badge variant="secondary" className="text-[10px] bg-gray-100 text-gray-500 h-4 px-1">
+                          <Badge variant="secondary" className="text-[10px] bg-gray-100 text-muted-foreground h-4 px-1">
                             {items.length}
                           </Badge>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-gray-700">
+                          <span className="text-sm font-semibold text-foreground">
                             {formatCurrency(categoryTotal, currency)}
                           </span>
                           {isExpanded ? (
@@ -629,7 +629,7 @@ export default function BudgetTracker() {
                                 className="flex items-center justify-between px-3 py-2 border-t border-gray-50 hover:bg-gray-50/50 group"
                               >
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm text-gray-900 truncate">{item.name}</p>
+                                  <p className="text-sm text-foreground truncate">{item.name}</p>
                                   <p className="text-xs text-gray-400">
                                     Paid by {getTravelerName(item.paidBy)}
                                     {item.splitAmong.length > 0 &&
@@ -637,7 +637,7 @@ export default function BudgetTracker() {
                                   </p>
                                 </div>
                                 <div className="flex items-center gap-2 ml-2">
-                                  <span className="text-sm font-medium text-gray-700">
+                                  <span className="text-sm font-medium text-foreground">
                                     {formatCurrency(item.amount, currency)}
                                   </span>
                                   {isOwner && (
@@ -674,7 +674,7 @@ export default function BudgetTracker() {
         >
           <Card className="border-gray-100 shadow-sm">
             <CardHeader className="pb-2 pt-4 px-4">
-              <CardTitle className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+              <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <ArrowRight className="size-4 text-[#FF6B6B]" />
                 Settle Up
               </CardTitle>
@@ -691,7 +691,7 @@ export default function BudgetTracker() {
                         {settlement.from.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm text-gray-900 truncate">
+                        <p className="text-sm text-foreground truncate">
                           <span className="font-medium">{settlement.from}</span>
                           <span className="text-gray-400"> owes </span>
                           <span className="font-medium">{settlement.to}</span>
@@ -750,7 +750,7 @@ export default function BudgetTracker() {
           <div className="space-y-4 px-1 pb-6">
             {/* Name */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-gray-700">Expense Name</Label>
+              <Label className="text-xs font-medium text-foreground">Expense Name</Label>
               <Input
                 placeholder="e.g., Dinner at restaurant"
                 value={formName}
@@ -762,7 +762,7 @@ export default function BudgetTracker() {
             {/* Amount + Category */}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-gray-700">Amount</Label>
+                <Label className="text-xs font-medium text-foreground">Amount</Label>
                 <Input
                   type="number"
                   placeholder="0.00"
@@ -772,7 +772,7 @@ export default function BudgetTracker() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-gray-700">Category</Label>
+                <Label className="text-xs font-medium text-foreground">Category</Label>
                 <Select value={formCategory} onValueChange={setFormCategory}>
                   <SelectTrigger className="h-10">
                     <SelectValue />
@@ -790,7 +790,7 @@ export default function BudgetTracker() {
 
             {/* Paid By */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-gray-700">Paid By</Label>
+              <Label className="text-xs font-medium text-foreground">Paid By</Label>
               <Select value={formPaidBy} onValueChange={setFormPaidBy}>
                 <SelectTrigger className="h-10">
                   <SelectValue />
@@ -807,7 +807,7 @@ export default function BudgetTracker() {
 
             {/* Split Type */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-gray-700">Split Type</Label>
+              <Label className="text-xs font-medium text-foreground">Split Type</Label>
               <div className="flex gap-1.5">
                 {(['equal', 'custom', 'percentage'] as SplitType[]).map((type) => (
                   <Button
@@ -829,7 +829,7 @@ export default function BudgetTracker() {
 
             {/* Split Among */}
             <div className="space-y-2">
-              <Label className="text-xs font-medium text-gray-700">Split Among</Label>
+              <Label className="text-xs font-medium text-foreground">Split Among</Label>
               <div className="space-y-2">
                 {travelers.map((t) => (
                   <div key={t.id} className="flex items-center gap-3">
@@ -838,7 +838,7 @@ export default function BudgetTracker() {
                       onCheckedChange={() => toggleSplitPerson(t.id)}
                       className="data-[state=checked]:bg-[#2EC4B6] data-[state=checked]:border-[#2EC4B6]"
                     />
-                    <span className="text-sm text-gray-700 flex-1">{t.name}</span>
+                    <span className="text-sm text-foreground flex-1">{t.name}</span>
                     {formSplitType === 'custom' && formSplitAmong.includes(t.id) && (
                       <Input
                         type="number"

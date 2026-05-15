@@ -31,10 +31,10 @@ export default function StepDays() {
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           How many days is your trip?
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Choose the duration of your adventure
         </p>
       </div>
@@ -60,7 +60,7 @@ export default function StepDays() {
           >
             {days}
           </motion.div>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             {days === 1 ? 'Day' : 'Days'}
           </p>
         </div>
@@ -77,7 +77,7 @@ export default function StepDays() {
 
       {/* Quick Select */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
           Quick Select
         </p>
         <div className="flex flex-wrap gap-2">
@@ -101,7 +101,7 @@ export default function StepDays() {
 
       {/* Visual Day Blocks */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
           Trip Overview
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -143,8 +143,8 @@ export default function StepDays() {
           <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#FFBA49]/5 to-[#FF8C42]/5 border border-[#FFBA49]/20">
             <Wallet className="size-5 text-[#FFBA49]" />
             <div className="flex-1">
-              <p className="text-xs text-gray-500">Budget per day</p>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-xs text-muted-foreground">Budget per day</p>
+              <p className="text-lg font-bold text-foreground">
                 {currencySymbol(wizardData.currency)}{perDayBudget.toFixed(0)} {wizardData.currency}
               </p>
             </div>
@@ -152,8 +152,8 @@ export default function StepDays() {
           <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
             <Clock className="size-5 text-[#2EC4B6]" />
             <div className="flex-1">
-              <p className="text-xs text-gray-500">Total duration</p>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-xs text-muted-foreground">Total duration</p>
+              <p className="text-lg font-bold text-foreground">
                 {days} {days === 1 ? 'day' : 'days'}, {days - 1} {days - 1 === 1 ? 'night' : 'nights'}
               </p>
             </div>
@@ -165,22 +165,22 @@ export default function StepDays() {
       <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
         <div className="flex items-center gap-2 mb-3">
           <CalendarDays className="size-4 text-gray-400" />
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Summary
           </span>
         </div>
         <div className="grid grid-cols-3 gap-3 text-center">
           <div>
             <p className="text-2xl font-bold text-[#FF6B6B]">{days}</p>
-            <p className="text-[10px] text-gray-500 uppercase">Days</p>
+            <p className="text-[10px] text-muted-foreground uppercase">Days</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-[#FF8C42]">{days * 3}</p>
-            <p className="text-[10px] text-gray-500 uppercase">Activities</p>
+            <p className="text-[10px] text-muted-foreground uppercase">Activities</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-[#2EC4B6]">{days * 2}</p>
-            <p className="text-[10px] text-gray-500 uppercase">Meals</p>
+            <p className="text-[10px] text-muted-foreground uppercase">Meals</p>
           </div>
         </div>
       </div>

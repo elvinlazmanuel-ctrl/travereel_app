@@ -16,10 +16,10 @@ export default function StepTravelDetails() {
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           Travel Details
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Add your flight and accommodation details (optional)
         </p>
       </div>
@@ -32,8 +32,8 @@ export default function StepTravelDetails() {
               <Plane className="size-4 text-[#FF6B6B]" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900">Flight Details</p>
-              <p className="text-[10px] text-gray-500">Help us plan around your schedule</p>
+              <p className="text-sm font-semibold text-foreground">Flight Details</p>
+              <p className="text-[10px] text-muted-foreground">Help us plan around your schedule</p>
             </div>
           </div>
           <Switch
@@ -47,7 +47,7 @@ export default function StepTravelDetails() {
           <div className="space-y-3 pl-2 border-l-2 border-[#FF6B6B]/20 ml-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-foreground mb-1.5">
                   <Calendar className="size-3 inline mr-1" />
                   Departure Date
                 </label>
@@ -59,7 +59,7 @@ export default function StepTravelDetails() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-foreground mb-1.5">
                   <Calendar className="size-3 inline mr-1" />
                   Return Date
                 </label>
@@ -74,7 +74,7 @@ export default function StepTravelDetails() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-foreground mb-1.5">
                   <Clock className="size-3 inline mr-1" />
                   Departure Time
                 </label>
@@ -87,7 +87,7 @@ export default function StepTravelDetails() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-foreground mb-1.5">
                   <Clock className="size-3 inline mr-1" />
                   Arrival Time
                 </label>
@@ -120,8 +120,8 @@ export default function StepTravelDetails() {
               <Hotel className="size-4 text-[#2EC4B6]" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900">Accommodation</p>
-              <p className="text-[10px] text-gray-500">Do you have a hotel booked?</p>
+              <p className="text-sm font-semibold text-foreground">Accommodation</p>
+              <p className="text-[10px] text-muted-foreground">Do you have a hotel booked?</p>
             </div>
           </div>
           <Switch
@@ -152,7 +152,7 @@ export default function StepTravelDetails() {
       {/* Summary */}
       {(wizardData.departureTime || wizardData.arrivalTime || !hasHotel) && (
         <div className="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-2">
-          <p className="text-xs font-semibold text-gray-700 mb-2">Your Travel Details:</p>
+          <p className="text-xs font-semibold text-foreground mb-2">Your Travel Details:</p>
           {wizardData.departureTime && (
             <div className="flex items-center gap-2 text-xs text-gray-600">
               <Plane className="size-3 text-[#FF6B6B]" />

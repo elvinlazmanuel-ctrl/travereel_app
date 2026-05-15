@@ -85,10 +85,10 @@ export default function StepTravelType() {
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           Who are you traveling with?
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Select your travel style
         </p>
       </div>
@@ -114,8 +114,8 @@ export default function StepTravelType() {
               >
                 <Icon className="size-5 text-white" />
               </div>
-              <p className="text-sm font-bold text-gray-900">{type.label}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{type.description}</p>
+              <p className="text-sm font-bold text-foreground">{type.label}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{type.description}</p>
               <p className="text-[10px] text-gray-400 mt-1">{type.count}</p>
               {isSelected && (
                 <motion.div
@@ -189,7 +189,7 @@ export default function StepTravelType() {
               {/* Companions List */}
               {companions.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     Added Companions ({companions.length})
                   </p>
                   <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
@@ -207,7 +207,7 @@ export default function StepTravelType() {
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">{c.name}</p>
+                          <p className="text-sm font-medium text-foreground truncate">{c.name}</p>
                           {c.email && (
                             <p className="text-xs text-gray-400 truncate">{c.email}</p>
                           )}

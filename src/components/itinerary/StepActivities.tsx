@@ -34,10 +34,10 @@ export default function StepActivities() {
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           What activities are you interested in?
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Select at least 1 activity to personalize your itinerary
         </p>
       </div>
@@ -56,7 +56,7 @@ export default function StepActivities() {
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           />
         </div>
-        <span className="text-xs font-medium text-gray-500 shrink-0">
+        <span className="text-xs font-medium text-muted-foreground shrink-0">
           {selectedActivities.length}/{activityCategories.length}
         </span>
       </div>
@@ -79,7 +79,7 @@ export default function StepActivities() {
               <span className="text-lg">{activity.emoji}</span>
               <span
                 className={`text-sm font-medium ${
-                  isSelected ? 'text-[#FF6B6B]' : 'text-gray-700'
+                  isSelected ? 'text-[#FF6B6B]' : 'text-foreground'
                 }`}
               >
                 {activity.label}
@@ -109,7 +109,7 @@ export default function StepActivities() {
           animate={{ opacity: 1, y: 0 }}
           className="p-4 rounded-xl bg-gradient-to-r from-[#FF6B6B]/5 via-[#FF8C42]/5 to-[#FFBA49]/5 border border-[#FF6B6B]/20"
         >
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
             Selected Activities
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -118,7 +118,7 @@ export default function StepActivities() {
               return activity ? (
                 <span
                   key={id}
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/80 text-xs font-medium text-gray-700"
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/80 text-xs font-medium text-foreground"
                 >
                   {activity.emoji} {activity.label}
                 </span>

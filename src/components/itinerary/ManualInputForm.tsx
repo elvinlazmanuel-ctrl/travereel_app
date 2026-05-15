@@ -229,8 +229,8 @@ export default function ManualInputForm() {
           <Route className="size-5 text-white" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-gray-900">Plan Your Itinerary</h2>
-          <p className="text-xs text-gray-500">
+          <h2 className="text-lg font-bold text-foreground">Plan Your Itinerary</h2>
+          <p className="text-xs text-muted-foreground">
             {wizardData.location}, {wizardData.country} &middot; {days.length} days
           </p>
         </div>
@@ -267,7 +267,7 @@ export default function ManualInputForm() {
                   value={day.title}
                   onChange={(e) => updateDay(day.id, 'title', e.target.value)}
                   onClick={(e) => e.stopPropagation()}
-                  className="h-auto p-0 border-0 text-sm font-bold text-gray-900 focus:ring-0 focus:outline-none bg-transparent"
+                  className="h-auto p-0 border-0 text-sm font-bold text-foreground focus:ring-0 focus:outline-none bg-transparent"
                   placeholder={`Day ${day.dayNumber}`}
                 />
               </div>
@@ -450,7 +450,7 @@ export default function ManualInputForm() {
 
       {/* Requirements Checklist */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
           Requirements & Preparation
         </p>
         <div className="grid grid-cols-2 gap-2">
@@ -471,7 +471,7 @@ export default function ManualInputForm() {
                 ) : (
                   <Square className="size-4 text-gray-300 shrink-0" />
                 )}
-                <span className={`text-xs font-medium ${checked ? 'text-gray-800' : 'text-gray-500'}`}>
+                <span className={`text-xs font-medium ${checked ? 'text-foreground' : 'text-muted-foreground'}`}>
                   {req}
                 </span>
               </button>

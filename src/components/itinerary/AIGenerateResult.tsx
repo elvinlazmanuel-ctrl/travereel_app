@@ -199,15 +199,15 @@ export default function AIGenerateResult() {
             <span className="text-2xl">✨</span>
           </div>
         </motion.div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2">
+        <h3 className="text-lg font-bold text-foreground mb-2">
           AI is planning your trip...
         </h3>
-        <p className="text-sm text-gray-500 mb-4 text-center max-w-[250px]">
+        <p className="text-sm text-muted-foreground mb-4 text-center max-w-[250px]">
           Creating a personalized itinerary for {wizardData.location}, {wizardData.country}
         </p>
         <div className="flex items-center gap-2 mb-4">
           <Clock className="size-4 text-[#FF8C42]" />
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-foreground">
             {elapsedTime}s elapsed
           </span>
         </div>
@@ -236,10 +236,10 @@ export default function AIGenerateResult() {
         <div className="size-16 rounded-full bg-red-50 flex items-center justify-center mb-4">
           <AlertCircle className="size-8 text-[#FF6B6B]" />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2">
+        <h3 className="text-lg font-bold text-foreground mb-2">
           {isTimeout ? 'Request Timed Out' : 'Something went wrong'}
         </h3>
-        <p className="text-sm text-gray-500 mb-2 text-center max-w-[250px]">
+        <p className="text-sm text-muted-foreground mb-2 text-center max-w-[250px]">
           {isTimeout 
             ? 'The AI service took longer than 60 seconds. Please try again.'
             : error
@@ -278,8 +278,8 @@ export default function AIGenerateResult() {
           <span className="text-lg">✨</span>
         </div>
         <div>
-          <h2 className="text-lg font-bold text-gray-900">Your AI Itinerary</h2>
-          <p className="text-xs text-gray-500">
+          <h2 className="text-lg font-bold text-foreground">Your AI Itinerary</h2>
+          <p className="text-xs text-muted-foreground">
             {wizardData.location}, {wizardData.country} &middot; {wizardData.days} days
           </p>
         </div>
@@ -288,13 +288,13 @@ export default function AIGenerateResult() {
       {/* Budget Overview */}
       <div className="grid grid-cols-3 gap-2">
         <div className="p-3 rounded-xl bg-[#FF6B6B]/5 border border-[#FF6B6B]/10 text-center">
-          <p className="text-xs text-gray-500 mb-1">Your Budget</p>
+          <p className="text-xs text-muted-foreground mb-1">Your Budget</p>
           <p className="text-sm font-bold text-[#FF6B6B]">
             {currencySymbol(wizardData.currency)}{wizardData.budget.toLocaleString()}
           </p>
         </div>
         <div className="p-3 rounded-xl bg-[#FF8C42]/5 border border-[#FF8C42]/10 text-center">
-          <p className="text-xs text-gray-500 mb-1">Est. Cost</p>
+          <p className="text-xs text-muted-foreground mb-1">Est. Cost</p>
           <p className="text-sm font-bold text-[#FF8C42]">
             ${result.totalEstimatedCost.toLocaleString()}
           </p>
@@ -305,7 +305,7 @@ export default function AIGenerateResult() {
             background: budgetRemaining >= 0 ? 'rgba(46,196,182,0.05)' : 'rgba(255,107,107,0.05)',
           }}
         >
-          <p className="text-xs text-gray-500 mb-1">Remaining</p>
+          <p className="text-xs text-muted-foreground mb-1">Remaining</p>
           <p className={`text-sm font-bold ${budgetRemaining >= 0 ? 'text-[#2EC4B6]' : 'text-[#FF6B6B]'}`}>
             ${budgetRemaining.toLocaleString()}
           </p>
@@ -334,8 +334,8 @@ export default function AIGenerateResult() {
                 D{day.dayNumber}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-gray-900 truncate">{day.title}</p>
-                <p className="text-xs text-gray-500 truncate">{day.description}</p>
+                <p className="text-sm font-bold text-foreground truncate">{day.title}</p>
+                <p className="text-xs text-muted-foreground truncate">{day.description}</p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <Badge variant="secondary" className="text-[10px]">
@@ -382,11 +382,11 @@ export default function AIGenerateResult() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-0.5">
-                              <p className="text-sm font-medium text-gray-900 truncate">
+                              <p className="text-sm font-medium text-foreground truncate">
                                 {activity.title}
                               </p>
                             </div>
-                            <p className="text-xs text-gray-500 mb-1">
+                            <p className="text-xs text-muted-foreground mb-1">
                               {activity.description}
                             </p>
                             <div className="flex items-center gap-3 flex-wrap">
@@ -424,7 +424,7 @@ export default function AIGenerateResult() {
       {/* Requirements */}
       {result.requirements && result.requirements.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Requirements & Preparation
           </p>
           <div className="space-y-2">
@@ -434,7 +434,7 @@ export default function AIGenerateResult() {
                 className="flex items-start gap-2 p-3 rounded-lg bg-amber-50 border border-amber-100"
               >
                 <AlertCircle className="size-4 text-amber-500 shrink-0 mt-0.5" />
-                <p className="text-xs text-gray-700">{req}</p>
+                <p className="text-xs text-foreground">{req}</p>
               </div>
             ))}
           </div>

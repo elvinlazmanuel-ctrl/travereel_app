@@ -225,7 +225,7 @@ export default function NotificationsPage() {
               return (
                 <div key={group}>
                   <div className="px-4 py-2">
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                       {group}
                     </span>
                   </div>

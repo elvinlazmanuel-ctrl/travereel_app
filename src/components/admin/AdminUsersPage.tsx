@@ -215,7 +215,7 @@ export default function AdminUsersPage() {
     return (
       <div className="max-w-2xl mx-auto px-4 py-12 text-center">
         <Shield className="size-12 text-red-300 mx-auto mb-3" />
-        <p className="text-gray-500">Access denied</p>
+        <p className="text-muted-foreground">Access denied</p>
         <Button variant="ghost" onClick={() => setCurrentView('settings')} className="mt-3">
           Go back
         </Button>
@@ -233,11 +233,11 @@ export default function AdminUsersPage() {
           onClick={() => setCurrentView('admin')}
           className="size-9"
         >
-          <ArrowLeft className="size-5 text-gray-700" />
+          <ArrowLeft className="size-5 text-foreground" />
         </Button>
         <div className="flex items-center gap-2">
-          <Users className="size-5 text-gray-700" />
-          <h1 className="text-xl font-bold text-gray-900">User Management</h1>
+          <Users className="size-5 text-foreground" />
+          <h1 className="text-xl font-bold text-foreground">User Management</h1>
         </div>
       </div>
 
@@ -266,7 +266,7 @@ export default function AdminUsersPage() {
       </div>
 
       {/* Results count */}
-      <p className="text-xs text-gray-500 mb-3">{filteredUsers.length} users found</p>
+      <p className="text-xs text-muted-foreground mb-3">{filteredUsers.length} users found</p>
 
       {/* User List */}
       {isLoading ? (
@@ -276,7 +276,7 @@ export default function AdminUsersPage() {
       ) : filteredUsers.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <Users className="size-12 text-gray-300 mb-3" />
-          <p className="text-sm text-gray-500">No users found</p>
+          <p className="text-sm text-muted-foreground">No users found</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -300,7 +300,7 @@ export default function AdminUsersPage() {
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-gray-900 truncate">{user.name}</span>
+                          <span className="text-sm font-medium text-foreground truncate">{user.name}</span>
                           {getRoleBadge(user.role)}
                           {user.isBanned && (
                             <Badge className="bg-red-100 text-red-700 border-red-200 text-[10px]">
@@ -309,7 +309,7 @@ export default function AdminUsersPage() {
                           )}
                         </div>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs text-gray-500">@{user.username}</span>
+                          <span className="text-xs text-muted-foreground">@{user.username}</span>
                           <span className="text-[10px] text-gray-400">·</span>
                           <span className="text-[11px] text-gray-400 flex items-center gap-0.5">
                             <Mail className="size-2.5" />
@@ -326,7 +326,7 @@ export default function AdminUsersPage() {
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="size-8">
-                            <MoreHorizontal className="size-4 text-gray-500" />
+                            <MoreHorizontal className="size-4 text-muted-foreground" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">

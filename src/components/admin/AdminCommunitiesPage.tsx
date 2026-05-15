@@ -255,7 +255,7 @@ export default function AdminCommunitiesPage() {
     return (
       <div className="max-w-2xl mx-auto px-4 py-12 text-center">
         <Shield className="size-12 text-red-300 mx-auto mb-3" />
-        <p className="text-gray-500">Access denied</p>
+        <p className="text-muted-foreground">Access denied</p>
         <Button variant="ghost" onClick={() => setCurrentView('settings')} className="mt-3">
           Go back
         </Button>
@@ -274,11 +274,11 @@ export default function AdminCommunitiesPage() {
             onClick={() => setCurrentView('admin')}
             className="size-9"
           >
-            <ArrowLeft className="size-5 text-gray-700" />
+            <ArrowLeft className="size-5 text-foreground" />
           </Button>
           <div className="flex items-center gap-2">
-            <Shield className="size-5 text-gray-700" />
-            <h1 className="text-xl font-bold text-gray-900">Community Management</h1>
+            <Shield className="size-5 text-foreground" />
+            <h1 className="text-xl font-bold text-foreground">Community Management</h1>
           </div>
         </div>
         <Button
@@ -317,7 +317,7 @@ export default function AdminCommunitiesPage() {
       </div>
 
       {/* Results count */}
-      <p className="text-xs text-gray-500 mb-3">{filteredCommunities.length} communities found</p>
+      <p className="text-xs text-muted-foreground mb-3">{filteredCommunities.length} communities found</p>
 
       {/* Community List */}
       {isLoading ? (
@@ -327,7 +327,7 @@ export default function AdminCommunitiesPage() {
       ) : filteredCommunities.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <Globe className="size-12 text-gray-300 mb-3" />
-          <p className="text-sm text-gray-500">No communities found</p>
+          <p className="text-sm text-muted-foreground">No communities found</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -351,10 +351,10 @@ export default function AdminCommunitiesPage() {
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-gray-900 truncate">{community.name}</span>
+                          <span className="text-sm font-medium text-foreground truncate">{community.name}</span>
                           {getCategoryBadge(community.category)}
                         </div>
-                        <p className="text-xs text-gray-500 mt-0.5 truncate">{community.description || 'No description'}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{community.description || 'No description'}</p>
                         <div className="flex items-center gap-2 mt-1">
                           <Users className="size-3 text-gray-400" />
                           <span className="text-[11px] text-gray-400">{community.members} members</span>
@@ -364,7 +364,7 @@ export default function AdminCommunitiesPage() {
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="size-8">
-                            <MoreHorizontal className="size-4 text-gray-500" />
+                            <MoreHorizontal className="size-4 text-muted-foreground" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
@@ -406,7 +406,7 @@ export default function AdminCommunitiesPage() {
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1.5 block">Name</label>
+              <label className="text-sm font-medium text-foreground mb-1.5 block">Name</label>
               <Input
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
@@ -415,7 +415,7 @@ export default function AdminCommunitiesPage() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1.5 block">Description</label>
+              <label className="text-sm font-medium text-foreground mb-1.5 block">Description</label>
               <Textarea
                 value={editDescription}
                 onChange={(e) => setEditDescription(e.target.value)}
@@ -424,7 +424,7 @@ export default function AdminCommunitiesPage() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1.5 block">Category</label>
+              <label className="text-sm font-medium text-foreground mb-1.5 block">Category</label>
               <Select value={editCategory} onValueChange={setEditCategory}>
                 <SelectTrigger className="rounded-xl">
                   <SelectValue placeholder="Select category" />
@@ -439,7 +439,7 @@ export default function AdminCommunitiesPage() {
               </Select>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1.5 block">Image URL</label>
+              <label className="text-sm font-medium text-foreground mb-1.5 block">Image URL</label>
               <Input
                 value={editImage}
                 onChange={(e) => setEditImage(e.target.value)}

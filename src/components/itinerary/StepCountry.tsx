@@ -87,7 +87,7 @@ export default function StepCountry() {
     <div className="space-y-6">
       {/* Title Input */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-foreground mb-2">
           Itinerary Name
         </label>
         <Input
@@ -100,10 +100,10 @@ export default function StepCountry() {
 
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           Which country do you want to visit?
         </h2>
-        <p className="text-sm text-gray-500">Select a country for your adventure</p>
+        <p className="text-sm text-muted-foreground">Select a country for your adventure</p>
       </div>
 
       {/* Search */}
@@ -120,7 +120,7 @@ export default function StepCountry() {
       {/* Popular Countries Grid */}
       {!search && (
         <div>
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Popular Destinations
           </p>
           <div className="grid grid-cols-2 gap-2">
@@ -135,7 +135,7 @@ export default function StepCountry() {
                 }`}
               >
                 <span className="text-2xl">{country.flag}</span>
-                <span className="text-sm font-medium text-gray-800 flex-1 text-left">
+                <span className="text-sm font-medium text-foreground flex-1 text-left">
                   {country.name}
                 </span>
                 {wizardData.country === country.name && (
@@ -150,7 +150,7 @@ export default function StepCountry() {
       {/* All Countries List */}
       <div>
         {!search && (
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             All Countries
           </p>
         )}
@@ -166,7 +166,7 @@ export default function StepCountry() {
               }`}
             >
               <span className="text-xl">{country.flag}</span>
-              <span className="text-sm font-medium text-gray-800 flex-1 text-left">
+              <span className="text-sm font-medium text-foreground flex-1 text-left">
                 {country.name}
               </span>
               {wizardData.country === country.name && (
@@ -177,7 +177,7 @@ export default function StepCountry() {
           {filteredAll.length === 0 && (
             <div className="flex flex-col items-center py-8 text-center">
               <MapPin className="size-8 text-gray-300 mb-2" />
-              <p className="text-sm text-gray-500">No countries found</p>
+              <p className="text-sm text-muted-foreground">No countries found</p>
             </div>
           )}
         </div>

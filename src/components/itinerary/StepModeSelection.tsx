@@ -20,10 +20,10 @@ export default function StepModeSelection() {
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <h2 className="text-xl font-bold text-foreground mb-1">
           Choose how to create your itinerary
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Let AI handle the planning or do it yourself
         </p>
       </div>
@@ -54,10 +54,10 @@ export default function StepModeSelection() {
               <Sparkles className="size-7 text-white" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-bold text-gray-900 mb-1">
+              <h3 className="text-lg font-bold text-foreground mb-1">
                 Let AI Plan Your Trip
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 AI will create a detailed day-by-day itinerary with routes, budget estimates, and requirements
               </p>
               <div className="mt-3 flex items-center gap-2">
@@ -99,10 +99,10 @@ export default function StepModeSelection() {
               <Pencil className="size-7 text-white" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-bold text-gray-900 mb-1">
+              <h3 className="text-lg font-bold text-foreground mb-1">
                 Plan It Yourself
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Add your own activities, routes, and budget items manually
               </p>
               <div className="mt-3 flex items-center gap-2">
@@ -139,7 +139,7 @@ export default function StepModeSelection() {
 
       {/* Tips */}
       <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-muted-foreground text-center">
           💡 You can always edit your itinerary later, regardless of which mode you choose
         </p>
       </div>

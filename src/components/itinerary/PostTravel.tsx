@@ -1112,23 +1112,23 @@ export default function PostTravel() {
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-lg bg-gradient-to-br from-[#FF6B6B]/10 to-[#FF8C42]/10 p-3">
                 <Calendar className="size-4 text-[#FF6B6B] mb-1" />
-                <p className="text-2xl font-bold text-gray-900">{selectedItinerary.days}</p>
-                <p className="text-[10px] text-gray-500">Days Traveled</p>
+                <p className="text-2xl font-bold text-foreground">{selectedItinerary.days}</p>
+                <p className="text-[10px] text-muted-foreground">Days Traveled</p>
               </div>
               <div className="rounded-lg bg-gradient-to-br from-[#2EC4B6]/10 to-[#FFBA49]/10 p-3">
                 <CheckCircle2 className="size-4 text-[#2EC4B6] mb-1" />
-                <p className="text-2xl font-bold text-gray-900">{completedActivities.length}</p>
-                <p className="text-[10px] text-gray-500">Activities Done</p>
+                <p className="text-2xl font-bold text-foreground">{completedActivities.length}</p>
+                <p className="text-[10px] text-muted-foreground">Activities Done</p>
               </div>
               <div className="rounded-lg bg-gradient-to-br from-[#FFBA49]/10 to-[#FF6B6B]/10 p-3">
                 <MapPin className="size-4 text-[#FFBA49] mb-1" />
-                <p className="text-2xl font-bold text-gray-900">{new Set(selectedItinerary.daysPlan.map(d => d.title)).size}</p>
-                <p className="text-[10px] text-gray-500">Places Visited</p>
+                <p className="text-2xl font-bold text-foreground">{new Set(selectedItinerary.daysPlan.map(d => d.title)).size}</p>
+                <p className="text-[10px] text-muted-foreground">Places Visited</p>
               </div>
               <div className="rounded-lg bg-gradient-to-br from-[#E879A8]/10 to-[#FF8C42]/10 p-3">
                 <Camera className="size-4 text-[#E879A8] mb-1" />
-                <p className="text-2xl font-bold text-gray-900">{uploadedPhotos.length}</p>
-                <p className="text-[10px] text-gray-500">Photos Uploaded</p>
+                <p className="text-2xl font-bold text-foreground">{uploadedPhotos.length}</p>
+                <p className="text-[10px] text-muted-foreground">Photos Uploaded</p>
               </div>
             </div>
           </CardContent>
@@ -1169,7 +1169,7 @@ export default function PostTravel() {
                       className={`rounded-lg bg-gradient-to-br ${data.color} p-3 border border-gray-100`}
                     >
                       <div className="text-2xl mb-1">{data.icon}</div>
-                      <p className="text-xs font-semibold text-gray-900">{data.name}</p>
+                      <p className="text-xs font-semibold text-foreground">{data.name}</p>
                     </div>
                   )
                 })}
@@ -1208,7 +1208,7 @@ export default function PostTravel() {
                       <div className="size-6 rounded-full bg-[#E879A8]/10 flex items-center justify-center">
                         <Icon className="size-3 text-[#E879A8]" />
                       </div>
-                      <span className="text-xs font-medium text-gray-700">{prompt.question}</span>
+                      <span className="text-xs font-medium text-foreground">{prompt.question}</span>
                     </div>
                     <Textarea
                       placeholder="Share your thoughts..."

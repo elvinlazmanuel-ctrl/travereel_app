@@ -546,7 +546,7 @@ export default function DataTablePage() {
                       size="sm"
                       onClick={() => handleUpdate(String(row.id), { status: 'dismissed' })}
                       disabled={isLoading}
-                      className="text-gray-500"
+                      className="text-muted-foreground"
                     >
                       <X className="w-3.5 h-3.5" />
                       <span className="ml-1 hidden sm:inline">Dismiss</span>
@@ -559,7 +559,7 @@ export default function DataTablePage() {
                     size="sm"
                     onClick={() => handleUpdate(String(row.id), { status: 'dismissed' })}
                     disabled={isLoading}
-                    className="text-gray-500"
+                    className="text-muted-foreground"
                   >
                     <X className="w-3.5 h-3.5" />
                     <span className="ml-1 hidden sm:inline">Dismiss</span>

@@ -206,7 +206,7 @@ export default function CommunityPage() {
       {/* My Communities Section */}
       <div className="mb-4">
         <div className="flex items-center justify-between px-4 mb-2">
-          <h3 className="text-sm font-semibold text-gray-900">My Communities</h3>
+          <h3 className="text-sm font-semibold text-foreground">My Communities</h3>
           <button
             onClick={() => setShowCreateDialog(true)}
             className="flex items-center gap-1 text-xs font-medium text-[#2EC4B6] hover:text-[#2EC4B6]/80 transition-colors"
@@ -243,7 +243,7 @@ export default function CommunityPage() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <span className="text-[11px] font-medium text-gray-700 text-center leading-tight line-clamp-2 group-hover:text-[#2EC4B6] transition-colors">
+                <span className="text-[11px] font-medium text-foreground text-center leading-tight line-clamp-2 group-hover:text-[#2EC4B6] transition-colors">
                   {community.name}
                 </span>
               </motion.div>
@@ -269,7 +269,7 @@ export default function CommunityPage() {
         <div className="mb-5">
           <div className="flex items-center gap-2 px-4 mb-3">
             <Flame className="size-4 text-[#FF8C42]" />
-            <h3 className="text-sm font-semibold text-gray-900">Trending</h3>
+            <h3 className="text-sm font-semibold text-foreground">Trending</h3>
           </div>
           <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 pb-2">
             {trendingCommunities.map((community, index) => {
@@ -299,7 +299,7 @@ export default function CommunityPage() {
                     </div>
                   </div>
                   <div className="p-2.5">
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">
+                    <h4 className="text-xs font-semibold text-foreground truncate">
                       {community.name}
                     </h4>
                     {community.category && (
@@ -320,7 +320,7 @@ export default function CommunityPage() {
         <div className="mb-5">
           <div className="flex items-center gap-2 px-4 mb-3">
             <Sparkles className="size-4 text-[#FFBA49]" />
-            <h3 className="text-sm font-semibold text-gray-900">Suggested for You</h3>
+            <h3 className="text-sm font-semibold text-foreground">Suggested for You</h3>
           </div>
           <div className="px-4 space-y-2">
             {suggestedCommunities.map((community, index) => {
@@ -343,10 +343,10 @@ export default function CommunityPage() {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-semibold text-gray-900 truncate">{community.name}</h4>
+                    <h4 className="text-sm font-semibold text-foreground truncate">{community.name}</h4>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <Users className="size-3 text-gray-400" />
-                      <span className="text-xs text-gray-500">{formatMembers(community.members)} members</span>
+                      <span className="text-xs text-muted-foreground">{formatMembers(community.members)} members</span>
                       {community.category && (
                         <>
                           <span className="text-gray-300">·</span>
@@ -376,7 +376,7 @@ export default function CommunityPage() {
 
       {/* Discover Communities */}
       <div className="px-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Discover Communities</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Discover Communities</h3>
 
         {isLoading ? (
           <CommunityGridSkeleton />
@@ -411,7 +411,7 @@ export default function CommunityPage() {
                     {/* Category badge */}
                     {community.category && (
                       <div className="absolute top-2 left-2">
-                        <Badge className="bg-white/90 text-gray-700 border-0 text-[10px] px-1.5 py-0 h-5 gap-1">
+                        <Badge className="bg-white/90 text-foreground border-0 text-[10px] px-1.5 py-0 h-5 gap-1">
                           <CategoryIcon className="size-3" />
                           {categoryLabels[community.category] || community.category}
                         </Badge>
@@ -422,19 +422,19 @@ export default function CommunityPage() {
                   {/* Content */}
                   <div className="p-3">
                     <h4
-                      className="text-sm font-semibold text-gray-900 truncate cursor-pointer hover:text-[#2EC4B6] transition-colors"
+                      className="text-sm font-semibold text-foreground truncate cursor-pointer hover:text-[#2EC4B6] transition-colors"
                       onClick={() => handleCommunityClick(community)}
                     >
                       {community.name}
                     </h4>
                     <div className="flex items-center gap-1 mt-0.5">
                       <Users className="size-3 text-gray-400" />
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-muted-foreground">
                         {formatMembers(community.members)} members
                       </span>
                     </div>
                     {community.description && (
-                      <p className="text-[11px] text-gray-500 mt-1.5 line-clamp-2 leading-relaxed">
+                      <p className="text-[11px] text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">
                         {community.description}
                       </p>
                     )}
@@ -442,7 +442,7 @@ export default function CommunityPage() {
                       size="sm"
                       className={`w-full mt-2.5 h-7 text-xs rounded-lg transition-all ${
                         isJoined
-                          ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
+                          ? 'bg-gray-100 text-foreground hover:bg-gray-200 border border-gray-200'
                           : 'bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white'
                       }`}
                       onClick={() => {
@@ -506,8 +506,8 @@ function EmptyState() {
       <div className="size-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
         <Users className="size-7 text-gray-400" />
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">No communities found</h3>
-      <p className="text-sm text-gray-500 max-w-[240px]">
+      <h3 className="text-lg font-semibold text-foreground mb-1">No communities found</h3>
+      <p className="text-sm text-muted-foreground max-w-[240px]">
         Try a different search or category to find communities.
       </p>
     </div>

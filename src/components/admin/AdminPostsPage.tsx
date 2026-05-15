@@ -249,7 +249,7 @@ export default function AdminPostsPage() {
     return (
       <div className="max-w-2xl mx-auto px-4 py-12 text-center">
         <FileText className="size-12 text-red-300 mx-auto mb-3" />
-        <p className="text-gray-500">Access denied</p>
+        <p className="text-muted-foreground">Access denied</p>
         <Button variant="ghost" onClick={() => setCurrentView('settings')} className="mt-3">
           Go back
         </Button>
@@ -267,11 +267,11 @@ export default function AdminPostsPage() {
           onClick={() => setCurrentView('admin')}
           className="size-9"
         >
-          <ArrowLeft className="size-5 text-gray-700" />
+          <ArrowLeft className="size-5 text-foreground" />
         </Button>
         <div className="flex items-center gap-2">
-          <FileText className="size-5 text-gray-700" />
-          <h1 className="text-xl font-bold text-gray-900">Post Management</h1>
+          <FileText className="size-5 text-foreground" />
+          <h1 className="text-xl font-bold text-foreground">Post Management</h1>
         </div>
       </div>
 
@@ -299,7 +299,7 @@ export default function AdminPostsPage() {
       </div>
 
       {/* Results count */}
-      <p className="text-xs text-gray-500 mb-3">{filteredPosts.length} posts found</p>
+      <p className="text-xs text-muted-foreground mb-3">{filteredPosts.length} posts found</p>
 
       {/* Post List */}
       {isLoading ? (
@@ -309,7 +309,7 @@ export default function AdminPostsPage() {
       ) : filteredPosts.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <FileText className="size-12 text-gray-300 mb-3" />
-          <p className="text-sm text-gray-500">No posts found</p>
+          <p className="text-sm text-muted-foreground">No posts found</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -344,7 +344,7 @@ export default function AdminPostsPage() {
                         <div className="flex items-center gap-2 mb-0.5">
                           <button
                             onClick={() => handleViewAuthor(post)}
-                            className="text-sm font-medium text-gray-900 hover:text-[#FF6B6B] transition-colors"
+                            className="text-sm font-medium text-foreground hover:text-[#FF6B6B] transition-colors"
                           >
                             @{post.author.username}
                           </button>
@@ -361,7 +361,7 @@ export default function AdminPostsPage() {
                             </Badge>
                           )}
                         </div>
-                        <p className="text-xs text-gray-500 line-clamp-2">{post.caption || 'No caption'}</p>
+                        <p className="text-xs text-muted-foreground line-clamp-2">{post.caption || 'No caption'}</p>
                         <div className="flex items-center gap-3 mt-1.5">
                           <span className="text-[11px] text-gray-400">❤ {post.likes}</span>
                           <span className="text-[11px] text-gray-400">💬 {post.comments}</span>
@@ -380,7 +380,7 @@ export default function AdminPostsPage() {
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="size-8 flex-shrink-0">
-                            <MoreHorizontal className="size-4 text-gray-500" />
+                            <MoreHorizontal className="size-4 text-muted-foreground" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
@@ -429,8 +429,8 @@ export default function AdminPostsPage() {
                   <AvatarFallback>{detailPost.author.username[0].toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{detailPost.author.name}</p>
-                  <p className="text-xs text-gray-500">@{detailPost.author.username}</p>
+                  <p className="text-sm font-medium text-foreground">{detailPost.author.name}</p>
+                  <p className="text-xs text-muted-foreground">@{detailPost.author.username}</p>
                 </div>
                 {detailPost.isFlagged && (
                   <Badge className="bg-amber-100 text-amber-700 border-amber-200 text-[10px] ml-auto">
@@ -452,27 +452,27 @@ export default function AdminPostsPage() {
 
               {/* Caption */}
               <div>
-                <label className="text-xs font-medium text-gray-500 uppercase">Caption</label>
-                <p className="text-sm text-gray-700 mt-1">{detailPost.caption || 'No caption'}</p>
+                <label className="text-xs font-medium text-muted-foreground uppercase">Caption</label>
+                <p className="text-sm text-foreground mt-1">{detailPost.caption || 'No caption'}</p>
               </div>
 
               {/* Details */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-xl p-3">
-                  <p className="text-xs text-gray-500">Likes</p>
-                  <p className="text-lg font-bold text-gray-900">{detailPost.likes}</p>
+                  <p className="text-xs text-muted-foreground">Likes</p>
+                  <p className="text-lg font-bold text-foreground">{detailPost.likes}</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-3">
-                  <p className="text-xs text-gray-500">Comments</p>
-                  <p className="text-lg font-bold text-gray-900">{detailPost.comments}</p>
+                  <p className="text-xs text-muted-foreground">Comments</p>
+                  <p className="text-lg font-bold text-foreground">{detailPost.comments}</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-3">
-                  <p className="text-xs text-gray-500">Reports</p>
-                  <p className="text-lg font-bold text-gray-900">{detailPost.reportCount || 0}</p>
+                  <p className="text-xs text-muted-foreground">Reports</p>
+                  <p className="text-lg font-bold text-foreground">{detailPost.reportCount || 0}</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-3">
-                  <p className="text-xs text-gray-500">Status</p>
-                  <p className="text-sm font-bold text-gray-900">{detailPost.isFlagged ? 'Flagged' : 'Normal'}</p>
+                  <p className="text-xs text-muted-foreground">Status</p>
+                  <p className="text-sm font-bold text-foreground">{detailPost.isFlagged ? 'Flagged' : 'Normal'}</p>
                 </div>
               </div>
 
@@ -487,7 +487,7 @@ export default function AdminPostsPage() {
               {/* Tags */}
               {detailPost.tags && detailPost.tags.length > 0 && (
                 <div>
-                  <label className="text-xs font-medium text-gray-500 uppercase flex items-center gap-1">
+                  <label className="text-xs font-medium text-muted-foreground uppercase flex items-center gap-1">
                     <Tag className="size-3" /> Tags
                   </label>
                   <div className="flex flex-wrap gap-1 mt-1">

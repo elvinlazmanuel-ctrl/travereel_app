@@ -390,7 +390,7 @@ export default function UserProfilePage() {
   if (!user) {
     return (
       <div className="max-w-md mx-auto flex flex-col items-center justify-center min-h-[60vh]">
-        <p className="text-gray-500 text-sm">User not found</p>
+        <p className="text-muted-foreground text-sm">User not found</p>
         <Button variant="ghost" onClick={handleBack} className="mt-3">
           Go back
         </Button>
@@ -408,15 +408,15 @@ export default function UserProfilePage() {
           className="size-9 rounded-full"
           onClick={handleBack}
         >
-          <ArrowLeft className="size-5 text-gray-700" />
+          <ArrowLeft className="size-5 text-foreground" />
         </Button>
-        <h1 className="text-lg font-semibold text-gray-900 flex-1">
+        <h1 className="text-lg font-semibold text-foreground flex-1">
           {user.username || 'unknown'}
         </h1>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="size-9 rounded-full">
-              <MoreHorizontal className="size-5 text-gray-700" />
+              <MoreHorizontal className="size-5 text-foreground" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
@@ -461,24 +461,24 @@ export default function UserProfilePage() {
 
           <div className="flex-1 flex justify-around">
             <div className="text-center">
-              <p className="text-lg font-bold text-gray-900">{userPosts.length}</p>
-              <p className="text-xs text-gray-500">Posts</p>
+              <p className="text-lg font-bold text-foreground">{userPosts.length}</p>
+              <p className="text-xs text-muted-foreground">Posts</p>
             </div>
             <button className="text-center outline-none" onClick={handleFollowersClick}>
-              <p className="text-lg font-bold text-gray-900">{followersCount}</p>
-              <p className="text-xs text-gray-500">Followers</p>
+              <p className="text-lg font-bold text-foreground">{followersCount}</p>
+              <p className="text-xs text-muted-foreground">Followers</p>
             </button>
             <button className="text-center outline-none" onClick={handleFollowingClick}>
-              <p className="text-lg font-bold text-gray-900">{followingCount}</p>
-              <p className="text-xs text-gray-500">Following</p>
+              <p className="text-lg font-bold text-foreground">{followingCount}</p>
+              <p className="text-xs text-muted-foreground">Following</p>
             </button>
           </div>
         </div>
 
         {/* Name & Bio */}
         <div className="mt-3">
-          <h2 className="text-sm font-semibold text-gray-900">{user.name || 'Unknown'}</h2>
-          {user.bio && <p className="text-sm text-gray-500 mt-0.5">{user.bio}</p>}
+          <h2 className="text-sm font-semibold text-foreground">{user.name || 'Unknown'}</h2>
+          {user.bio && <p className="text-sm text-muted-foreground mt-0.5">{user.bio}</p>}
         </div>
 
         {/* Action Buttons */}
@@ -535,7 +535,7 @@ export default function UserProfilePage() {
             <Button
               onClick={handleFollowToggle}
               disabled={isFollowLoading}
-              className="flex-1 h-9 text-sm rounded-lg font-medium bg-gray-100 text-gray-800 hover:bg-gray-200"
+              className="flex-1 h-9 text-sm rounded-lg font-medium bg-gray-100 text-foreground hover:bg-gray-200"
             >
               {isFollowLoading ? '...' : 'Follow'}
             </Button>
@@ -566,7 +566,7 @@ export default function UserProfilePage() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5">
                     <Users className="size-4 text-[#2EC4B6]" />
-                    <h3 className="text-sm font-semibold text-gray-900">{friendsCount} Friends</h3>
+                    <h3 className="text-sm font-semibold text-foreground">{friendsCount} Friends</h3>
                   </div>
                 </div>
                 <div className="flex gap-4 overflow-x-auto scrollbar-none pb-1">
@@ -764,10 +764,10 @@ function BlockedAccountState() {
       <div className="size-16 rounded-full bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center mb-4">
         <Ban className="size-7 text-red-500" />
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+      <h3 className="text-lg font-semibold text-foreground mb-1">
         You blocked this account
       </h3>
-      <p className="text-sm text-gray-500 max-w-[250px]">
+      <p className="text-sm text-muted-foreground max-w-[250px]">
         Unblock to see their posts and itineraries again.
       </p>
     </div>
@@ -780,10 +780,10 @@ function PrivateAccountState() {
       <div className="size-16 rounded-full bg-gradient-to-br from-[#2EC4B6]/10 to-[#FFBA49]/10 flex items-center justify-center mb-4">
         <Lock className="size-7 text-[#2EC4B6]" />
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+      <h3 className="text-lg font-semibold text-foreground mb-1">
         This account is private
       </h3>
-      <p className="text-sm text-gray-500 max-w-[250px]">
+      <p className="text-sm text-muted-foreground max-w-[250px]">
         Follow this account to see their posts and itineraries.
       </p>
     </div>
@@ -816,8 +816,8 @@ function EmptyPostsState() {
       <div className="size-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
         <Grid3X3 className="size-7 text-gray-400" />
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">No Posts Yet</h3>
-      <p className="text-sm text-gray-500 max-w-[240px]">
+      <h3 className="text-lg font-semibold text-foreground mb-1">No Posts Yet</h3>
+      <p className="text-sm text-muted-foreground max-w-[240px]">
         This traveler hasn&apos;t shared any posts yet.
       </p>
     </div>
@@ -830,8 +830,8 @@ function EmptyItinerariesState() {
       <div className="size-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
         <Map className="size-7 text-gray-400" />
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">No Itineraries Yet</h3>
-      <p className="text-sm text-gray-500 max-w-[240px]">
+      <h3 className="text-lg font-semibold text-foreground mb-1">No Itineraries Yet</h3>
+      <p className="text-sm text-muted-foreground max-w-[240px]">
         This traveler hasn&apos;t planned any trips yet.
       </p>
     </div>
