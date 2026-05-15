@@ -108,9 +108,9 @@ export const unfriendSchema = z.object({
 // Community schemas
 export const createCommunitySchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100),
-  description: z.string().max(500).optional(),
-  image: z.string().url().optional(),
-  category: z.string().max(50).optional(),
+  description: z.string().max(500).optional().nullable(),
+  image: z.string().url().optional().nullable(),
+  category: z.string().max(50).optional().nullable(),
   authorId: userIdSchema,
 })
 

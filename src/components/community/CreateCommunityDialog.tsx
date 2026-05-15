@@ -132,9 +132,9 @@ export default function CreateCommunityDialog({ open, onOpenChange }: CreateComm
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: name.trim(),
-          description: description.trim() || null,
-          category: category || null,
-          image: imageUrl,
+          description: description.trim() || undefined,
+          category: category || undefined,
+          ...(imageUrl && { image: imageUrl }),
           authorId: currentUser?.id || 'anonymous',
         }),
       })

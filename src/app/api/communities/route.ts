@@ -175,9 +175,9 @@ export async function POST(request: Request) {
     const community = await db.community.create({
       data: {
         name,
-        description: description || null,
-        image: image || null,
-        category: category || null,
+        description: description || undefined,
+        image: image || undefined,
+        category: category || undefined,
         members: 1,
       },
     })
