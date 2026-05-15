@@ -44,7 +44,7 @@ Please provide a comprehensive day-by-day itinerary.`
         'X-Title': 'Travereel',
       },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-chat:free',
+        model: 'meta-llama/llama-3.1-8b-instruct:free',
         messages: [
           {
             role: 'system',
