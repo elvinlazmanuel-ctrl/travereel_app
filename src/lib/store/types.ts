@@ -83,6 +83,8 @@ export interface Itinerary {
   title: string
   country: string
   location: string
+  departureDate?: string | null
+  returnDate?: string | null
   budget: number
   currency: string
   days: number
@@ -91,6 +93,7 @@ export interface Itinerary {
   status: 'pre-travel' | 'during-travel' | 'post-travel'
   isPublic: boolean
   requirements: string[]
+  collaborators?: string[] | null
   authorId: string
   createdAt: string
   daysPlan: ItineraryDay[]

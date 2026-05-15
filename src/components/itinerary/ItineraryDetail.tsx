@@ -52,6 +52,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useAppStore, type Itinerary, type ItineraryDay } from '@/lib/store'
 import DuringTravel from './DuringTravel'
 import PostTravel from './PostTravel'
+import { ItineraryExport } from './ItineraryExport'
+import { ItineraryMap } from './ItineraryMap'
+import { CurrencyConverter } from './CurrencyConverter'
+import { WeatherForecast } from './WeatherForecast'
 
 // Country flag emoji mapping
 const countryFlags: Record<string, string> = {
@@ -841,6 +845,50 @@ export default function ItineraryDetail() {
                 <span className="text-[10px] text-gray-400">+{itinerary.daysPlan.length - 4}</span>
               )}
             </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Phase 2: Travel Tools Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="space-y-4"
+      >
+        {/* Section Header */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-base font-semibold text-gray-900">Travel Tools</h3>
+          <Badge variant="secondary" className="text-[10px] bg-[#2EC4B6]/10 text-[#2EC4B6]">
+            NEW
+          </Badge>
+        </div>
+
+        {/* Export Tools */}
+        <Card className="border-gray-100 shadow-sm">
+          <CardContent className="p-4">
+            <h4 className="text-sm font-semibold text-gray-900 mb-3">Export & Share</h4>
+            <ItineraryExport itinerary={itinerary} />
+          </CardContent>
+        </Card>
+
+        {/* Weather Forecast */}
+        <WeatherForecast
+          location={itinerary.location}
+          country={itinerary.country}
+          departureDate={itinerary.departureDate}
+          returnDate={itinerary.returnDate}
+        />
+
+        {/* Currency Converter */}
+        <Card className="border-gray-100 shadow-sm">
+          <CardContent className="p-4">
+            <h4 className="text-sm font-semibold text-gray-900 mb-3">Currency Converter</h4>
+            <CurrencyConverter
+              defaultFrom={itinerary.currency}
+              defaultTo="USD"
+              defaultAmount={itinerary.budget}
+            />
           </CardContent>
         </Card>
       </motion.div>

@@ -21,8 +21,8 @@ interface ItineraryExportProps {
     status: string
     departureDate?: Date | string
     returnDate?: Date | string
-    requirements?: string
-    activities?: string
+    requirements?: string[]
+    activities?: string[]
     days_plan?: Array<{
       dayNumber: number
       date?: Date | string
@@ -146,7 +146,7 @@ export function ItineraryExport({ itinerary }: ItineraryExportProps) {
       }
 
       // Requirements
-      if (itinerary.requirements) {
+      if (itinerary.requirements && itinerary.requirements.length > 0) {
         const reqY = (doc as any).lastAutoTable?.finalY + 10 || 200
         
         if (reqY > 250) {
@@ -158,7 +158,8 @@ export function ItineraryExport({ itinerary }: ItineraryExportProps) {
         
         doc.setFontSize(10)
         doc.setTextColor(80, 80, 80)
-        const splitText = doc.splitTextToSize(itinerary.requirements, pageWidth - 28)
+        const requirementsText = itinerary.requirements.join(', ')
+        const splitText = doc.splitTextToSize(requirementsText, pageWidth - 28)
         doc.text(splitText, 14, reqY + 8)
       }
 
