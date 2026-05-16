@@ -27,6 +27,7 @@ export type {
   User,
   Post,
   Story,
+  StoryGroup,
   Itinerary,
   ItineraryDay,
   DayActivity,

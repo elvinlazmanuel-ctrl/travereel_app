@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { useAppStore } from '@/lib/store'
+import { useAppStore, type Story } from '@/lib/store'
 
 function formatStoryTime(dateStr: string): string {
   const now = new Date()
@@ -23,7 +23,6 @@ const STORY_DURATION = 5000 // 5 seconds
 
 export default function StoryViewer() {
   const { stories, selectedStoryIndex, setCurrentView, previousView, currentUser, markStoryViewed } = useAppStore()
-  const [currentIndex, setCurrentIndex] = useState(selectedStoryIndex)
   const [progress, setProgress] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -31,7 +30,43 @@ export default function StoryViewer() {
   const elapsedRef = useRef<number>(0)
   const viewedStoriesRef = useRef<Set<string>>(new Set())
 
-  const currentStory = stories[currentIndex]
+  // Group stories by user
+  const storyGroups = useMemo(() => {
+    const groupsMap = new Map<string, Story[]>()
+    
+    stories.forEach(story => {
+      const authorId = story.authorId
+      if (!groupsMap.has(authorId)) {
+        groupsMap.set(authorId, [])
+      }
+      groupsMap.get(authorId)!.push(story)
+    })
+    
+    return Array.from(groupsMap.values())
+  }, [stories])
+
+  // Find which group and index the selectedStoryIndex belongs to
+  const { currentGroup, storyIndexInGroup, userGroupIndex } = useMemo(() => {
+    let index = 0
+    for (let groupIdx = 0; groupIdx < storyGroups.length; groupIdx++) {
+      const group = storyGroups[groupIdx]
+      if (selectedStoryIndex >= index && selectedStoryIndex < index + group.length) {
+        return {
+          currentGroup: group,
+          storyIndexInGroup: selectedStoryIndex - index,
+          userGroupIndex: groupIdx,
+        }
+      }
+      index += group.length
+    }
+    return {
+      currentGroup: storyGroups[0] || [],
+      storyIndexInGroup: 0,
+      userGroupIndex: 0,
+    }
+  }, [storyGroups, selectedStoryIndex])
+
+  const currentStory = currentGroup[storyIndexInGroup]
 
   // Track story views
   useEffect(() => {
@@ -51,23 +86,47 @@ export default function StoryViewer() {
   }, [currentStory, currentUser, markStoryViewed])
 
   const goNext = useCallback(() => {
-    if (currentIndex < stories.length - 1) {
-      setCurrentIndex(currentIndex + 1)
-      setProgress(0)
-      elapsedRef.current = 0
+    if (storyIndexInGroup < currentGroup.length - 1) {
+      // Next story from same user - just update store index
+      const nextIndex = selectedStoryIndex + 1
+      useAppStore.getState().setSelectedStoryIndex(nextIndex)
     } else {
-      // Last story, close viewer
-      setCurrentView(previousView || 'feed')
+      // Move to next user's stories
+      const nextUserGroupIndex = userGroupIndex + 1
+      if (nextUserGroupIndex < storyGroups.length) {
+        // Find the first story index of the next user
+        let nextIndex = 0
+        for (let i = 0; i < nextUserGroupIndex; i++) {
+          nextIndex += storyGroups[i].length
+        }
+        useAppStore.getState().setSelectedStoryIndex(nextIndex)
+      } else {
+        // Last story, close viewer
+        setCurrentView(previousView || 'feed')
+      }
     }
-  }, [currentIndex, stories.length, setCurrentView, previousView])
+    setProgress(0)
+    elapsedRef.current = 0
+  }, [storyIndexInGroup, currentGroup.length, userGroupIndex, storyGroups.length, selectedStoryIndex, setCurrentView, previousView])
 
   const goPrev = useCallback(() => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1)
-      setProgress(0)
-      elapsedRef.current = 0
+    if (storyIndexInGroup > 0) {
+      // Previous story from same user
+      const prevIndex = selectedStoryIndex - 1
+      useAppStore.getState().setSelectedStoryIndex(prevIndex)
+    } else if (userGroupIndex > 0) {
+      // Move to previous user's stories (last story of previous user)
+      const prevUserGroupIndex = userGroupIndex - 1
+      let prevIndex = 0
+      for (let i = 0; i < prevUserGroupIndex; i++) {
+        prevIndex += storyGroups[i].length
+      }
+      prevIndex += storyGroups[prevUserGroupIndex].length - 1
+      useAppStore.getState().setSelectedStoryIndex(prevIndex)
     }
-  }, [currentIndex])
+    setProgress(0)
+    elapsedRef.current = 0
+  }, [storyIndexInGroup, userGroupIndex, selectedStoryIndex, storyGroups])
 
   const handleClose = useCallback(() => {
     setCurrentView(previousView || 'feed')
@@ -95,7 +154,7 @@ export default function StoryViewer() {
         clearInterval(timerRef.current)
       }
     }
-  }, [currentIndex, isPaused, goNext, currentStory])
+  }, [selectedStoryIndex, isPaused, goNext, currentStory])
 
   // Pause on unmount
   useEffect(() => {
@@ -108,7 +167,6 @@ export default function StoryViewer() {
 
   const handleTapLeft = () => {
     if (progress > 10) {
-      // Restart current story
       setProgress(0)
       elapsedRef.current = 0
     } else {
@@ -152,9 +210,9 @@ export default function StoryViewer() {
       <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent pointer-events-none z-10" />
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/60 to-transparent pointer-events-none z-10" />
 
-      {/* Progress bars */}
+      {/* Progress bars - show all stories from current user */}
       <div className="absolute top-3 inset-x-3 z-20 flex gap-1">
-        {stories.map((_, i) => (
+        {currentGroup.map((_, i) => (
           <div
             key={i}
             className="h-0.5 flex-1 rounded-full bg-white/30 overflow-hidden"
@@ -163,9 +221,9 @@ export default function StoryViewer() {
               className="h-full bg-white rounded-full transition-all duration-100"
               style={{
                 width:
-                  i < currentIndex
+                  i < storyIndexInGroup
                     ? '100%'
-                    : i === currentIndex
+                    : i === storyIndexInGroup
                     ? `${progress}%`
                     : '0%',
               }}
@@ -220,41 +278,29 @@ export default function StoryViewer() {
         <button
           className="w-1/3 h-full outline-none"
           onClick={handleTapLeft}
-          onTouchStart={() => {
-            setIsPaused(true)
-          }}
-          onTouchEnd={() => {
-            setIsPaused(false)
-          }}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
           aria-label="Previous story"
         />
         {/* Center tap zone (pause) */}
         <button
           className="w-1/3 h-full outline-none"
-          onTouchStart={() => {
-            setIsPaused(true)
-          }}
-          onTouchEnd={() => {
-            setIsPaused(false)
-          }}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
           aria-label="Pause story"
         />
         {/* Right tap zone */}
         <button
           className="w-1/3 h-full outline-none"
           onClick={handleTapRight}
-          onTouchStart={() => {
-            setIsPaused(true)
-          }}
-          onTouchEnd={() => {
-            setIsPaused(false)
-          }}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
           aria-label="Next story"
         />
       </div>
 
       {/* Navigation arrows (desktop) */}
-      {currentIndex > 0 && (
+      {(storyIndexInGroup > 0 || userGroupIndex > 0) && (
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -267,7 +313,7 @@ export default function StoryViewer() {
           <ChevronLeft className="size-5 text-white" />
         </motion.button>
       )}
-      {currentIndex < stories.length - 1 && (
+      {(storyIndexInGroup < currentGroup.length - 1 || userGroupIndex < storyGroups.length - 1) && (
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

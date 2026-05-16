@@ -1,21 +1,47 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { useAppStore } from '@/lib/store'
+import { useAppStore, type StoryGroup } from '@/lib/store'
 
 export default function StoryBar() {
   const { stories, currentUser, setSelectedStoryIndex, setCurrentView } = useAppStore()
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  // Group stories by user
+  const storyGroups: StoryGroup[] = useMemo(() => {
+    const groupsMap = new Map<string, StoryGroup>()
+    
+    stories.forEach(story => {
+      const authorId = story.authorId
+      if (!groupsMap.has(authorId)) {
+        groupsMap.set(authorId, {
+          author: story.author,
+          stories: [],
+          hasUnviewed: false,
+        })
+      }
+      
+      const group = groupsMap.get(authorId)!
+      group.stories.push(story)
+      
+      // If any story is unviewed, mark the group as having unviewed content
+      if (!story.viewed) {
+        group.hasUnviewed = true
+      }
+    })
+    
+    return Array.from(groupsMap.values())
+  }, [stories])
+
   const handleYourStory = () => {
     setCurrentView('create-story')
   }
 
-  const handleStoryClick = (index: number) => {
-    setSelectedStoryIndex(index)
+  const handleStoryGroupClick = (startIndex: number) => {
+    setSelectedStoryIndex(startIndex)
     setCurrentView('story-viewer')
   }
 
@@ -53,39 +79,45 @@ export default function StoryBar() {
           </span>
         </motion.button>
 
-        {/* Story circles */}
-        {stories.map((story, index) => (
-          <motion.button
-            key={story.id}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleStoryClick(index)}
-            className="flex flex-col items-center gap-1 shrink-0 outline-none"
-            aria-label={`View ${story.author.username}'s story`}
-          >
-            <div
-              className={`p-[2.5px] rounded-full ${
-                story.viewed
-                  ? 'bg-gray-300'
-                  : 'bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49]'
-              }`}
+        {/* Story groups - one indicator per user */}
+        {storyGroups.map((group, groupIndex) => {
+          // Find the starting index of this group's first story in the original stories array
+          const startIndex = stories.findIndex(s => s.authorId === group.author.id)
+          const latestStory = group.stories[0] // Most recent story
+          
+          return (
+            <motion.button
+              key={group.author.id}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleStoryGroupClick(startIndex)}
+              className="flex flex-col items-center gap-1 shrink-0 outline-none"
+              aria-label={`View ${group.author.username}'s stories (${group.stories.length} stories)`}
             >
-              <div className="p-[2px] rounded-full bg-card">
-                <Avatar className="size-14">
-                  <AvatarImage
-                    src={story.author.avatar || undefined}
-                    alt={story.author.username}
-                  />
-                  <AvatarFallback className="bg-gradient-to-br from-[#FFBA49]/20 to-[#2EC4B6]/20 text-gray-600 text-xs font-semibold">
-                    {story.author.username.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+              <div
+                className={`p-[2.5px] rounded-full ${
+                  group.hasUnviewed
+                    ? 'bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49]'
+                    : 'bg-gray-300'
+                }`}
+              >
+                <div className="p-[2px] rounded-full bg-card">
+                  <Avatar className="size-14">
+                    <AvatarImage
+                      src={latestStory.author.avatar || undefined}
+                      alt={latestStory.author.username}
+                    />
+                    <AvatarFallback className="bg-gradient-to-br from-[#FFBA49]/20 to-[#2EC4B6]/20 text-gray-600 text-xs font-semibold">
+                      {latestStory.author.username.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
               </div>
-            </div>
-            <span className="text-[11px] text-muted-foreground font-medium truncate w-16 text-center">
-              {story.author.username}
-            </span>
-          </motion.button>
-        ))}
+              <span className="text-[11px] text-muted-foreground font-medium truncate w-16 text-center">
+                {latestStory.author.username}
+              </span>
+            </motion.button>
+          )
+        })}
       </div>
     </div>
   )

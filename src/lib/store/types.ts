@@ -87,6 +87,13 @@ export interface Story {
   viewed: boolean
 }
 
+// Grouped stories by user for display in StoryBar
+export interface StoryGroup {
+  author: User
+  stories: Story[]
+  hasUnviewed: boolean
+}
+
 export interface Itinerary {
   id: string
   title: string
