@@ -29,6 +29,16 @@ model User {
   emailVerificationExpires DateTime?
   passwordResetToken String?
   passwordResetExpires DateTime?
+  
+  // Superadmin security fields
+  twoFactorSecret String?
+  twoFactorEnabled Boolean @default(false)
+  twoFactorBackupCodes String? // JSON array of backup codes
+  lastLoginAt DateTime?
+  lastLoginIp String?
+  loginAttempts Int @default(0)
+  lockedUntil DateTime?
+  
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
 
@@ -48,6 +58,7 @@ model User {
   storyViews     StoryView[]
   reportsMade    PostReport[] @relation("ReportReporter")
   adminActions   AdminAction[] @relation("AdminActor")
+  auditLogs      AdminAuditLog[] @relation("AdminAuditActor")
   sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
   receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
   communityMemberships   CommunityMember[]
@@ -268,6 +279,24 @@ model AdminAction {
   admin       User     @relation("AdminActor", fields: [adminId], references: [id])
 
   @@map("admin_actions")
+}
+
+// Enhanced audit logging for superadmin actions
+model AdminAuditLog {
+  id          String   @id @default(cuid())
+  adminId     String
+  action      String   // LOGIN, LOGOUT, USER_BAN, POST_DELETE, etc.
+  targetType  String?  // USER, POST, COMMUNITY, SETTINGS
+  targetId    String?
+  details     String?  // JSON string with additional context
+  ipAddress   String?
+  userAgent   String?
+  outcome     String   @default("success") // success, failed, denied
+  createdAt   DateTime @default(now())
+
+  admin       User     @relation("AdminAuditActor", fields: [adminId], references: [id])
+
+  @@map("admin_audit_logs")
 }
 
 model Itinerary {

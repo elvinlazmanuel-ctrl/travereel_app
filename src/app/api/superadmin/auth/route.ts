@@ -2,9 +2,12 @@ import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { loginSchema, validateBody } from '@/lib/validation'
+import { hashPassword, comparePassword } from '@/lib/auth-utils'
+import { generateToken } from '@/lib/auth-jwt'
+import { logAdminAction } from '@/lib/audit-logger'
 
-const SUPERADMIN_EMAIL = 'superadmin@travereel.com'
-const SUPERADMIN_PASSWORD = 'superadmin2024'
+// Use environment variables instead of hardcoded credentials
+const SUPERADMIN_EMAIL = process.env.SUPERADMIN_EMAIL || 'superadmin@travereel.com'
 
 export async function POST(request: Request) {
   try {
@@ -30,81 +33,149 @@ export async function POST(request: Request) {
       )
     }
 
-    // Check against hardcoded superadmin credentials
-    if (email === SUPERADMIN_EMAIL && password === SUPERADMIN_PASSWORD) {
-      // Find or create a superadmin user in the database
-      let adminUser = await db.user.findFirst({
-        where: { role: 'admin' },
-      })
+    // Get client info for logging
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown'
+    const userAgent = request.headers.get('user-agent') || 'unknown'
 
-      // If no admin user exists, create one
-      if (!adminUser) {
-        adminUser = await db.user.create({
-          data: {
-            email: SUPERADMIN_EMAIL,
-            username: 'superadmin',
-            name: 'Super Admin',
-            password: SUPERADMIN_PASSWORD,
-            role: 'admin',
-            isPrivate: false,
-          },
-        })
-      }
-
-      // Generate a simple token-like response
-      const token = Buffer.from(
-        `${adminUser.id}:${adminUser.role}:${Date.now()}`
-      ).toString('base64')
-
-      return NextResponse.json({
-        success: true,
-        token,
-        admin: {
-          id: adminUser.id,
-          email: adminUser.email,
-          username: adminUser.username,
-          name: adminUser.name,
-          role: adminUser.role,
-          avatar: adminUser.avatar,
-        },
-      })
-    }
-
-    // Also allow login via existing admin users in the database
-    const existingAdmin = await db.user.findFirst({
+    // Find admin user
+    const adminUser = await db.user.findFirst({
       where: {
         email,
         role: 'admin',
       },
     })
 
-    if (existingAdmin && existingAdmin.password === password) {
-      const token = Buffer.from(
-        `${existingAdmin.id}:${existingAdmin.role}:${Date.now()}`
-      ).toString('base64')
-
-      return NextResponse.json({
-        success: true,
-        token,
-        admin: {
-          id: existingAdmin.id,
-          email: existingAdmin.email,
-          username: existingAdmin.username,
-          name: existingAdmin.name,
-          role: existingAdmin.role,
-          avatar: existingAdmin.avatar,
-        },
+    if (!adminUser) {
+      // Log failed attempt
+      await logAdminAction({
+        adminId: 'unknown',
+        action: 'LOGIN_ATTEMPT',
+        details: JSON.stringify({ email, reason: 'user_not_found' }),
+        ipAddress: ip,
+        userAgent,
+        outcome: 'failed',
       })
+
+      return NextResponse.json(
+        { error: 'Invalid credentials' },
+        { status: 401 }
+      )
     }
 
-    return NextResponse.json(
-      { error: 'Invalid credentials' },
-      { status: 401 }
-    )
+    // Compare password with bcrypt
+    const isPasswordValid = await comparePassword(password, adminUser.password)
+
+    if (!isPasswordValid) {
+      // Log failed attempt
+      await logAdminAction({
+        adminId: adminUser.id,
+        action: 'LOGIN_ATTEMPT',
+        details: JSON.stringify({ email, reason: 'invalid_password' }),
+        ipAddress: ip,
+        userAgent,
+        outcome: 'failed',
+      })
+
+      return NextResponse.json(
+        { error: 'Invalid credentials' },
+        { status: 401 }
+      )
+    }
+
+    // Successful login - update last login info
+    await db.user.update({
+      where: { id: adminUser.id },
+      data: {
+        lastLoginAt: new Date(),
+        lastLoginIp: ip,
+      },
+    })
+
+    // Generate JWT token
+    const token = generateToken({
+      userId: adminUser.id,
+      email: adminUser.email,
+      role: adminUser.role,
+    })
+
+    // Log successful login
+    await logAdminAction({
+      adminId: adminUser.id,
+      action: 'LOGIN',
+      ipAddress: ip,
+      userAgent,
+      outcome: 'success',
+    })
+
+    // Return token in HttpOnly cookie
+    const response = NextResponse.json({
+      success: true,
+      admin: {
+        id: adminUser.id,
+        email: adminUser.email,
+        username: adminUser.username,
+        name: adminUser.name,
+        role: adminUser.role,
+        avatar: adminUser.avatar,
+      },
+    })
+
+    // Set HttpOnly cookie
+    response.cookies.set('superadmin_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24, // 24 hours
+      path: '/',
+    })
+
+    return response
   } catch (error) {
     console.error('Superadmin auth error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+
+// Initialize superadmin on first run
+export async function GET() {
+  try {
+    const existingAdmin = await db.user.findFirst({
+      where: { email: SUPERADMIN_EMAIL },
+    })
+
+    if (!existingAdmin) {
+      // Create initial superadmin with hashed password
+      const initialPassword = process.env.SUPERADMIN_PASSWORD || 'ChangeMe123!'
+      const hashedPassword = await hashPassword(initialPassword)
+
+      await db.user.create({
+        data: {
+          email: SUPERADMIN_EMAIL,
+          username: 'superadmin',
+          name: 'Super Admin',
+          password: hashedPassword,
+          role: 'admin',
+          isPrivate: false,
+        },
+      })
+
+      return NextResponse.json({
+        message: 'Initial superadmin account created with hashed password',
+        email: SUPERADMIN_EMAIL,
+      })
+    }
+
+    return NextResponse.json({
+      message: 'Superadmin account exists',
+      email: SUPERADMIN_EMAIL,
+    })
+  } catch (error) {
+    console.error('Error initializing superadmin:', error)
+    return NextResponse.json(
+      { error: 'Failed to initialize' },
       { status: 500 }
     )
   }

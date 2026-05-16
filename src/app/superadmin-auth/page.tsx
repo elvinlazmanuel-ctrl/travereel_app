@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 
 const SuperAdminAuth = dynamic(() => import('@/components/superadmin/SuperAdminAuth'))
@@ -20,13 +20,56 @@ interface AdminUser {
   token?: string
 }
 
+const SESSION_TIMEOUT = 30 * 60 * 1000 // 30 minutes in milliseconds
+
 export default function SuperAdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null)
   const [activeTab, setActiveTab] = useState('overview')
   const [loading, setLoading] = useState(true)
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Check localStorage for existing auth on mount
+  // Reset inactivity timer
+  const resetInactivityTimer = useCallback(() => {
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current)
+    }
+
+    inactivityTimerRef.current = setTimeout(() => {
+      // Auto logout after 30 minutes of inactivity
+      handleLogout()
+    }, SESSION_TIMEOUT)
+  }, [])
+
+  // Set up activity listeners for session timeout
+  useEffect(() => {
+    if (!isAuthenticated) return
+
+    const activityEvents = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
+    
+    // Reset timer on any user activity
+    const handleActivity = () => {
+      resetInactivityTimer()
+    }
+
+    activityEvents.forEach(event => {
+      window.addEventListener(event, handleActivity)
+    })
+
+    // Initial timer setup
+    resetInactivityTimer()
+
+    return () => {
+      activityEvents.forEach(event => {
+        window.removeEventListener(event, handleActivity)
+      })
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current)
+      }
+    }
+  }, [isAuthenticated, resetInactivityTimer])
+
+  // Check for existing auth on mount
   useEffect(() => {
     try {
       const auth = localStorage.getItem('superadmin_auth')
@@ -45,13 +88,28 @@ export default function SuperAdminPage() {
   const handleAuth = (user: AdminUser) => {
     setIsAuthenticated(true)
     setAdminUser(user)
+    // Note: Token is now in HttpOnly cookie, but we keep user data in state for UI
+    localStorage.setItem('superadmin_auth', JSON.stringify(user))
+    resetInactivityTimer()
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('superadmin_auth')
-    setIsAuthenticated(false)
-    setAdminUser(null)
-    setActiveTab('overview')
+  const handleLogout = async () => {
+    try {
+      // Call logout API to clear cookie
+      await fetch('/api/superadmin/logout', {
+        method: 'POST',
+      })
+    } catch (error) {
+      console.error('Logout error:', error)
+    } finally {
+      localStorage.removeItem('superadmin_auth')
+      setIsAuthenticated(false)
+      setAdminUser(null)
+      setActiveTab('overview')
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current)
+      }
+    }
   }
 
   if (loading) {
