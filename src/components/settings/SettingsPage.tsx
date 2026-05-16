@@ -158,21 +158,21 @@ export default function SettingsPage() {
 
   // Apply dark mode on mount and when changed
   useEffect(() => {
-    // Sync with next-themes
-    if (darkMode) {
-      setTheme('dark')
-    } else {
-      setTheme('light')
+    // Sync with next-themes - only update if different
+    const currentTheme = theme === 'dark'
+    if (darkMode !== currentTheme) {
+      setTheme(darkMode ? 'dark' : 'light')
     }
-  }, [darkMode, setTheme])
+  }, [darkMode])
 
-  // Sync from next-themes on mount
+  // Sync from next-themes on mount only
   useEffect(() => {
     const isDark = theme === 'dark'
-    if (isDark !== darkMode) {
+    // Only sync once on mount to avoid infinite loop
+    if (currentUser && isDark !== darkMode) {
       setDarkMode(isDark)
     }
-  }, [theme, darkMode])
+  }, []) // Empty dependency array - only runs on mount
 
   // Detect user location on mount to suggest currency
   useEffect(() => {
