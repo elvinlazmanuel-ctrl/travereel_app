@@ -186,12 +186,18 @@ export default function NewsFeed() {
             // Load liked post IDs from API
             if (likesRes.ok) {
               const likesData = await likesRes.json()
+              console.log('[NewsFeed] Loaded liked post IDs:', likesData.likedPostIds)
               setLikedPostIds(likesData.likedPostIds || [])
+            } else {
+              console.error('[NewsFeed] Failed to fetch likes:', likesRes.status, likesRes.statusText)
             }
             // Load bookmarked post IDs from API
             if (bookmarksRes.ok) {
               const bookmarksData = await bookmarksRes.json()
+              console.log('[NewsFeed] Loaded bookmarks:', bookmarksData.bookmarks?.length || 0, 'items')
               setBookmarks(bookmarksData.bookmarks || [])
+            } else {
+              console.error('[NewsFeed] Failed to fetch bookmarks:', bookmarksRes.status, bookmarksRes.statusText)
             }
           } catch {
             // Non-critical

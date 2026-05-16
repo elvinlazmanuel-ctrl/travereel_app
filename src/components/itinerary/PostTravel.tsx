@@ -194,6 +194,7 @@ export default function PostTravel() {
   const totalBudget = selectedItinerary?.budget || 0
   // Use itinerary currency, fallback to user's default currency, then USD
   const currency = selectedItinerary?.currency || currentUser?.currency || 'USD'
+  console.log('[PostTravel] Currency:', currency, '| Itinerary:', selectedItinerary?.currency, '| User:', currentUser?.currency)
   const budgetItems = selectedItinerary?.budgetItems || []
   const totalSpent = budgetItems.reduce((sum, item) => sum + item.amount, 0)
 

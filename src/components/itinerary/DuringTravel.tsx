@@ -304,6 +304,7 @@ export default function DuringTravel() {
   const totalBudget = selectedItinerary?.budget || 0
   // Use itinerary currency, fallback to user's default currency, then USD
   const currency = selectedItinerary?.currency || currentUser?.currency || 'USD'
+  console.log('[DuringTravel] Currency:', currency, '| Itinerary:', selectedItinerary?.currency, '| User:', currentUser?.currency)
 
   // Find the "current" day (first day with pending activities)
   const currentTravelDay = useMemo(() => {
