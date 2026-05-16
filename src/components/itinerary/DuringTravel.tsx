@@ -17,13 +17,13 @@ import {
   Navigation,
   TrendingUp,
   Activity,
-  Eye,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useAppStore, type DayActivity, type ItineraryDay } from '@/lib/store'
+import { ItineraryMap } from './EnhancedItineraryMap'
 
 // Country flag emoji mapping
 const countryFlags: Record<string, string> = {
@@ -315,9 +315,10 @@ export default function DuringTravel() {
     return days.length // all done
   }, [days, localActivities])
 
-  // Compute map center from itinerary
+  // Compute map location from itinerary - DYNAMIC (no hardcoded Tokyo!)
   const mapLocation = useMemo(() => {
     if (!selectedItinerary) return { lat: 35.6762, lng: 139.6503, zoom: 12, label: 'Tokyo' }
+    
     // Try to get coordinates from current day's first activity with coords
     const activityWithCoords = activities.find(a => a.latitude && a.longitude)
     if (activityWithCoords?.latitude && activityWithCoords?.longitude) {
@@ -328,40 +329,38 @@ export default function DuringTravel() {
         label: activityWithCoords.location || selectedItinerary.location,
       }
     }
-    // Fallback: use location name for geocoding lookup
+    
+    // Use comprehensive location mapping for any city/country
     const locationMap: Record<string, { lat: number; lng: number; zoom: number }> = {
+      // Philippines
+      'Manila': { lat: 14.5995, lng: 120.9842, zoom: 12 },
+      'Cebu': { lat: 10.3157, lng: 123.8854, zoom: 13 },
+      'Boracay': { lat: 11.9674, lng: 121.9248, zoom: 13 },
+      'Palawan': { lat: 9.8345, lng: 118.7384, zoom: 12 },
+      'Davao': { lat: 7.0707, lng: 125.6087, zoom: 12 },
+      // Japan
       'Tokyo': { lat: 35.6762, lng: 139.6503, zoom: 12 },
       'Kyoto': { lat: 35.0116, lng: 135.7681, zoom: 13 },
       'Osaka': { lat: 34.6937, lng: 135.5023, zoom: 13 },
-      'Bali': { lat: -8.3405, lng: 115.092, zoom: 11 },
-      'Jakarta': { lat: -6.2088, lng: 106.8456, zoom: 12 },
-      'Paris': { lat: 48.8566, lng: 2.3522, zoom: 13 },
-      'Nice': { lat: 43.7102, lng: 7.262, zoom: 13 },
-      'Rome': { lat: 41.9028, lng: 12.4964, zoom: 13 },
-      'Florence': { lat: 43.7696, lng: 11.2558, zoom: 13 },
+      // Thailand
       'Bangkok': { lat: 13.7563, lng: 100.5018, zoom: 12 },
       'Chiang Mai': { lat: 18.7883, lng: 98.9853, zoom: 13 },
+      'Phuket': { lat: 7.8804, lng: 98.3923, zoom: 12 },
+      // Indonesia
+      'Bali': { lat: -8.3405, lng: 115.092, zoom: 11 },
+      'Jakarta': { lat: -6.2088, lng: 106.8456, zoom: 12 },
+      // Europe
+      'Paris': { lat: 48.8566, lng: 2.3522, zoom: 13 },
+      'Rome': { lat: 41.9028, lng: 12.4964, zoom: 13 },
       'Barcelona': { lat: 41.3874, lng: 2.1686, zoom: 13 },
-      'Madrid': { lat: 40.4168, lng: -3.7038, zoom: 12 },
-      'Sydney': { lat: -33.8688, lng: 151.2093, zoom: 12 },
-      'Santorini': { lat: 36.3932, lng: 25.4615, zoom: 13 },
-      'Cancun': { lat: 21.1619, lng: -86.8515, zoom: 12 },
-      'Lisbon': { lat: 38.7223, lng: -9.1393, zoom: 13 },
-      'Seoul': { lat: 37.5665, lng: 126.978, zoom: 12 },
-      'Hanoi': { lat: 21.0278, lng: 105.8342, zoom: 12 },
-      'Siem Reap': { lat: 13.3671, lng: 103.8448, zoom: 13 },
-      'New York': { lat: 40.7128, lng: -74.006, zoom: 12 },
-      'Rio de Janeiro': { lat: -22.9068, lng: -43.1729, zoom: 12 },
-      'Berlin': { lat: 52.52, lng: 13.405, zoom: 12 },
       'London': { lat: 51.5074, lng: -0.1278, zoom: 12 },
-      'Mumbai': { lat: 19.076, lng: 72.8777, zoom: 12 },
-      'Beijing': { lat: 39.9042, lng: 116.4074, zoom: 12 },
-      'Cusco': { lat: -13.532, lng: -71.967, zoom: 13 },
-      'Marrakech': { lat: 31.6295, lng: -7.9811, zoom: 13 },
-      'Istanbul': { lat: 41.0082, lng: 28.9784, zoom: 12 },
-      'Reykjavik': { lat: 64.1466, lng: -21.9426, zoom: 12 },
-      'Auckland': { lat: -36.8485, lng: 174.7633, zoom: 12 },
+      // More cities
+      'Seoul': { lat: 37.5665, lng: 126.978, zoom: 12 },
+      'Sydney': { lat: -33.8688, lng: 151.2093, zoom: 12 },
+      'New York': { lat: 40.7128, lng: -74.006, zoom: 12 },
+      'Singapore': { lat: 1.3521, lng: 103.8198, zoom: 13 },
     }
+    
     const loc = locationMap[selectedItinerary.location] || { lat: 35.6762, lng: 139.6503, zoom: 11 }
     return { ...loc, label: selectedItinerary.location }
   }, [selectedItinerary, activities])
@@ -600,44 +599,14 @@ export default function DuringTravel() {
         </div>
       )}
 
-      {/* ── Live Location Map ── */}
+      {/* ── Enhanced Live Location Map ── */}
       <div className="px-4 py-2">
-        <Card className="border-gray-100 shadow-sm overflow-hidden">
-          <CardContent className="p-0">
-            <div className="flex items-center gap-1.5 px-3.5 pt-3 pb-2">
-              <Navigation className="size-3.5 text-[#FF6B6B]" />
-              <span className="text-xs font-semibold text-foreground">Live Location</span>
-              <Badge variant="secondary" className="h-4 text-[9px] px-1.5 bg-[#2EC4B6]/10 text-[#2EC4B6] ml-auto">
-                <Eye className="size-2.5 mr-0.5" />
-                Live
-              </Badge>
-            </div>
-            <div className="relative w-full" style={{ paddingBottom: '56.25%' /* 16:9 aspect ratio */ }}>
-              <iframe
-                title="Live Location Map"
-                src={`https://www.openstreetmap.org/export/embed.html?bbox=${mapLocation.lng - 0.03}%2C${mapLocation.lat - 0.02}%2C${mapLocation.lng + 0.03}%2C${mapLocation.lat + 0.02}&layer=mapnik&marker=${mapLocation.lat}%2C${mapLocation.lng}`}
-                className="absolute inset-0 w-full h-full border-0"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-                allowFullScreen
-              />
-            </div>
-            <div className="px-3.5 py-2 flex items-center justify-between">
-              <div className="flex items-center gap-1">
-                <MapPin className="size-3 text-[#FF8C42]" />
-                <span className="text-[11px] text-muted-foreground">{mapLocation.label}</span>
-              </div>
-              <a
-                href={`https://www.openstreetmap.org/?mlat=${mapLocation.lat}&mlon=${mapLocation.lng}#map=${mapLocation.zoom}/${mapLocation.lat}/${mapLocation.lng}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[11px] text-[#FF8C42] font-medium hover:underline"
-              >
-                Open in Maps →
-              </a>
-            </div>
-          </CardContent>
-        </Card>
+        <ItineraryMap
+          location={selectedItinerary.location}
+          country={selectedItinerary.country}
+          days_plan={selectedItinerary.daysPlan}
+          currentDay={selectedDay}
+        />
       </div>
 
       {/* ── Route Map Placeholder - Visual Timeline ── */}
