@@ -360,16 +360,16 @@ export default function PostCard({ post }: PostCardProps) {
       : post.caption
 
   return (
-    <article className="bg-card border-b border-border">
+    <article className="group bg-card border border-border/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-[1.01] mb-6">
       {/* Author Row */}
-      <div className="flex items-center justify-between px-4 py-3">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-border/30">
         <div className="flex items-center gap-3">
-          <Avatar className="size-9 cursor-pointer" onClick={handleAuthorClick}>
+          <Avatar className="size-11 cursor-pointer ring-2 ring-transparent hover:ring-[#FF6B6B]/30 transition-all" onClick={handleAuthorClick}>
             <AvatarImage
               src={authorAvatar}
               alt={authorUsername}
             />
-            <AvatarFallback className="bg-gradient-to-br from-[#FFBA49]/20 to-[#2EC4B6]/20 text-muted-foreground text-xs font-semibold">
+            <AvatarFallback className="bg-gradient-to-br from-[#FFBA49]/30 to-[#2EC4B6]/30 text-muted-foreground text-sm font-semibold">
               {authorUsername.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
@@ -380,7 +380,7 @@ export default function PostCard({ post }: PostCardProps) {
             >
               {authorUsername}
               {post.isSponsored && (
-                <Badge variant="secondary" className="text-[9px] bg-amber-50 text-amber-700 border-amber-200 gap-1 px-1.5 py-0">
+                <Badge variant="secondary" className="text-[9px] bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 border-amber-200 gap-1 px-2 py-0.5 shadow-sm">
                   <Megaphone className="size-2.5" />
                   Sponsored{post.sponsoredBy ? ` by ${post.sponsoredBy}` : ''}
                 </Badge>
@@ -389,9 +389,9 @@ export default function PostCard({ post }: PostCardProps) {
             {post.location && (
               <button
                 onClick={() => setShowMapDialog(true)}
-                className="flex items-center gap-0.5 text-[11px] text-muted-foreground hover:text-[#FF8C42] transition-colors"
+                className="flex items-center gap-1 text-xs text-muted-foreground hover:text-[#FF8C42] transition-colors mt-0.5"
               >
-                <MapPin className="size-3" />
+                <MapPin className="size-3.5" />
                 {post.location}
               </button>
             )}
@@ -402,9 +402,9 @@ export default function PostCard({ post }: PostCardProps) {
                   post.sharedToCommunity!.name,
                   post.sharedToCommunity!.image
                 )}
-                className="flex items-center gap-1 text-[11px] text-[#2EC4B6] hover:text-[#2EC4B6]/80 transition-colors font-medium"
+                className="flex items-center gap-1 text-xs text-[#2EC4B6] hover:text-[#2EC4B6]/80 transition-colors font-medium mt-0.5"
               >
-                <Globe className="size-3" />
+                <Globe className="size-3.5" />
                 {post.sharedToCommunity.name}
               </button>
             )}
@@ -461,9 +461,12 @@ export default function PostCard({ post }: PostCardProps) {
       {/* Image Carousel - only shown when post has images */}
       {post.images.length > 0 && (
         <div
-          className="relative w-full aspect-square bg-muted select-none overflow-hidden"
+          className="relative w-full aspect-[4/3] bg-muted select-none overflow-hidden group-hover:shadow-inner transition-shadow"
           onClick={handleImageTap}
         >
+          {/* Gradient overlay at bottom for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent z-[5] pointer-events-none" />
+          
           <Carousel
             opts={{ loop: false }}
             className="w-full h-full"
@@ -485,8 +488,8 @@ export default function PostCard({ post }: PostCardProps) {
             </CarouselContent>
             {post.images.length > 1 && (
               <>
-                <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 size-8 bg-white/80 hover:bg-white border-0 shadow-md opacity-70 hover:opacity-100 transition-opacity [&>svg]:size-4" />
-                <CarouselNext className="right-2 top-1/2 -translate-y-1/2 size-8 bg-white/80 hover:bg-white border-0 shadow-md opacity-70 hover:opacity-100 transition-opacity [&>svg]:size-4" />
+                <CarouselPrevious className="left-3 top-1/2 -translate-y-1/2 size-9 bg-white/90 hover:bg-white border-0 shadow-lg opacity-0 group-hover:opacity-100 transition-all [&>svg]:size-5" />
+                <CarouselNext className="right-3 top-1/2 -translate-y-1/2 size-9 bg-white/90 hover:bg-white border-0 shadow-lg opacity-0 group-hover:opacity-100 transition-all [&>svg]:size-5" />
               </>
             )}
           </Carousel>
@@ -589,8 +592,8 @@ export default function PostCard({ post }: PostCardProps) {
       )}
 
       {/* Action Row */}
-      <div className="flex items-center justify-between px-4 py-2.5">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between px-5 py-3 border-t border-border/30 bg-gradient-to-r from-muted/20 to-muted/10">
+        <div className="flex items-center gap-3">
           <ReactionPicker
             currentReaction={userReaction}
             onReact={handleReaction}
@@ -598,37 +601,39 @@ export default function PostCard({ post }: PostCardProps) {
           />
           <motion.button
             whileTap={{ scale: 0.85 }}
-            className="outline-none"
+            className="outline-none group/icon"
             aria-label="Comments"
             onClick={() => setShowComments(true)}
           >
-            <MessageCircle className="size-6 text-foreground" />
+            <MessageCircle className="size-6 text-foreground group-hover/icon:text-[#2EC4B6] transition-colors" />
           </motion.button>
           <motion.button
             whileTap={{ scale: 0.85 }}
-            className="outline-none"
+            className="outline-none group/icon"
             aria-label="Share"
             onClick={() => setShowShareMenu(true)}
           >
-            <Send className="size-6 text-foreground -rotate-12" />
+            <Send className="size-6 text-foreground -rotate-12 group-hover/icon:text-[#FFBA49] transition-colors" />
           </motion.button>
         </div>
         <motion.button
           whileTap={{ scale: 0.85 }}
           onClick={handleBookmark}
-          className="outline-none"
+          className="outline-none group/icon"
           aria-label={isBookmarked ? 'Unsave' : 'Save'}
         >
           <Bookmark
-            className={`size-6 transition-colors ${
-              isBookmarked ? 'text-foreground fill-foreground' : 'text-foreground'
+            className={`size-6 transition-all ${
+              isBookmarked 
+                ? 'text-[#FFBA49] fill-[#FFBA49] drop-shadow-sm' 
+                : 'text-foreground group-hover/icon:text-[#FFBA49]'
             }`}
           />
         </motion.button>
       </div>
 
       {/* Like Count */}
-      <div className="px-4 pb-1">
+      <div className="px-5 pb-3 pt-2">
         <span className="text-sm font-semibold text-foreground">
           {(post.likes ?? 0).toLocaleString()} {(post.likes ?? 0) === 1 ? 'like' : 'likes'}
         </span>
