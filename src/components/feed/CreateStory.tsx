@@ -19,18 +19,6 @@ const gradientStyles = [
   { background: 'linear-gradient(to bottom right, #f093fb, #f5576c)' },
 ]
 
-// Map index to a data URL for the gradient (used as mediaUrl for text/color stories)
-const gradientColorNames = [
-  'coral-sunset',
-  'amber-glow',
-  'teal-gold',
-  'rose-pink',
-  'aqua-mint',
-  'gold-coral',
-  'indigo-purple',
-  'pink-red',
-]
-
 export default function CreateStory() {
   const { currentUser, setCurrentView, addStory } = useAppStore()
   const [caption, setCaption] = useState('')
@@ -116,7 +104,9 @@ export default function CreateStory() {
         mediaType = 'image'
       } else {
         // Use gradient background for text stories or photo mode without a file
-        mediaUrl = `story-bg://${gradientColorNames[selectedColor]}`
+        // Store the actual gradient CSS in mediaUrl with a prefix to identify it
+        const gradientCSS = gradientStyles[selectedColor].background
+        mediaUrl = `gradient:${gradientCSS}`
         mediaType = mode === 'text' ? 'text' : 'image'
       }
 

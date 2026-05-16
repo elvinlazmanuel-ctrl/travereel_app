@@ -188,7 +188,7 @@ export default function StoryViewer() {
 
   return (
     <div className="fixed inset-0 z-50 bg-black">
-      {/* Story image */}
+      {/* Story content */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentStory.id}
@@ -198,11 +198,32 @@ export default function StoryViewer() {
           transition={{ duration: 0.25 }}
           className="absolute inset-0"
         >
-          <img
-            src={currentStory.mediaUrl}
-            alt={currentStory.caption || 'Story'}
-            className="w-full h-full object-cover"
-          />
+          {/* Check if this is a gradient/text story */}
+          {currentStory.mediaUrl.startsWith('gradient:') ? (
+            /* Gradient background for text stories */
+            <div
+              className="w-full h-full flex items-center justify-center"
+              style={{
+                background: currentStory.mediaUrl.replace('gradient:', ''),
+              }}
+            >
+              {/* Display caption in center for text stories */}
+              {currentStory.caption && (
+                <div className="px-12">
+                  <p className="text-white text-3xl font-bold text-center drop-shadow-lg leading-relaxed">
+                    {currentStory.caption}
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Regular image story */
+            <img
+              src={currentStory.mediaUrl}
+              alt={currentStory.caption || 'Story'}
+              className="w-full h-full object-cover"
+            />
+          )}
         </motion.div>
       </AnimatePresence>
 
@@ -263,8 +284,8 @@ export default function StoryViewer() {
         </motion.button>
       </div>
 
-      {/* Caption at bottom */}
-      {currentStory.caption && (
+      {/* Caption at bottom - only show for image stories, not gradient/text stories */}
+      {currentStory.caption && !currentStory.mediaUrl.startsWith('gradient:') && (
         <div className="absolute bottom-8 inset-x-0 z-20 px-6">
           <p className="text-sm text-white font-medium drop-shadow-lg">
             {currentStory.caption}
