@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+import { db } from '@/lib/db'
 
 const BCRYPT_ROUNDS = 12 // Higher rounds = more secure but slower
 
@@ -76,4 +77,27 @@ export function generateSecureToken(length: number = 32): string {
     token += chars.charAt(Math.floor(Math.random() * chars.length))
   }
   return token
+}
+
+/**
+ * Verify if a user has admin privileges
+ * @param userId - User ID to check
+ * @returns true if user is admin or superadmin, false otherwise
+ */
+export async function verifyAdmin(userId: string): Promise<boolean> {
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { role: true, isBanned: true },
+    })
+
+    if (!user || user.isBanned) {
+      return false
+    }
+
+    return user.role === 'admin' || user.role === 'superadmin'
+  } catch (error) {
+    console.error('Verify admin error:', error)
+    return false
+  }
 }
