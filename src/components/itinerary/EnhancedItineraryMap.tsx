@@ -1,11 +1,22 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { MapPin, Navigation, Car, Bus, Train, Bike, Utensils, Camera, Coffee, Info, Loader2, AlertCircle, Search } from 'lucide-react'
+import { MapPin, Navigation, Car, Bus, Train, Bike, Utensils, Camera, Coffee, Info, Loader2, AlertCircle, Search, Layers, Satellite, Mountain, Moon, Sun } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import dynamic from 'next/dynamic'
+import 'leaflet/dist/leaflet.css'
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
+import L from 'leaflet'
+import 'leaflet-routing-machine'
+
+// Extend Leaflet type to include Routing
+declare module 'leaflet' {
+  namespace Routing {
+    function control(options: any): any
+  }
+}
 
 // Dynamic import to avoid SSR issues with Leaflet
 const MapContainer = dynamic(
@@ -82,6 +93,36 @@ const transportByRegion: Record<string, Array<{ type: string; icon: any; name: s
   ],
 }
 
+// Tile layer configurations
+const tileLayers = {
+  standard: {
+    name: 'Standard',
+    icon: Sun,
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  },
+  satellite: {
+    name: 'Satellite',
+    icon: Satellite,
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attribution: '&copy; Esri',
+  },
+  terrain: {
+    name: 'Terrain',
+    icon: Mountain,
+    url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+    attribution: '&copy; OpenTopoMap',
+  },
+  dark: {
+    name: 'Dark Mode',
+    icon: Moon,
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    attribution: '&copy; CartoDB',
+  },
+}
+
+type TileLayerType = keyof typeof tileLayers
+
 // Points of interest categories
 const poiCategories = [
   { id: 'restaurants', icon: Utensils, label: 'Restaurants', color: '#FF6B6B' },
@@ -113,7 +154,13 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
   const [showPOI, setShowPOI] = useState<string | null>(null)
   const [selectedPOI, setSelectedPOI] = useState<any>(null)
   const [pois, setPois] = useState<any[]>([])
+  const [activeTileLayer, setActiveTileLayer] = useState<TileLayerType>('standard')
+  const [showLayerSwitcher, setShowLayerSwitcher] = useState(false)
+  const [routeInfo, setRouteInfo] = useState<{ distance: string; duration: string } | null>(null)
+  const [weatherData, setWeatherData] = useState<any>(null)
   const mapRef = useRef<any>(null)
+  const tileLayerRef = useRef<any>(null)
+  const routingControlRef = useRef<any>(null)
 
   // Geocode location
   useEffect(() => {
@@ -231,9 +278,126 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
     return transportByRegion[region] || transportByRegion['Europe']
   }
 
-  // Get activities for current day with coordinates
+  // Switch tile layer
+  useEffect(() => {
+    if (!mapRef.current || !tileLayerRef.current) return
+    
+    // Remove old layer
+    mapRef.current.removeLayer(tileLayerRef.current)
+    
+    // Add new layer
+    const newLayer = L.tileLayer(tileLayers[activeTileLayer].url, {
+      attribution: tileLayers[activeTileLayer].attribution,
+      maxZoom: 19,
+    })
+    
+    newLayer.addTo(mapRef.current)
+    tileLayerRef.current = newLayer
+  }, [activeTileLayer])
+
+  // Fetch weather data for location
+  useEffect(() => {
+    if (!coordinates) return
+    
+    const fetchWeather = async () => {
+      try {
+        const [lat, lon] = coordinates
+        const response = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m`
+        )
+        const data = await response.json()
+        
+        if (data.current_weather) {
+          setWeatherData({
+            temperature: data.current_weather.temperature,
+            windspeed: data.current_weather.windspeed,
+            weathercode: data.current_weather.weathercode,
+          })
+        }
+      } catch (error) {
+        console.error('Weather fetch error:', error)
+      }
+    }
+    
+    fetchWeather()
+  }, [coordinates])
+
+  // Get weather description
+  const getWeatherDescription = (code: number) => {
+    const weatherCodes: Record<number, string> = {
+      0: 'Clear sky',
+      1: 'Mainly clear',
+      2: 'Partly cloudy',
+      3: 'Overcast',
+      45: 'Foggy',
+      48: 'Depositing rime fog',
+      51: 'Light drizzle',
+      53: 'Moderate drizzle',
+      55: 'Dense drizzle',
+      61: 'Slight rain',
+      63: 'Moderate rain',
+      65: 'Heavy rain',
+      71: 'Slight snow',
+      73: 'Moderate snow',
+      75: 'Heavy snow',
+      95: 'Thunderstorm',
+    }
+    return weatherCodes[code] || 'Unknown'
+  }
+
+  // Setup routing between activities
+  const setupRouting = () => {
+    if (!mapRef.current || activitiesWithCoords.length < 2) return
+    
+    // Remove existing routing control
+    if (routingControlRef.current) {
+      mapRef.current.removeControl(routingControlRef.current)
+    }
+    
+    // Create waypoints from activities
+    const waypoints = activitiesWithCoords.map(a => 
+      L.latLng(a.latitude!, a.longitude!)
+    )
+    
+    // Add routing control
+    const routingControl = L.Routing.control({
+      waypoints,
+      routeWhileDragging: false,
+      showAlternatives: false,
+      fitSelectedRoutes: true,
+      lineOptions: {
+        styles: [{ color: '#FF6B6B', weight: 4, opacity: 0.8 }],
+      },
+      addWaypoints: false,
+      draggableWaypoints: false,
+      show: false, // Hide default instructions panel
+    }).addTo(mapRef.current)
+    
+    // Listen for route found event
+    routingControl.on('routesfound', (e: any) => {
+      const route = e.routes[0]
+      const distance = (route.summary.totalDistance / 1000).toFixed(1) // km
+      const duration = Math.round(route.summary.totalTime / 60) // minutes
+      
+      setRouteInfo({
+        distance: `${distance} km`,
+        duration: `${duration} min`,
+      })
+    })
+    
+    routingControlRef.current = routingControl
+  }
+
   const dayActivities = days_plan?.find(d => d.dayNumber === currentDay)?.activities || []
   const activitiesWithCoords = dayActivities.filter(a => a.latitude && a.longitude)
+
+  // Setup routing when activities change
+  useEffect(() => {
+    if (coordinates && activitiesWithCoords.length >= 2) {
+      // Small delay to ensure map is ready
+      setTimeout(() => setupRouting(), 500)
+    }
+  }, [coordinates, currentDay])
 
   if (loading) {
     return (
@@ -263,13 +427,18 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
           zoom={userLocation ? 15 : 13}
           style={{ height: '100%', width: '100%' }}
           scrollWheelZoom={true}
-          ref={mapRef}
+          ref={(map) => {
+            if (map) {
+              mapRef.current = map
+              // Initialize tile layer
+              tileLayerRef.current = L.tileLayer(tileLayers[activeTileLayer].url, {
+                attribution: tileLayers[activeTileLayer].attribution,
+                maxZoom: 19,
+              }).addTo(map)
+            }
+          }}
         >
-          {/* @ts-ignore */}
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+          {/* Tile layer is managed manually via useEffect */}
           
           {/* User GPS location */}
           {userLocation && (
@@ -344,15 +513,43 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
             </Marker>
           ))}
 
-          {/* Route polyline connecting activities */}
-          {activitiesWithCoords.length > 1 && (
-            // @ts-ignore
-            <Polyline
-              positions={activitiesWithCoords.map(a => [a.latitude!, a.longitude!])}
-              pathOptions={{ color: '#FF6B6B', weight: 3, opacity: 0.8, dashArray: '10, 10' }}
-            />
-          )}
+          {/* Day activities markers (routing lines are handled by Leaflet Routing Machine) */}
         </MapContainer>
+
+        {/* Layer Switcher Button */}
+        <button
+          onClick={() => setShowLayerSwitcher(!showLayerSwitcher)}
+          className="absolute top-4 left-4 z-[1000] bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition-colors"
+        >
+          <Layers className="size-5 text-[#FF6B6B]" />
+        </button>
+
+        {/* Layer Switcher Panel */}
+        {showLayerSwitcher && (
+          <div className="absolute top-16 left-4 z-[1000] bg-white rounded-xl shadow-xl p-2 space-y-1 min-w-[160px]">
+            {(Object.keys(tileLayers) as TileLayerType[]).map((layerKey) => {
+              const layer = tileLayers[layerKey]
+              const Icon = layer.icon
+              return (
+                <button
+                  key={layerKey}
+                  onClick={() => {
+                    setActiveTileLayer(layerKey)
+                    setShowLayerSwitcher(false)
+                  }}
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    activeTileLayer === layerKey
+                      ? 'bg-[#FF6B6B]/10 text-[#FF6B6B]'
+                      : 'hover:bg-gray-50 text-gray-700'
+                  }`}
+                >
+                  <Icon className="size-4" />
+                  {layer.name}
+                </button>
+              )
+            })}
+          </div>
+        )}
 
         {/* GPS Button */}
         <button
@@ -366,6 +563,30 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
             <Navigation className="size-5 text-[#FF6B6B]" />
           )}
         </button>
+
+        {/* Route Info Badge */}
+        {routeInfo && activitiesWithCoords.length >= 2 && (
+          <div className="absolute top-16 right-4 z-[1000] bg-white rounded-lg shadow-lg px-3 py-2">
+            <div className="flex items-center gap-2 text-xs">
+              <Navigation className="size-3.5 text-[#FF6B6B]" />
+              <div>
+                <p className="font-semibold text-gray-900">{routeInfo.distance}</p>
+                <p className="text-gray-500">{routeInfo.duration}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Weather Badge */}
+        {weatherData && (
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur rounded-lg shadow-lg px-3 py-1.5">
+            <div className="flex items-center gap-1.5 text-xs">
+              <span className="font-semibold text-gray-900">{weatherData.temperature}°C</span>
+              <span className="text-gray-500">{getWeatherDescription(weatherData.weathercode)}</span>
+              <span className="text-gray-400">· {weatherData.windspeed} km/h wind</span>
+            </div>
+          </div>
+        )}
 
         {/* POI Category Buttons */}
         <div className="absolute bottom-4 left-4 right-4 z-[1000] flex gap-2">
