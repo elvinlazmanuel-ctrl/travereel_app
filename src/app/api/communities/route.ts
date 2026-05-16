@@ -23,6 +23,9 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: validation.error }, { status: 400 })
       }
 
+      // Get userId if provided (for membership check)
+      const userId = searchParams.get('userId')
+
       const community = await db.community.findUnique({
         where: { id },
         include: {
@@ -80,8 +83,20 @@ export async function GET(request: Request) {
         )
       }
 
+      // Check if user is a member
+      let isMember = false
+      if (userId) {
+        const membership = await db.communityMember.findUnique({
+          where: {
+            userId_communityId: { userId, communityId: id },
+          },
+        })
+        isMember = !!membership
+      }
+
       const parsedCommunity = {
         ...community,
+        isMember,
         sharedPosts: community.sharedPosts.map((sp) => ({
           ...sp,
           post: {
@@ -107,6 +122,9 @@ export async function GET(request: Request) {
       ]
     }
 
+    // Get userId if provided (for membership check)
+    const userId = searchParams.get('userId')
+
     // Cursor-based pagination parameters
     const cursorParam = searchParams.get('cursor')
     const limitParam = searchParams.get('limit')
@@ -126,6 +144,16 @@ export async function GET(request: Request) {
       ...(search && !isPaginated ? { take: 20 } : {}),
     })
 
+    // If userId is provided, fetch membership info
+    let membershipMap = new Map<string, boolean>()
+    if (userId) {
+      const memberships = await db.communityMember.findMany({
+        where: { userId },
+        select: { communityId: true },
+      })
+      memberships.forEach((m) => membershipMap.set(m.communityId, true))
+    }
+
     // Determine if there are more results
     let hasMore = false
     let communitiesToReturn = communities
@@ -141,6 +169,7 @@ export async function GET(request: Request) {
 
     const parsedCommunities = communitiesToReturn.map((community) => ({
       ...community,
+      isMember: userId ? membershipMap.has(community.id) : false,
     }))
 
     if (isPaginated) {

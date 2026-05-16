@@ -125,8 +125,10 @@ export default function CommunityDetailPage() {
     if (!selectedCommunity) return
     setIsLoading(true)
     try {
+      // Pass userId to get membership info
+      const communityUrl = `/api/communities?id=${selectedCommunity.id}${currentUser ? `&userId=${currentUser.id}` : ''}`
       const [communityRes, postsRes] = await Promise.all([
-        fetch(`/api/communities?id=${selectedCommunity.id}${currentUser ? `&userId=${currentUser.id}` : ''}`),
+        fetch(communityUrl),
         fetch(`/api/share?communityId=${selectedCommunity.id}`),
       ])
 

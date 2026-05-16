@@ -71,7 +71,9 @@ export default function CommunityPage() {
   const fetchCommunities = useCallback(async () => {
     setIsLoading(true)
     try {
-      const res = await fetch('/api/communities')
+      // Fetch communities with userId to get membership info
+      const url = currentUser ? `/api/communities?userId=${currentUser.id}` : '/api/communities'
+      const res = await fetch(url)
       if (res.ok) {
         const data = await res.json()
         const mapped: CommunityType[] = data.communities.map((c: Record<string, unknown>) => ({
@@ -85,22 +87,12 @@ export default function CommunityPage() {
         }))
         setCommunities(mapped)
 
-        // Also fetch joined community IDs for current user
+        // Set joined community IDs from API response
         if (currentUser) {
-          const memberRes = await fetch(`/api/communities?userId=${currentUser.id}`)
-          if (memberRes.ok) {
-            const memberData = await memberRes.json()
-            const joinedIds = (memberData.communities || [])
-              .filter((c: { isMember: boolean }) => c.isMember)
-              .map((c: { id: string }) => c.id)
-            if (joinedIds.length > 0) {
-              setJoinedCommunityIds(joinedIds)
-            } else if (mapped.length >= 2 && joinedCommunityIds.length === 0) {
-              setJoinedCommunityIds([mapped[0].id, mapped[1].id])
-            }
-          }
-        } else if (mapped.length >= 2 && joinedCommunityIds.length === 0) {
-          setJoinedCommunityIds([mapped[0].id, mapped[1].id])
+          const joinedIds = mapped
+            .filter((c) => c.isMember)
+            .map((c) => c.id)
+          setJoinedCommunityIds(joinedIds)
         }
       }
     } catch (err) {
@@ -108,15 +100,13 @@ export default function CommunityPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [setCommunities, setJoinedCommunityIds, currentUser, joinedCommunityIds.length])
+  }, [setCommunities, setJoinedCommunityIds, currentUser])
 
   useEffect(() => {
-    if (communities.length === 0) {
-      fetchCommunities()
-    } else {
-      setIsLoading(false)
-    }
-  }, [communities.length, fetchCommunities])
+    // Always fetch communities when component mounts or currentUser changes
+    // This ensures membership status is loaded after refresh
+    fetchCommunities()
+  }, [fetchCommunities])
 
   // Filter discover communities
   const discoverCommunities = communities.filter((c) => {
