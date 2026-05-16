@@ -37,6 +37,11 @@ export const createAuthSlice: StateCreator<AppStore, [], [], AuthSlice> = (set, 
     // Connect socket on login
     import('@/lib/socket').then(({ connectSocket }) => {
       const socket = connectSocket(user.id)
+      if (!socket) {
+        // WebSocket not available (e.g., Vercel without chat service)
+        console.info('[Auth] Real-time chat disabled - WebSocket unavailable')
+        return
+      }
       socket.on('connect', () => {
         get().setIsSocketConnected(true)
       })

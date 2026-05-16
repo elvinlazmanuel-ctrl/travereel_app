@@ -120,6 +120,12 @@ export default function ChatRoomPage() {
     if (!selectedChatRoom || !currentUser) return
 
     const socket = getSocket()
+    if (!socket) {
+      // WebSocket not available
+      console.info('[ChatRoom] Real-time features disabled - WebSocket unavailable')
+      return
+    }
+    
     socketRef.current = socket
 
     // Join the chat room via socket
