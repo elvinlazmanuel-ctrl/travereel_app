@@ -29,7 +29,7 @@ export default function BottomNav() {
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 w-full h-14 bg-background border-t border-border flex justify-around items-center px-2 safe-area-pb">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 w-full h-16 bg-background/90 backdrop-blur-xl border-t border-border/50 flex justify-around items-center px-3 safe-area-pb shadow-2xl">
       {navItems.map((item) => {
         const active = isActive(item.view)
         const isCreate = item.view === 'create'
@@ -39,43 +39,44 @@ export default function BottomNav() {
           <button
             key={item.view}
             onClick={() => handleTap(item.view)}
-            className="flex flex-col items-center justify-center gap-0.5 relative outline-none focus:outline-none"
+            className="flex flex-col items-center justify-center gap-1 relative outline-none focus:outline-none group"
             aria-label={item.label}
           >
             {isCreate ? (
               <motion.div
                 whileTap={{ scale: 0.9 }}
-                className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49]"
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] shadow-lg shadow-[#FF6B6B]/30 -mt-4"
               >
-                <PlusCircle className="size-6 text-white" strokeWidth={2.5} />
+                <PlusCircle className="size-7 text-white" strokeWidth={2.5} />
               </motion.div>
             ) : (
               <div className="relative flex items-center justify-center">
                 <Icon
-                  className={`size-6 transition-colors duration-200 ${
+                  className={`size-6 transition-all duration-200 ${
                     active
-                      ? 'text-[#FF6B6B] fill-[#FF6B6B]/20'
-                      : 'text-muted-foreground'
+                      ? 'text-[#FF6B6B] fill-[#FF6B6B]/20 scale-110' 
+                      : 'text-muted-foreground group-hover:text-[#2EC4B6]'
                   }`}
                   strokeWidth={active ? 2.5 : 1.8}
                 />
                 {active && (
                   <motion.div
                     layoutId="bottomNavIndicator"
-                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-[#FF6B6B]"
+                    className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42]"
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 )}
                 {/* Notification indicator for Community icon */}
                 {item.view === 'community' && (hasUnreadNotifications || pendingFriendRequestCount > 0) && (
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#FF6B6B]" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] border-2 border-background shadow-sm" />
                 )}
               </div>
             )}
             {!isCreate && (
               <span
-                className={`text-[10px] leading-tight ${
-                  active ? 'text-[#FF6B6B] font-semibold' : 'text-muted-foreground'
+                className={`text-[11px] leading-tight transition-all ${
+                  active ? 'text-[#FF6B6B] font-bold' : 'text-muted-foreground group-hover:text-[#2EC4B6]'
                 }`}
               >
                 {item.label}
