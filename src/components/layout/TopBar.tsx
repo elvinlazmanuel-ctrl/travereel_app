@@ -18,21 +18,21 @@ export default function TopBar() {
   // Feed view: logo + icons
   if (currentView === 'feed') {
     return (
-      <header className="sticky top-0 z-40 w-full h-14 bg-background border-b border-border flex items-center justify-between px-4">
+      <header className="sticky top-0 z-40 w-full h-14 bg-background/80 backdrop-blur-xl border-b border-border/50 flex items-center justify-between px-4">
         <h1 className="text-xl font-bold bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] bg-clip-text text-transparent">
           Travereel
         </h1>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="icon"
-            className="relative"
+            className="relative rounded-full hover:bg-muted/50 transition-all"
             onClick={() => setCurrentView('friends')}
             aria-label="Friends"
           >
             <UserPlus className="size-5 text-muted-foreground" />
             {pendingFriendRequestCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 min-w-[16px] h-4 rounded-full bg-[#FF6B6B] text-white text-[9px] font-bold flex items-center justify-center px-0.5">
+              <span className="absolute top-1 right-1 min-w-[18px] h-4.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white text-[10px] font-bold flex items-center justify-center px-1 shadow-md">
                 {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
               </span>
             )}
@@ -40,25 +40,25 @@ export default function TopBar() {
           <Button
             variant="ghost"
             size="icon"
-            className="relative"
+            className="relative rounded-full hover:bg-muted/50 transition-all"
             onClick={() => setCurrentView('notifications')}
             aria-label="Notifications"
           >
             <Bell className="size-5 text-muted-foreground" />
             {hasUnreadNotifications && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#FF6B6B]" />
+              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] shadow-md" />
             )}
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="relative"
+            className="relative rounded-full hover:bg-muted/50 transition-all"
             onClick={() => setCurrentView('messages')}
             aria-label="Messages"
           >
             <Mail className="size-5 text-muted-foreground" />
             {hasUnreadMessages && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#FF6B6B]" />
+              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] shadow-md" />
             )}
           </Button>
         </div>
