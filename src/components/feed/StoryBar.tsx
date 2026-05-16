@@ -46,35 +46,42 @@ export default function StoryBar() {
   }
 
   return (
-    <div className="w-full border-b border-border bg-card">
+    <div className="w-full border-b border-border/50 bg-gradient-to-r from-card via-muted/20 to-card">
       <div
         ref={scrollRef}
-        className="flex items-center gap-3 overflow-x-auto px-4 py-3 scrollbar-none"
+        className="flex items-center gap-4 overflow-x-auto px-5 py-4 scrollbar-none snap-x snap-mandatory"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {/* Your Story Button */}
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={handleYourStory}
-          className="flex flex-col items-center gap-1 shrink-0 outline-none"
+          className="flex flex-col items-center gap-2 shrink-0 outline-none snap-start group"
           aria-label="Create your story"
         >
           <div className="relative">
-            <Avatar className="size-16 border-2 border-white shadow-sm">
-              <AvatarImage
-                src={currentUser?.avatar || undefined}
-                alt={currentUser?.name || 'You'}
-              />
-              <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-[#FF8C42] text-sm font-semibold">
-                {currentUser?.name?.charAt(0)?.toUpperCase() || 'U'}
-              </AvatarFallback>
-            </Avatar>
-            {/* Plus icon */}
-            <div className="absolute -bottom-0.5 -right-0.5 flex items-center justify-center size-6 rounded-full bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] border-2 border-white shadow-sm">
-              <Plus className="size-3.5 text-white" strokeWidth={3} />
+            <div className="p-[3px] rounded-full bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] group-hover:shadow-lg transition-shadow">
+              <div className="p-[2px] rounded-full bg-card">
+                <Avatar className="size-16">
+                  <AvatarImage
+                    src={currentUser?.avatar || undefined}
+                    alt={currentUser?.name || 'You'}
+                  />
+                  <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/30 to-[#FF8C42]/30 text-[#FF8C42] text-base font-semibold">
+                    {currentUser?.name?.charAt(0)?.toUpperCase() || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
             </div>
+            {/* Plus icon */}
+            <motion.div 
+              whileHover={{ scale: 1.1 }}
+              className="absolute -bottom-1 -right-1 flex items-center justify-center size-7 rounded-full bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] border-2 border-white shadow-md"
+            >
+              <Plus className="size-4 text-white" strokeWidth={3} />
+            </motion.div>
           </div>
-          <span className="text-[11px] text-muted-foreground font-medium truncate w-16 text-center">
+          <span className="text-xs text-muted-foreground font-medium truncate w-20 text-center">
             Your Story
           </span>
         </motion.button>
@@ -90,14 +97,14 @@ export default function StoryBar() {
               key={group.author.id}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleStoryGroupClick(startIndex)}
-              className="flex flex-col items-center gap-1 shrink-0 outline-none"
+              className="flex flex-col items-center gap-2 shrink-0 outline-none snap-start group"
               aria-label={`View ${group.author.username}'s stories (${group.stories.length} stories)`}
             >
               <div
-                className={`p-[2.5px] rounded-full ${
+                className={`p-[3px] rounded-full transition-all ${
                   group.hasUnviewed
-                    ? 'bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49]'
-                    : 'bg-gray-300'
+                    ? 'bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] group-hover:shadow-lg group-hover:shadow-[#FF6B6B]/20'
+                    : 'bg-gray-300 dark:bg-gray-600'
                 }`}
               >
                 <div className="p-[2px] rounded-full bg-card">
@@ -106,13 +113,13 @@ export default function StoryBar() {
                       src={latestStory.author.avatar || undefined}
                       alt={latestStory.author.username}
                     />
-                    <AvatarFallback className="bg-gradient-to-br from-[#FFBA49]/20 to-[#2EC4B6]/20 text-gray-600 text-xs font-semibold">
+                    <AvatarFallback className="bg-gradient-to-br from-[#FFBA49]/30 to-[#2EC4B6]/30 text-gray-600 dark:text-gray-300 text-sm font-semibold">
                       {latestStory.author.username.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </div>
               </div>
-              <span className="text-[11px] text-muted-foreground font-medium truncate w-16 text-center">
+              <span className="text-xs text-muted-foreground font-medium truncate w-20 text-center">
                 {latestStory.author.username}
               </span>
             </motion.button>
