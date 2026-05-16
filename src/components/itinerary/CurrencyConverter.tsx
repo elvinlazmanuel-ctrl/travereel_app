@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { getStoredLocation, detectUserLocation, storeDetectedLocation } from '@/lib/user-location'
 
 const popularCurrencies = [
   { code: 'USD', name: 'US Dollar', symbol: '$', flag: '🇺🇸' },
@@ -43,12 +44,38 @@ interface CurrencyConverterProps {
 }
 
 export function CurrencyConverter({ 
-  defaultFrom = 'USD', 
-  defaultTo = 'EUR',
+  defaultFrom, 
+  defaultTo,
   defaultAmount = 100 
 }: CurrencyConverterProps) {
-  const [fromCurrency, setFromCurrency] = useState(defaultFrom)
-  const [toCurrency, setToCurrency] = useState(defaultTo)
+  // Get detected currency from location
+  const [initialFrom, setInitialFrom] = useState(defaultFrom || 'USD')
+  const [initialTo, setInitialTo] = useState(defaultTo || 'EUR')
+  
+  // Detect user location to set default currency
+  useEffect(() => {
+    const detectCurrency = async () => {
+      const stored = getStoredLocation()
+      if (stored && stored.currency) {
+        setInitialFrom(stored.currency)
+        return
+      }
+      
+      // Detect location if not stored
+      const location = await detectUserLocation()
+      if (location && location.currency) {
+        setInitialFrom(location.currency)
+        storeDetectedLocation(location)
+      }
+    }
+    
+    if (!defaultFrom) {
+      detectCurrency()
+    }
+  }, [defaultFrom])
+  
+  const [fromCurrency, setFromCurrency] = useState(initialFrom)
+  const [toCurrency, setToCurrency] = useState(initialTo)
   const [amount, setAmount] = useState(defaultAmount)
   const [rates, setRates] = useState<Record<string, number>>(fallbackRates)
   const [loading, setLoading] = useState(false)

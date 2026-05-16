@@ -22,6 +22,7 @@ import {
   Loader2,
   X,
   Upload,
+  MapPin,
 } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
@@ -46,6 +47,7 @@ import {
 import { useAppStore } from '@/lib/store'
 import { useTheme } from 'next-themes'
 import { toast } from 'sonner'
+import { detectUserLocation, getStoredLocation, storeDetectedLocation, getCurrencyForCountry } from '@/lib/user-location'
 
 interface SettingRowProps {
   icon: React.ReactNode
@@ -122,6 +124,8 @@ export default function SettingsPage() {
   const [language, setLanguage] = useState(currentUser?.language || 'en')
   const [defaultCurrency, setDefaultCurrency] = useState(currentUser?.currency || 'USD')
   const [defaultTravelType, setDefaultTravelType] = useState(currentUser?.travelType || 'solo')
+  const [detectedCountry, setDetectedCountry] = useState<string | null>(null)
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false)
 
   // Dialog states
   const [editProfileOpen, setEditProfileOpen] = useState(false)
@@ -169,6 +173,49 @@ export default function SettingsPage() {
       setDarkMode(isDark)
     }
   }, [theme, darkMode])
+
+  // Detect user location on mount to suggest currency
+  useEffect(() => {
+    const detectLocation = async () => {
+      // Check if user already has a currency set
+      if (currentUser?.currency) return
+
+      // Check stored location
+      const stored = getStoredLocation()
+      if (stored) {
+        setDetectedCountry(stored.country)
+        // Auto-set currency if not already set
+        if (!currentUser?.currency && stored.currency !== 'USD') {
+          setDefaultCurrency(stored.currency)
+          saveSetting('currency', stored.currency)
+        }
+        return
+      }
+
+      // Detect location from IP
+      setIsDetectingLocation(true)
+      try {
+        const location = await detectUserLocation()
+        if (location && location.country !== 'Unknown') {
+          setDetectedCountry(location.country)
+          storeDetectedLocation(location)
+          
+          // Auto-set currency based on detected location
+          if (!currentUser?.currency && location.currency !== 'USD') {
+            setDefaultCurrency(location.currency)
+            saveSetting('currency', location.currency)
+            toast.success(`Detected your location! Default currency set to ${location.currency}`)
+          }
+        }
+      } catch (error) {
+        console.warn('Location detection failed:', error)
+      } finally {
+        setIsDetectingLocation(false)
+      }
+    }
+
+    detectLocation()
+  }, [currentUser])
 
   // Initialize edit forms when dialogs open
   useEffect(() => {
@@ -601,6 +648,12 @@ export default function SettingsPage() {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm text-foreground">Default Currency</p>
+          {detectedCountry && (
+            <p className="text-xs text-[#2EC4B6] flex items-center gap-1">
+              <MapPin className="size-2.5" />
+              Detected from {detectedCountry}
+            </p>
+          )}
         </div>
         <Select value={defaultCurrency} onValueChange={handleCurrencyChange}>
           <SelectTrigger className="w-[90px] h-8 text-xs rounded-lg border-border">

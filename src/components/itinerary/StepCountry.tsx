@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { Search, Check, MapPin } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Search, Check, MapPin, Loader2 } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 import { Input } from '@/components/ui/input'
+import { detectUserLocation, getStoredLocation, storeDetectedLocation } from '@/lib/user-location'
 
 const popularCountries = [
   { flag: '🇯🇵', name: 'Japan', code: 'JP' },
@@ -74,6 +75,45 @@ const allCountries = [
 export default function StepCountry() {
   const { wizardData, setWizardData } = useAppStore()
   const [search, setSearch] = useState('')
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false)
+  const [detectedCountry, setDetectedCountry] = useState<string | null>(null)
+
+  // Auto-detect user location on component mount
+  useEffect(() => {
+    const detectLocation = async () => {
+      // Check if we already have a stored location
+      const stored = getStoredLocation()
+      if (stored) {
+        setDetectedCountry(stored.country)
+        return
+      }
+
+      // Detect location from IP
+      setIsDetectingLocation(true)
+      try {
+        const location = await detectUserLocation()
+        if (location && location.country !== 'Unknown') {
+          setDetectedCountry(location.country)
+          storeDetectedLocation(location)
+          
+          // Auto-select detected country if user hasn't made a selection yet
+          if (!wizardData.country) {
+            // Check if detected country is in our list
+            const countryExists = allCountries.some(c => c.name === location.country)
+            if (countryExists) {
+              handleSelect(location.country)
+            }
+          }
+        }
+      } catch (error) {
+        console.warn('Location detection failed:', error)
+      } finally {
+        setIsDetectingLocation(false)
+      }
+    }
+
+    detectLocation()
+  }, [])
 
   const filteredAll = allCountries.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase())
@@ -104,6 +144,18 @@ export default function StepCountry() {
           Which country do you want to visit?
         </h2>
         <p className="text-sm text-muted-foreground">Select a country for your adventure</p>
+        {isDetectingLocation && (
+          <div className="flex items-center gap-2 mt-2 text-xs text-[#2EC4B6]">
+            <Loader2 className="size-3 animate-spin" />
+            <span>Detecting your location...</span>
+          </div>
+        )}
+        {detectedCountry && !isDetectingLocation && (
+          <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+            <MapPin className="size-3" />
+            <span>Detected: {detectedCountry}</span>
+          </div>
+        )}
       </div>
 
       {/* Search */}
