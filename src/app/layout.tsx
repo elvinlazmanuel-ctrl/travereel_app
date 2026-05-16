@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -32,16 +32,6 @@ export const metadata: Metadata = {
       { url: "/logo.svg", type: "image/svg+xml" },
     ],
   },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FF6B6B" },
-    { media: "(prefers-color-scheme: dark)", color: "#FF6B6B" },
-  ],
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -64,6 +54,17 @@ export const metadata: Metadata = {
     title: "Travereel - Travel Social",
     description: "Share your travel adventures, plan itineraries, and connect with fellow travelers.",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FF6B6B" },
+    { media: "(prefers-color-scheme: dark)", color: "#FF6B6B" },
+  ],
 };
 
 export default function RootLayout({
