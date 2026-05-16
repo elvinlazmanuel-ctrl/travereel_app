@@ -166,12 +166,14 @@ export default function NewsFeed() {
           setStories(storiesWithViewed)
         }
 
-        // Fetch following IDs and friend request count
+        // Fetch following IDs, friend request count, likes, and bookmarks
         if (userId) {
           try {
-            const [followsRes, friendReqRes] = await Promise.all([
+            const [followsRes, friendReqRes, likesRes, bookmarksRes] = await Promise.all([
               fetch(`/api/follows?userId=${userId}&type=following`),
               fetch(`/api/friend-requests?userId=${userId}&type=pending`),
+              fetch(`/api/likes?userId=${userId}`),
+              fetch(`/api/bookmarks?userId=${userId}`),
             ])
             if (followsRes.ok) {
               const followsData = await followsRes.json()
@@ -180,6 +182,16 @@ export default function NewsFeed() {
             if (friendReqRes.ok) {
               const friendData = await friendReqRes.json()
               setPendingFriendRequestCount(friendData.pendingCount || 0)
+            }
+            // Load liked post IDs from API
+            if (likesRes.ok) {
+              const likesData = await likesRes.json()
+              setLikedPostIds(likesData.likedPostIds || [])
+            }
+            // Load bookmarked post IDs from API
+            if (bookmarksRes.ok) {
+              const bookmarksData = await bookmarksRes.json()
+              setBookmarks(bookmarksData.bookmarks || [])
             }
           } catch {
             // Non-critical

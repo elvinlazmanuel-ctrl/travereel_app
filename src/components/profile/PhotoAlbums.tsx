@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Image, Trash2, Edit2, Eye, Lock, MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -62,6 +62,11 @@ export function PhotoAlbums({ userId, isOwnProfile }: PhotoAlbumsProps) {
       setLoading(false)
     }
   }, [userId])
+
+  // Fetch albums on mount
+  useEffect(() => {
+    fetchAlbums()
+  }, [fetchAlbums])
 
   // Create album
   const handleCreateAlbum = async () => {

@@ -249,7 +249,7 @@ function getStatusBadge(status: DayActivity['status']) {
 // ─── Main Component ────────────────────────────────────────────
 
 export default function DuringTravel() {
-  const { selectedItinerary, setCurrentView } = useAppStore()
+  const { selectedItinerary, setCurrentView, currentUser } = useAppStore()
   const [selectedDay, setSelectedDay] = useState(1)
   const [localActivities, setLocalActivities] = useState<Record<string, DayActivity['status']>>({})
   const [isUpdating, setIsUpdating] = useState<string | null>(null)
@@ -302,7 +302,8 @@ export default function DuringTravel() {
     .filter((a) => (localActivities[a.id] || a.status) === 'completed')
     .reduce((sum, a) => sum + a.cost, 0)
   const totalBudget = selectedItinerary?.budget || 0
-  const currency = selectedItinerary?.currency || 'USD'
+  // Use itinerary currency, fallback to user's default currency, then USD
+  const currency = selectedItinerary?.currency || currentUser?.currency || 'USD'
 
   // Find the "current" day (first day with pending activities)
   const currentTravelDay = useMemo(() => {
