@@ -1,37 +1,49 @@
-// Service Worker for Travereel PWA
-const CACHE_NAME = 'travereel-v1'
-const RUNTIME_CACHE = 'travereel-runtime-v1'
+// Service Worker for Travereel PWA - Enhanced Version
+const CACHE_NAME = 'travereel-v2'
+const RUNTIME_CACHE = 'travereel-runtime-v2'
+const OFFLINE_PAGE = '/offline.html'
 
-// Assets to pre-cache
+// Assets to pre-cache (critical for offline)
 const PRECACHE_ASSETS = [
   '/',
   '/manifest.json',
   '/logo.svg',
-  // Add more critical assets as needed
+  OFFLINE_PAGE,
 ]
 
 // Install event - precache static assets
 self.addEventListener('install', (event) => {
+  console.log('[SW] Installing service worker...')
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('[Service Worker] Precaching assets')
+        console.log('[SW] Precaching assets')
         return cache.addAll(PRECACHE_ASSETS)
       })
-      .then(() => self.skipWaiting())
+      .then(() => {
+        console.log('[SW] Installation complete')
+        return self.skipWaiting()
+      })
   )
 })
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
+  console.log('[SW] Activating service worker...')
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
           .filter((name) => name !== CACHE_NAME && name !== RUNTIME_CACHE)
-          .map((name) => caches.delete(name))
+          .map((name) => {
+            console.log('[SW] Deleting old cache:', name)
+            return caches.delete(name)
+          })
       )
-    }).then(() => self.clients.claim())
+    }).then(() => {
+      console.log('[SW] Activation complete')
+      return self.clients.claim()
+    })
   )
 })
 
@@ -40,7 +52,10 @@ self.addEventListener('fetch', (event) => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') return
 
-  // Handle API requests differently
+  // Skip chrome-extension and other non-http requests
+  if (!event.request.url.startsWith('http')) return
+
+  // Handle API requests - network first, cache fallback
   if (event.request.url.includes('/api/')) {
     event.respondWith(
       fetch(event.request)
@@ -57,12 +72,34 @@ self.addEventListener('fetch', (event) => {
         .catch(() => {
           // Return cached version if available
           return caches.match(event.request)
+            .then((cached) => cached || new Response('Offline', { status: 503 }))
         })
     )
     return
   }
 
-  // For static assets - cache first
+  // For navigation requests - network first, offline page fallback
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const responseClone = response.clone()
+            caches.open(RUNTIME_CACHE).then((cache) => {
+              cache.put(event.request, responseClone)
+            })
+          }
+          return response
+        })
+        .catch(() => {
+          return caches.match(event.request)
+            .then((cached) => cached || caches.match(OFFLINE_PAGE))
+        })
+    )
+    return
+  }
+
+  // For static assets - cache first, network fallback
   event.respondWith(
     caches.match(event.request)
       .then((cachedResponse) => {
@@ -88,6 +125,13 @@ self.addEventListener('fetch', (event) => {
 
             return response
           })
+          .catch(() => {
+            // If it's an image request, return a fallback
+            if (event.request.destination === 'image') {
+              return new Response('', { status: 404 })
+            }
+            return caches.match(OFFLINE_PAGE)
+          })
       })
   )
 })
@@ -102,7 +146,7 @@ self.addEventListener('sync', (event) => {
 async function syncPosts() {
   // Get pending posts from IndexedDB
   // This will be implemented in the client-side code
-  console.log('[Service Worker] Syncing pending posts')
+  console.log('[SW] Syncing pending posts')
 }
 
 // Push notifications
@@ -112,8 +156,8 @@ self.addEventListener('push', (event) => {
   const data = event.data.json()
   const options = {
     body: data.body || 'New notification from Travereel',
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-192x192.png',
+    icon: '/logo.svg',
+    badge: '/logo.svg',
     vibrate: [200, 100, 200],
     data: data.url || '/',
     actions: [
@@ -135,5 +179,12 @@ self.addEventListener('notificationclick', (event) => {
     event.waitUntil(
       clients.openWindow(event.notification.data)
     )
+  }
+})
+
+// Message handler - for communication with client
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting()
   }
 })

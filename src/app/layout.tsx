@@ -6,6 +6,7 @@ import { Toaster as SonnerToaster } from "sonner";
 import { QueryProvider } from "@/lib/query-provider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { OfflineIndicator } from "@/components/ui/OfflineIndicator";
+import PWAInstallPrompt from "@/components/ui/PWAInstallPrompt";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,8 +44,15 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
     title: "Travereel",
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'black-translucent',
+    'msapplication-TileColor': '#FF6B6B',
+    'msapplication-tap-highlight': 'no',
   },
   openGraph: {
     title: "Travereel - Travel Social",
@@ -84,6 +92,7 @@ export default function RootLayout({
         >
           <QueryProvider>
             <OfflineIndicator />
+            <PWAInstallPrompt />
             {children}
             <Toaster />
             <SonnerToaster position="top-center" richColors />
