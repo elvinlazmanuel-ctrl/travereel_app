@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { validateBody, validateQuery, sendFriendRequestSchema, handleFriendRequestSchema, unfriendSchema, userIdSchema } from '@/lib/validation'
+import { sendPushNotification } from '@/lib/push-sender'
 
 const USER_SELECT = {
   id: true,
@@ -293,6 +294,16 @@ export async function POST(request: Request) {
         fromUserId: senderId,
       },
     })
+
+    // Send push notification
+    sendPushNotification({
+      userId: receiverId,
+      title: 'Friend Request',
+      body: `${sender.name || sender.username} sent you a friend request`,
+      url: '/friends',
+      type: 'friend_request',
+      tag: `travereel-friend-request-${senderId}`,
+    }).catch(err => console.error('[Push] Error sending friend request notification:', err))
 
     return NextResponse.json({ request: friendRequest }, { status: 201 })
   } catch (error) {

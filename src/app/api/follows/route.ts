@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { validateBody, validateQuery, followSchema, userIdSchema } from '@/lib/validation'
+import { sendPushNotification } from '@/lib/push-sender'
 
 export async function GET(request: Request) {
   try {
@@ -119,6 +120,16 @@ export async function POST(request: Request) {
           fromUserId: followerId,
         },
       })
+
+      // Send push notification
+      sendPushNotification({
+        userId: followingId,
+        title: 'New Follower',
+        body: `${follower.name || follower.username} started following you`,
+        url: `/profile/${followerId}`,
+        type: 'follow',
+        tag: `travereel-follow-${followerId}`,
+      }).catch(err => console.error('[Push] Error sending follow notification:', err))
     }
 
     return NextResponse.json({ follow }, { status: 201 })

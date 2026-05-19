@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { validateBody, validateQuery, createCommentSchema, deleteCommentSchema, postIdSchema, userIdSchema } from '@/lib/validation'
+import { sendPushNotification } from '@/lib/push-sender'
 
 export async function GET(request: Request) {
   try {
@@ -138,6 +139,16 @@ export async function POST(request: Request) {
           postId,
         },
       })
+
+      // Send push notification
+      sendPushNotification({
+        userId: post.authorId,
+        title: 'New Comment',
+        body: `${user?.username || 'Someone'} commented on your post`,
+        url: `/posts/${postId}`,
+        type: 'comment',
+        tag: `travereel-comment-${postId}`,
+      }).catch(err => console.error('[Push] Error sending comment notification:', err))
     }
 
     return NextResponse.json({ comment }, { status: 201 })
