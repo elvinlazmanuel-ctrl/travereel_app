@@ -1,6 +1,7 @@
 import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
+import { sendPushNotification } from '@/lib/push-sender'
 import { validateBody, validateQuery, toggleLikeSchema, userIdSchema } from '@/lib/validation'
 
 export async function POST(request: Request) {
@@ -54,6 +55,16 @@ export async function POST(request: Request) {
           postId,
         },
       })
+
+      // Send push notification
+      sendPushNotification({
+        userId: post.authorId,
+        title: 'New Like',
+        body: `${user?.username || 'Someone'} liked your post`,
+        url: `/posts/${postId}`,
+        type: 'like',
+        tag: `travereel-like-${postId}`,
+      }).catch(err => console.error('[Push] Error sending like notification:', err))
     }
 
     return NextResponse.json({ like }, { status: 201 })

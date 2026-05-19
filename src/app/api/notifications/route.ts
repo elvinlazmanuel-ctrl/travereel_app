@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { validateBody, validateQuery, markNotificationReadSchema, createNotificationSchema, userIdSchema } from '@/lib/validation'
+import { sendPushNotification } from '@/lib/push-sender'
 
 export async function GET(request: Request) {
   try {
@@ -132,6 +133,70 @@ export async function POST(request: Request) {
       { error: 'Internal server error' },
       { status: 500 }
     )
+  }
+}
+
+// Helper function to send push notification after creating a notification
+async function triggerPushNotification(userId: string, type: string, message: string, fromUser?: any) {
+  try {
+    // Map notification types to user-friendly titles
+    const typeTitles: Record<string, string> = {
+      'like': 'New Like',
+      'comment': 'New Comment',
+      'follow': 'New Follower',
+      'friend_request': 'Friend Request',
+      'message': 'New Message',
+      'mention': 'You were mentioned',
+      'share': 'Post Shared',
+    }
+
+    const title = typeTitles[type] || 'Travereel'
+    const body = fromUser 
+      ? `${fromUser.name}: ${message}`
+      : message
+
+    await sendPushNotification({
+      userId,
+      title,
+      body,
+      url: '/notifications',
+      type,
+      tag: `travereel-${type}`,
+    })
+  } catch (error) {
+    console.error('[Push] Error triggering push notification:', error)
+  }
+}
+
+// Helper function to send push notification after creating a notification
+async function triggerPushNotification(userId: string, type: string, message: string, fromUser?: any) {
+  try {
+    // Map notification types to user-friendly titles
+    const typeTitles: Record<string, string> = {
+      'like': 'New Like',
+      'comment': 'New Comment',
+      'follow': 'New Follower',
+      'friend_request': 'Friend Request',
+      'message': 'New Message',
+      'mention': 'You were mentioned',
+      'share': 'Post Shared',
+    }
+
+    const title = typeTitles[type] || 'Travereel'
+    const body = fromUser 
+      ? `${fromUser.name}: ${message}`
+      : message
+
+    await sendPushNotification({
+      userId,
+      title,
+      body,
+      url: '/notifications',
+      type,
+      tag: `travereel-${type}`,
+    })
+  } catch (error) {
+    console.error('[Push] Error triggering push notification:', error)
   }
 }
 

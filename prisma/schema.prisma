@@ -68,6 +68,7 @@ model User {
   travelStats   TravelStats?
   reactions     Reaction[]
   albums        Album[]
+  pushSubscriptions PushSubscription[]
 
   @@map("users")
 }
@@ -571,6 +572,23 @@ model Photo {
   album       Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
   
   @@map("photos")
+}
+
+// Push Notification Subscriptions
+model PushSubscription {
+  id              String   @id @default(cuid())
+  userId          String
+  endpoint        String   @unique
+  p256dh          String
+  auth            String
+  userAgent       String?
+  createdAt       DateTime @default(now())
+  lastUsedAt      DateTime @default(now())
+  isActive        Boolean  @default(true)
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("push_subscriptions")
 }
 
 // Update User model with new relations

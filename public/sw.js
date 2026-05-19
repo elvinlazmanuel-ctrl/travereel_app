@@ -156,14 +156,22 @@ self.addEventListener('push', (event) => {
   const data = event.data.json()
   const options = {
     body: data.body || 'New notification from Travereel',
-    icon: '/logo.svg',
-    badge: '/logo.svg',
+    icon: '/logo.png',
+    badge: '/logo.png',
     vibrate: [200, 100, 200],
-    data: data.url || '/',
+    data: {
+      url: data.url || '/',
+      notificationId: data.notificationId,
+      type: data.type,
+    },
+    tag: data.tag || 'default',
+    renotify: true,
     actions: [
-      { action: 'view', title: 'View' },
-      { action: 'dismiss', title: 'Dismiss' }
-    ]
+      { action: 'view', title: 'View', icon: '/logo.png' },
+      { action: 'dismiss', title: 'Dismiss', icon: '/logo.png' }
+    ],
+    requireInteraction: data.requireInteraction || false,
+    silent: data.silent || false
   }
 
   event.waitUntil(
@@ -177,7 +185,18 @@ self.addEventListener('notificationclick', (event) => {
 
   if (event.action === 'view') {
     event.waitUntil(
-      clients.openWindow(event.notification.data)
+      clients.matchAll({ type: 'window' }).then((clientList) => {
+        // If a window is already open, focus it
+        for (const client of clientList) {
+          if (client.url === event.notification.data.url && 'focus' in client) {
+            return client.focus()
+          }
+        }
+        // Otherwise open a new window
+        if (clients.openWindow) {
+          return clients.openWindow(event.notification.data.url)
+        }
+      })
     )
   }
 })

@@ -48,6 +48,7 @@ import { useAppStore } from '@/lib/store'
 import { useTheme } from 'next-themes'
 import { toast } from 'sonner'
 import { detectUserLocation, getStoredLocation, storeDetectedLocation, getCurrencyForCountry } from '@/lib/user-location'
+import { PushNotificationSettings } from './PushNotificationSettings'
 
 interface SettingRowProps {
   icon: React.ReactNode
@@ -637,6 +638,11 @@ export default function SettingsPage() {
         checked={activityStatus}
         onCheckedChange={handleActivityStatusChange}
       />
+
+      <Separator />
+
+      {/* Push Notifications */}
+      <PushNotificationSettings />
 
       <Separator />
 
