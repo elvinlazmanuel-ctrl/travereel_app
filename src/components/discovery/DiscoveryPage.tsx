@@ -391,22 +391,22 @@ export default function DiscoveryPage() {
 
   return (
     <div className="max-w-md mx-auto">
-      {/* Search Bar */}
+      {/* Search Bar - Explorer Style */}
       <div className="px-4 pt-3 pb-2">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lg">🔍</div>
           <Input
-            placeholder="Search people, posts, communities..."
-            className="pl-9 h-10 bg-muted border-0 rounded-xl text-sm"
+            placeholder="Explore destinations, travelers, communities..."
+            className="pl-10 h-11 glass border border-white/20 rounded-xl text-sm shadow-glass focus-visible:ring-2 focus-visible:ring-[#FF6B6B]/50"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-muted/50 transition-colors"
             >
-              <X className="size-4 text-gray-400" />
+              <X className="size-4 text-muted-foreground" />
             </button>
           )}
         </div>
@@ -797,49 +797,63 @@ export default function DiscoveryPage() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            {/* Category Filter Pills */}
+            {/* Category Filter Pills - Enhanced */}
             <div className="px-4 pb-3">
               <div className="flex gap-2 overflow-x-auto no-scrollbar">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
-                      selectedCategory === cat
-                        ? 'bg-[#2EC4B6] text-white shadow-sm'
-                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+                {categories.map((cat) => {
+                  const emojiMap: Record<string, string> = {
+                    All: '🌍',
+                    Travel: '✈️',
+                    Food: '🍜',
+                    Adventure: '🏔️',
+                    Culture: '🏛️',
+                    Beach: '🏖️',
+                    Mountain: '⛰️',
+                    City: '🏙️',
+                  }
+                  return (
+                    <motion.button
+                      key={cat}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
+                        selectedCategory === cat
+                          ? 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white shadow-lg shadow-[#FF6B6B]/30'
+                          : 'glass text-muted-foreground hover:bg-gradient-to-r hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10'
+                      }`}
+                    >
+                      <span>{emojiMap[cat]}</span>
+                      <span>{cat}</span>
+                    </motion.button>
+                  )
+                })}
               </div>
             </div>
 
-            {/* Tabs */}
+            {/* Tabs - Glass Morphism */}
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <div className="px-4">
-                <TabsList className="w-full bg-muted/80 rounded-xl h-10 p-1">
+                <TabsList className="w-full glass rounded-xl h-12 p-1">
                   <TabsTrigger
                     value="trending"
-                    className="rounded-lg text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#2EC4B6] flex-1"
+                    className="rounded-lg text-xs font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FF6B6B]/20 data-[state=active]:to-[#FF8C42]/20 data-[state=active]:shadow-md data-[state=active]:text-[#FF6B6B] flex-1 transition-all"
                   >
                     <TrendingUp className="size-3.5 mr-1" />
                     Trending
                   </TabsTrigger>
                   <TabsTrigger
                     value="people"
-                    className="rounded-lg text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#2EC4B6] flex-1"
+                    className="rounded-lg text-xs font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#4FACFE]/20 data-[state=active]:to-[#00F2FE]/20 data-[state=active]:shadow-md data-[state=active]:text-[#4FACFE] flex-1 transition-all"
                   >
                     <Users className="size-3.5 mr-1" />
                     People
                   </TabsTrigger>
                   <TabsTrigger
                     value="itineraries"
-                    className="rounded-lg text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#2EC4B6] flex-1"
+                    className="rounded-lg text-xs font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#43E97B]/20 data-[state=active]:to-[#38F9D7]/20 data-[state=active]:shadow-md data-[state=active]:text-[#43E97B] flex-1 transition-all"
                   >
                     <Compass className="size-3.5 mr-1" />
-                    Itineraries
+                    Trips
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -1143,15 +1157,19 @@ function SearchEmptyState({ icon, title, description }: { icon: React.ReactNode;
 
 function LoadingSkeleton() {
   return (
-    <div className="grid grid-cols-3 gap-0.5 px-0.5">
-      {Array.from({ length: 12 }).map((_, i) => (
-        <div
-          key={i}
-          className={`${i % 9 === 2 || i % 9 === 5 ? 'row-span-2 aspect-[3/4]' : 'aspect-square'}`}
-        >
-          <Skeleton className="w-full h-full rounded-none" />
+    <div className="px-4 py-3">
+      <div className="glass rounded-2xl p-4">
+        <div className="grid grid-cols-3 gap-2">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div
+              key={i}
+              className={`${i % 5 === 2 || i % 5 === 4 ? 'row-span-2 aspect-[3/4]' : 'aspect-square'}`}
+            >
+              <Skeleton className="w-full h-full rounded-xl bg-gradient-to-br from-[#FF6B6B]/10 to-[#2EC4B6]/10" />
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   )
 }
@@ -1159,13 +1177,27 @@ function LoadingSkeleton() {
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center px-6">
-      <div className="size-16 rounded-full bg-muted flex items-center justify-center mb-4">
-        <Search className="size-7 text-muted-foreground" />
-      </div>
-      <h3 className="text-lg font-semibold text-foreground mb-1">No posts found</h3>
-      <p className="text-sm text-muted-foreground max-w-[240px]">
-        Try a different search or category to discover more travel content.
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative mb-6"
+      >
+        <div className="size-20 rounded-full bg-gradient-to-br from-[#4FACFE]/20 via-[#00F2FE]/20 to-[#43E97B]/20 flex items-center justify-center">
+          <Compass className="size-10 text-[#4FACFE]" strokeWidth={1.5} />
+        </div>
+        <div className="absolute -top-2 -right-2 text-3xl animate-bounce">🧭</div>
+        <div className="absolute -bottom-2 -left-2 text-2xl animate-pulse">🗺️</div>
+      </motion.div>
+      <h3 className="text-2xl font-bold text-gradient-ocean mb-2">Discover Amazing Content</h3>
+      <p className="text-sm text-muted-foreground max-w-[280px] leading-relaxed">
+        Explore trending travel posts, connect with fellow travelers, and find inspiring itineraries.
       </p>
+      <div className="mt-6 flex gap-2 text-2xl">
+        <span className="animate-bounce" style={{ animationDelay: '0ms' }}>🌟</span>
+        <span className="animate-bounce" style={{ animationDelay: '100ms' }}>🎯</span>
+        <span className="animate-bounce" style={{ animationDelay: '200ms' }}>💫</span>
+      </div>
     </div>
   )
 }
