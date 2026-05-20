@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         )
       }
 
-      const { email, password, username, name } = validation.data
+      const { email, password, username, name, countryOfOrigin } = validation.data
 
       // Validate password strength
       const passwordValidation = validatePasswordStrength(password)
@@ -63,6 +63,7 @@ export async function POST(request: Request) {
           avatar: null,
           bio: null,
           isPrivate: false,
+          countryOfOrigin: countryOfOrigin || null,
         },
       })
 

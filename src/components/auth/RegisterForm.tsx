@@ -1,11 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Globe, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { Globe, Eye, EyeOff, Loader2, MapPin } from 'lucide-react'
+import { getAllCountries } from '@/lib/countries-database'
+import { detectUserLocation, storeDetectedLocation, getStoredLocation } from '@/lib/user-location'
+
+const allCountries = getAllCountries()
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void
@@ -16,10 +20,40 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
+  const [countryOfOrigin, setCountryOfOrigin] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false)
+
+  // Auto-detect user's country on component mount
+  useEffect(() => {
+    const detectLocation = async () => {
+      // Check if we already have a stored location
+      const stored = getStoredLocation()
+      if (stored && stored.country) {
+        setCountryOfOrigin(stored.country)
+        return
+      }
+
+      // Detect location from IP
+      setIsDetectingLocation(true)
+      try {
+        const location = await detectUserLocation()
+        if (location && location.country !== 'Unknown') {
+          setCountryOfOrigin(location.country)
+          storeDetectedLocation(location)
+        }
+      } catch (error) {
+        console.warn('Location detection failed:', error)
+      } finally {
+        setIsDetectingLocation(false)
+      }
+    }
+
+    detectLocation()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,6 +70,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
           username,
           name,
           password,
+          countryOfOrigin,
         }),
       })
 
@@ -127,6 +162,36 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             className="h-11 rounded-lg border-gray-200 bg-gray-50/50 focus:bg-white transition-colors"
             disabled={isLoading}
           />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="reg-country" className="text-gray-700">
+            Country of Origin
+          </Label>
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+            <select
+              id="reg-country"
+              value={countryOfOrigin}
+              onChange={(e) => setCountryOfOrigin(e.target.value)}
+              required
+              className="h-11 w-full rounded-lg border-gray-200 bg-gray-50/50 focus:bg-white transition-colors pl-10 pr-4 text-sm"
+              disabled={isLoading}
+            >
+              <option value="">Select your country</option>
+              {allCountries.map((country) => (
+                <option key={country.code} value={country.name}>
+                  {country.flag} {country.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          {isDetectingLocation && (
+            <p className="text-xs text-gray-500 flex items-center gap-1">
+              <Loader2 className="size-3 animate-spin" />
+              Detecting your location...
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">

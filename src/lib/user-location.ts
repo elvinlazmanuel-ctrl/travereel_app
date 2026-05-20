@@ -1,171 +1,21 @@
 /**
  * User Location Detection Utility
  * Uses IP geolocation to detect user's country and set appropriate defaults
+ * Includes visa-free detection and comprehensive country data
  */
 
-// Country to currency mapping
-export const countryToCurrency: Record<string, string> = {
-  'United States': 'USD',
-  'USA': 'USD',
-  'Philippines': 'PHP',
-  'Japan': 'JPY',
-  'United Kingdom': 'GBP',
-  'UK': 'GBP',
-  'Canada': 'CAD',
-  'Australia': 'AUD',
-  'Eurozone': 'EUR',
-  'Germany': 'EUR',
-  'France': 'EUR',
-  'Italy': 'EUR',
-  'Spain': 'EUR',
-  'Netherlands': 'EUR',
-  'Portugal': 'EUR',
-  'Thailand': 'THB',
-  'South Korea': 'KRW',
-  'India': 'INR',
-  'Indonesia': 'IDR',
-  'Vietnam': 'VND',
-  'Singapore': 'SGD',
-  'Malaysia': 'MYR',
-  'New Zealand': 'NZD',
-  'Switzerland': 'CHF',
-  'Sweden': 'SEK',
-  'Norway': 'NOK',
-  'Brazil': 'BRL',
-  'Mexico': 'MXN',
-  'China': 'CNY',
-  'UAE': 'AED',
-  'Saudi Arabia': 'SAR',
-  'Turkey': 'TRY',
-  'South Africa': 'ZAR',
-  'Egypt': 'EGP',
-  'Argentina': 'ARS',
-  'Chile': 'CLP',
-  'Colombia': 'COP',
-  'Peru': 'PEN',
-}
+import { 
+  getVisaFreeCountries, 
+  isVisaFree, 
+  getCountryByCode, 
+  getCountryByName,
+  countryToCurrency,
+  countryToRegion,
+  travelRequirementsByRegion 
+} from './countries-database'
 
-// Country to region mapping for travel requirements
-export const countryToRegion: Record<string, string> = {
-  'United States': 'North America',
-  'USA': 'North America',
-  'Canada': 'North America',
-  'Mexico': 'North America',
-  'Philippines': 'Southeast Asia',
-  'Thailand': 'Southeast Asia',
-  'Vietnam': 'Southeast Asia',
-  'Indonesia': 'Southeast Asia',
-  'Malaysia': 'Southeast Asia',
-  'Singapore': 'Southeast Asia',
-  'Myanmar': 'Southeast Asia',
-  'Cambodia': 'Southeast Asia',
-  'Laos': 'Southeast Asia',
-  'Japan': 'East Asia',
-  'South Korea': 'East Asia',
-  'China': 'East Asia',
-  'Taiwan': 'East Asia',
-  'Hong Kong': 'East Asia',
-  'United Kingdom': 'Europe',
-  'UK': 'Europe',
-  'Germany': 'Europe',
-  'France': 'Europe',
-  'Italy': 'Europe',
-  'Spain': 'Europe',
-  'Portugal': 'Europe',
-  'Netherlands': 'Europe',
-  'Switzerland': 'Europe',
-  'Austria': 'Europe',
-  'Greece': 'Europe',
-  'Australia': 'Oceania',
-  'New Zealand': 'Oceania',
-  'Fiji': 'Oceania',
-  'India': 'South Asia',
-  'Sri Lanka': 'South Asia',
-  'Nepal': 'South Asia',
-  'Brazil': 'South America',
-  'Argentina': 'South America',
-  'Chile': 'South America',
-  'Peru': 'South America',
-  'Colombia': 'South America',
-  'UAE': 'Middle East',
-  'Saudi Arabia': 'Middle East',
-  'Turkey': 'Middle East',
-  'Egypt': 'Africa',
-  'South Africa': 'Africa',
-  'Morocco': 'Africa',
-  'Kenya': 'Africa',
-}
-
-// Common travel requirements by region
-export const travelRequirementsByRegion: Record<string, string[]> = {
-  'Southeast Asia': [
-    'Valid passport (6+ months validity)',
-    'Return/onward ticket',
-    'Proof of accommodation',
-    'Visa may be required (check specific country)',
-    'Travel insurance recommended',
-    'Vaccination records (if applicable)',
-  ],
-  'East Asia': [
-    'Valid passport (6+ months validity)',
-    'Visa required for most countries',
-    'Return/onward ticket',
-    'Proof of accommodation',
-    'Sufficient funds proof',
-    'Travel itinerary',
-  ],
-  'Europe': [
-    'Valid passport (3+ months beyond stay)',
-    'Schengen visa (if applicable)',
-    'Travel insurance (minimum €30,000 coverage)',
-    'Return/onward ticket',
-    'Proof of accommodation',
-    'Proof of sufficient funds',
-  ],
-  'North America': [
-    'Valid passport',
-    'Visa or ESTA (for eligible countries)',
-    'Return/onward ticket',
-    'Proof of accommodation',
-    'Customs declaration form',
-  ],
-  'South Asia': [
-    'Valid passport (6+ months validity)',
-    'Visa required (e-visa available for some)',
-    'Return/onward ticket',
-    'Proof of accommodation',
-    'Yellow fever vaccination (if coming from endemic area)',
-  ],
-  'Oceania': [
-    'Valid passport',
-    'Visa or ETA (Electronic Travel Authority)',
-    'Return/onward ticket',
-    'Proof of sufficient funds',
-    'Health declaration form',
-  ],
-  'Middle East': [
-    'Valid passport (6+ months validity)',
-    'Visa required (some offer visa on arrival)',
-    'Return/onward ticket',
-    'Proof of accommodation',
-    'Respect local customs and dress code',
-  ],
-  'Africa': [
-    'Valid passport (6+ months validity)',
-    'Visa required for most countries',
-    'Yellow fever vaccination certificate',
-    'Return/onward ticket',
-    'Proof of accommodation',
-    'Travel insurance strongly recommended',
-  ],
-  'South America': [
-    'Valid passport (6+ months validity)',
-    'Visa requirements vary by country',
-    'Return/onward ticket',
-    'Proof of accommodation',
-    'Yellow fever vaccination (for some countries)',
-  ],
-}
+export { countryToCurrency, countryToRegion, travelRequirementsByRegion }
+export { getVisaFreeCountries, isVisaFree, getCountryByCode, getCountryByName }
 
 export interface UserLocation {
   country: string
@@ -253,6 +103,28 @@ export function getCurrencyForCountry(country: string): string {
 export function getTravelRequirementsForCountry(country: string): string[] {
   const region = countryToRegion[country]
   return travelRequirementsByRegion[region] || []
+}
+
+/**
+ * Get visa status information for a destination based on user's country
+ */
+export function getVisaStatus(userCountryCode: string, destinationCountryCode: string): {
+  isVisaFree: boolean
+  message: string
+} {
+  const visaFree = isVisaFree(userCountryCode, destinationCountryCode)
+  
+  if (visaFree) {
+    return {
+      isVisaFree: true,
+      message: 'Visa-free entry',
+    }
+  }
+  
+  return {
+    isVisaFree: false,
+    message: 'Visa required',
+  }
 }
 
 /**

@@ -18,6 +18,7 @@ model User {
   isPrivate      Boolean    @default(false)
   role           String     @default("user")
   isBanned       Boolean    @default(false)
+  countryOfOrigin String?
   currency       String     @default("USD")
   travelType     String     @default("solo")
   language       String     @default("en")

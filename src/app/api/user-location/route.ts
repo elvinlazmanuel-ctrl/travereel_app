@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { getVisaFreeCountries, getCountryByCode } from '@/lib/countries-database'
 
 // GET /api/user-location - Detect user location from IP
 export async function GET(request: Request) {
@@ -22,13 +23,26 @@ export async function GET(request: Request) {
 
     const data = await res.json()
 
+    const country = data.country_name || 'Unknown'
+    const countryCode = data.country_code || ''
+    
+    // Get visa-free countries for the detected country
+    const visaFreeCountries = countryCode ? getVisaFreeCountries(countryCode) : []
+    
+    // Get full country data
+    const countryData = countryCode ? getCountryByCode(countryCode) : null
+
     return NextResponse.json({
-      country: data.country_name || 'Unknown',
-      countryCode: data.country_code || '',
+      country,
+      countryCode,
       city: data.city || 'Unknown',
       region: data.region || '',
       latitude: data.latitude,
       longitude: data.longitude,
+      currency: countryData?.currency || 'USD',
+      continent: countryData?.continent || '',
+      visaFreeCountries,
+      visaFreeCount: visaFreeCountries.length,
     })
   } catch (error) {
     console.error('Location detection error:', error)

@@ -21,6 +21,7 @@ export const registerSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters').max(30).regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores'),
   name: z.string().min(1, 'Name is required').max(100),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  countryOfOrigin: z.string().optional(),
 })
 
 // Post schemas
