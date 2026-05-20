@@ -84,12 +84,20 @@
   --brand-emerald: oklch(0.65 0.22 155);
   --brand-blue: oklch(0.55 0.22 250);
   
+  /* Gradient backgrounds */
+  --gradient-sunset: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+  --gradient-ocean: linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%);
+  --gradient-forest: linear-gradient(135deg, #43E97B 0%, #38F9D7 100%);
+  --gradient-sky: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  --gradient-dawn: linear-gradient(135deg, #FA709A 0%, #FEE140 100%);
+  
   /* Enhanced shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-glow: 0 0 20px rgb(255 107 107 / 0.3);
+  --shadow-glass: 0 8px 32px 0 rgb(31 38 135 / 0.15);
 }
 
 .dark {
@@ -124,6 +132,13 @@
   --sidebar-accent-foreground: oklch(0.90 0 0);
   --sidebar-border: oklch(1 0 0 / 8%);
   --sidebar-ring: oklch(0.637 0.237 25.33);
+  
+  /* Dark mode gradients */
+  --gradient-sunset: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+  --gradient-ocean: linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%);
+  --gradient-forest: linear-gradient(135deg, #43E97B 0%, #38F9D7 100%);
+  --gradient-sky: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  --gradient-dawn: linear-gradient(135deg, #FA709A 0%, #FEE140 100%);
 }
 
 @layer base {
@@ -132,5 +147,141 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Travel-themed utility classes */
+@layer utilities {
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  
+  .dark .glass {
+    background: rgba(26, 26, 26, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Gradient backgrounds */
+  .bg-gradient-sunset {
+    background: var(--gradient-sunset);
+  }
+  
+  .bg-gradient-ocean {
+    background: var(--gradient-ocean);
+  }
+  
+  .bg-gradient-forest {
+    background: var(--gradient-forest);
+  }
+  
+  .bg-gradient-sky {
+    background: var(--gradient-sky);
+  }
+  
+  .bg-gradient-dawn {
+    background: var(--gradient-dawn);
+  }
+  
+  /* Text gradients */
+  .text-gradient-sunset {
+    background: var(--gradient-sunset);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-ocean {
+    background: var(--gradient-ocean);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Enhanced shadows */
+  .shadow-glass {
+    box-shadow: var(--shadow-glass);
+  }
+  
+  /* Smooth transitions */
+  .transition-all-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Hover lift effect */
+  .hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
+  
+  /* Image overlay gradient */
+  .image-overlay {
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  }
+  
+  /* Scroll snap for horizontal scrolling */
+  .scroll-snap-x {
+    scroll-snap-type: x mandatory;
+  }
+  
+  .scroll-snap-align {
+    scroll-snap-align: start;
+  }
+  
+  /* Animated gradient background */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+  
+  /* Pulse glow effect */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(255, 107, 107, 0.6);
+    }
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  /* Skeleton loading animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 25%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
   }
 }
