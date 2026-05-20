@@ -44,10 +44,11 @@ const categoryIcons: Record<string, string> = {
   features: '✨',
   access: '🔐',
   community: '👥',
+  monetization: '💰',
   general: '⚙️',
 }
 
-const categoryOrder = ['content', 'moderation', 'features', 'access', 'community', 'general']
+const categoryOrder = ['content', 'moderation', 'features', 'access', 'community', 'monetization', 'general']
 
 const categoryLabels: Record<string, string> = {
   content: 'Content',
@@ -55,6 +56,7 @@ const categoryLabels: Record<string, string> = {
   features: 'Features',
   access: 'Access',
   community: 'Community',
+  monetization: 'Monetization',
   general: 'General',
 }
 
@@ -228,7 +230,7 @@ export default function FeatureToggles() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {['content', 'moderation', 'features', 'access', 'community', 'general'].map((cat) => (
+                    {['content', 'moderation', 'features', 'access', 'community', 'monetization', 'general'].map((cat) => (
                       <SelectItem key={cat} value={cat}>
                         {categoryLabels[cat] || cat}
                       </SelectItem>
