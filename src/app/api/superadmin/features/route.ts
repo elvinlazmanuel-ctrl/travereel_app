@@ -1,16 +1,32 @@
 import { db } from '@/lib/db'
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
+import { requireSuperAdmin } from '@/lib/superadmin-middleware'
+import { logAdminAction } from '@/lib/audit-logger'
+import { encryptApiKey, decryptApiKey, maskApiKey } from '@/lib/api-key-encryption'
 
 // GET /api/superadmin/features - Fetch all feature toggles grouped by category
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    // Authenticate superadmin
+    const auth = await requireSuperAdmin(request)
+    if (!auth.success) {
+      return auth.error!
+    }
+
     const features = await db.featureToggle.findMany({
       orderBy: [{ category: 'asc' }, { label: 'asc' }],
     })
 
+    // Mask API keys in response for security
+    const sanitizedFeatures = features.map(feature => ({
+      ...feature,
+      apiKey: feature.apiKey ? maskApiKey(feature.apiKey) : null,
+      apiConfig: feature.apiConfig || null,
+    }))
+
     // Group by category
-    const grouped: Record<string, typeof features> = {}
-    for (const feature of features) {
+    const grouped: Record<string, typeof sanitizedFeatures> = {}
+    for (const feature of sanitizedFeatures) {
       const cat = feature.category || 'general'
       if (!grouped[cat]) {
         grouped[cat] = []
@@ -19,7 +35,7 @@ export async function GET() {
     }
 
     return NextResponse.json({
-      features,
+      features: sanitizedFeatures,
       grouped,
       categories: Object.keys(grouped).sort(),
     })
@@ -32,23 +48,22 @@ export async function GET() {
   }
 }
 
-// PUT /api/superadmin/features - Toggle a feature on/off
-// Body: { key, enabled }
-export async function PUT(request: Request) {
+// PUT /api/superadmin/features - Update a feature toggle (including API keys)
+// Body: { key, enabled?, apiKey?, apiConfig?, metadata? }
+export async function PUT(request: NextRequest) {
   try {
+    // Authenticate superadmin
+    const auth = await requireSuperAdmin(request)
+    if (!auth.success) {
+      return auth.error!
+    }
+
     const body = await request.json()
-    const { key, enabled } = body
+    const { key, enabled, apiKey, apiConfig, metadata } = body
 
     if (!key) {
       return NextResponse.json(
         { error: 'Feature key is required' },
-        { status: 400 }
-      )
-    }
-
-    if (typeof enabled !== 'boolean') {
-      return NextResponse.json(
-        { error: 'Enabled must be a boolean value' },
         { status: 400 }
       )
     }
@@ -64,12 +79,45 @@ export async function PUT(request: Request) {
       )
     }
 
+    // Prepare update data
+    const updateData: any = {}
+    if (typeof enabled === 'boolean') updateData.enabled = enabled
+    
+    // Encrypt API key if provided
+    if (apiKey !== undefined) {
+      if (apiKey === null || apiKey === '') {
+        updateData.apiKey = null // Remove API key
+      } else {
+        updateData.apiKey = await encryptApiKey(apiKey)
+      }
+    }
+    
+    if (apiConfig !== undefined) updateData.apiConfig = apiConfig
+    if (metadata !== undefined) updateData.metadata = metadata
+
     const updated = await db.featureToggle.update({
       where: { key },
-      data: { enabled },
+      data: updateData,
     })
 
-    return NextResponse.json({ success: true, data: updated })
+    // Log the action
+    await logAdminAction({
+      adminId: auth.admin!.id,
+      action: 'FEATURE_UPDATE',
+      target: key,
+      details: JSON.stringify({ enabled, hasApiKey: apiKey !== undefined }),
+      ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
+      userAgent: request.headers.get('user-agent') || 'unknown',
+      outcome: 'success',
+    })
+
+    // Return sanitized data
+    const sanitizedData = {
+      ...updated,
+      apiKey: updated.apiKey ? maskApiKey(updated.apiKey) : null,
+    }
+
+    return NextResponse.json({ success: true, data: sanitizedData })
   } catch (error) {
     console.error('Superadmin features PUT error:', error)
     return NextResponse.json(
@@ -80,11 +128,17 @@ export async function PUT(request: Request) {
 }
 
 // POST /api/superadmin/features - Create a new feature toggle
-// Body: { key, label, description?, category?, enabled? }
-export async function POST(request: Request) {
+// Body: { key, label, description?, category?, enabled?, apiKey?, apiConfig?, metadata? }
+export async function POST(request: NextRequest) {
   try {
+    // Authenticate superadmin
+    const auth = await requireSuperAdmin(request)
+    if (!auth.success) {
+      return auth.error!
+    }
+
     const body = await request.json()
-    const { key, label, description, category, enabled } = body
+    const { key, label, description, category, enabled, apiKey, apiConfig, metadata } = body
 
     if (!key || !label) {
       return NextResponse.json(
@@ -105,6 +159,12 @@ export async function POST(request: Request) {
       )
     }
 
+    // Encrypt API key if provided
+    let encryptedApiKey = null
+    if (apiKey) {
+      encryptedApiKey = await encryptApiKey(apiKey)
+    }
+
     const feature = await db.featureToggle.create({
       data: {
         key,
@@ -112,7 +172,21 @@ export async function POST(request: Request) {
         description: description || null,
         category: category || 'general',
         enabled: enabled !== undefined ? enabled : true,
+        apiKey: encryptedApiKey,
+        apiConfig: apiConfig || null,
+        metadata: metadata || null,
       },
+    })
+
+    // Log the action
+    await logAdminAction({
+      adminId: auth.admin!.id,
+      action: 'FEATURE_CREATE',
+      target: key,
+      details: JSON.stringify({ label, category, hasApiKey: !!apiKey }),
+      ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
+      userAgent: request.headers.get('user-agent') || 'unknown',
+      outcome: 'success',
     })
 
     return NextResponse.json({ success: true, data: feature }, { status: 201 })

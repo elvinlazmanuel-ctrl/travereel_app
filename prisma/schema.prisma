@@ -440,7 +440,15 @@ model FeatureToggle {
   description String?
   enabled     Boolean  @default(true)
   category    String   @default("general")
+  
+  // API Key management for features that require external services
+  apiKey      String?  // Encrypted API key for the feature
+  apiConfig   String?  // JSON configuration for API endpoints, settings, etc.
+  
+  // Metadata
+  metadata    String?  // JSON metadata for additional feature config
   updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
 
   @@map("feature_toggles")
 }
