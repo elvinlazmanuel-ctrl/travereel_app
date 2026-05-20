@@ -14,6 +14,7 @@ export interface FeatureToggle {
 
 /**
  * Hook to check if a specific feature is enabled
+ * Uses PUBLIC endpoint - no authentication required
  * 
  * @param key - The feature toggle key (e.g., 'where_to_stay', 'travel_insurance')
  * @returns Object with enabled status, feature data, and loading state
@@ -40,9 +41,8 @@ export function useFeatureToggle(key: string) {
       setLoading(true)
       setError(null)
       
-      const response = await fetch('/api/superadmin/features', {
-        credentials: 'include', // Include cookies for authentication
-      })
+      // Use PUBLIC endpoint - no authentication required
+      const response = await fetch('/api/features')
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
