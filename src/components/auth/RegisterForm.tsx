@@ -97,34 +97,34 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   }
 
   return (
-    <div className="w-full max-w-sm mx-auto px-6">
+    <div className="w-full max-w-sm mx-auto px-6 py-8">
       {/* Brand */}
       <div className="flex flex-col items-center mb-8">
-        <div className="flex items-center justify-center mb-4">
-          <img src="/new-logo.png" alt="Travereel" className="h-15 w-16" />
+        <div className="flex items-center justify-center mb-4 bg-white rounded-2xl p-3 shadow-sm">
+          <img src="/new-logo.png" alt="Travereel" className="h-16 w-16 object-contain" />
         </div>
-        <h1 className="text-3xl font-bold text-gradient-sky">
-          Travereel
+        <h1 className="text-3xl font-bold text-[#0B0B2A]">
+          Join Travereel
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Start your journey today
+        <p className="text-sm text-[#4A5568] mt-2">
+          Start your travel adventure today
         </p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
-          <div className="p-3 rounded-lg bg-[#2F5C9B]/10 border border-[#2F5C9B]/20">
-            <p className="text-sm text-[#2F5C9B] font-medium">{error}</p>
+          <div className="p-4 rounded-xl bg-red-50 border border-red-200">
+            <p className="text-sm text-red-700 font-medium">{error}</p>
             {errorDetails && (
-              <p className="text-xs text-[#2F5C9B]/80 mt-1">{errorDetails}</p>
+              <p className="text-xs text-red-600 mt-1">{errorDetails}</p>
             )}
           </div>
         )}
 
         <div className="space-y-2">
-          <Label htmlFor="reg-email" className="text-gray-700">
-            Email
+          <Label htmlFor="reg-email" className="text-[#0B0B2A] font-medium">
+            Email Address
           </Label>
           <Input
             id="reg-email"
@@ -133,55 +133,55 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="h-11 rounded-lg border-gray-200 bg-gray-50/50 focus:bg-white transition-colors"
+            className="h-12 rounded-xl border-gray-300 bg-white focus:bg-white transition-all focus:border-[#2F5C9B] focus:ring-2 focus:ring-[#2F5C9B]/20 text-[#0B0B2A] placeholder:text-gray-400"
             disabled={isLoading}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="reg-username" className="text-gray-700">
+          <Label htmlFor="reg-username" className="text-[#0B0B2A] font-medium">
             Username
           </Label>
           <Input
             id="reg-username"
             type="text"
-            placeholder="Choose a username"
+            placeholder="Choose a unique username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            className="h-11 rounded-lg border-gray-200 bg-gray-50/50 focus:bg-white transition-colors"
+            className="h-12 rounded-xl border-gray-300 bg-white focus:bg-white transition-all focus:border-[#2F5C9B] focus:ring-2 focus:ring-[#2F5C9B]/20 text-[#0B0B2A] placeholder:text-gray-400"
             disabled={isLoading}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="reg-name" className="text-gray-700">
+          <Label htmlFor="reg-name" className="text-[#0B0B2A] font-medium">
             Full Name
           </Label>
           <Input
             id="reg-name"
             type="text"
-            placeholder="Your full name"
+            placeholder="Enter your full name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="h-11 rounded-lg border-gray-200 bg-gray-50/50 focus:bg-white transition-colors"
+            className="h-12 rounded-xl border-gray-300 bg-white focus:bg-white transition-all focus:border-[#2F5C9B] focus:ring-2 focus:ring-[#2F5C9B]/20 text-[#0B0B2A] placeholder:text-gray-400"
             disabled={isLoading}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="reg-country" className="text-gray-700">
+          <Label htmlFor="reg-country" className="text-[#0B0B2A] font-medium">
             Country of Origin
           </Label>
           <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
             <select
               id="reg-country"
               value={countryOfOrigin}
               onChange={(e) => setCountryOfOrigin(e.target.value)}
               required
-              className="h-11 w-full rounded-lg border-gray-200 bg-gray-50/50 focus:bg-white transition-colors pl-10 pr-4 text-sm disabled:opacity-50"
+              className="h-12 w-full rounded-xl border-gray-300 bg-white focus:bg-white transition-all focus:border-[#2F5C9B] focus:ring-2 focus:ring-[#2F5C9B]/20 pl-10 pr-4 text-sm disabled:opacity-50 text-[#0B0B2A]"
               disabled={isLoading}
             >
               <option value="">Select your country</option>
@@ -193,7 +193,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             </select>
           </div>
           {isDetectingLocation && (
-            <p className="text-xs text-gray-500 flex items-center gap-1">
+            <p className="text-xs text-[#4A5568] flex items-center gap-1">
               <Loader2 className="size-3 animate-spin" />
               Detecting your location...
             </p>
@@ -201,31 +201,31 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="reg-password" className="text-gray-700">
+          <Label htmlFor="reg-password" className="text-[#0B0B2A] font-medium">
             Password
           </Label>
           <div className="relative">
             <Input
               id="reg-password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="Create a password"
+              placeholder="Create a strong password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="h-11 rounded-lg border-gray-200 bg-gray-50/50 focus:bg-white transition-colors pr-10"
+              className="h-12 rounded-xl border-gray-300 bg-white focus:bg-white transition-all focus:border-[#2F5C9B] focus:ring-2 focus:ring-[#2F5C9B]/20 text-[#0B0B2A] placeholder:text-gray-400 pr-10"
               disabled={isLoading}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#2F5C9B] transition-colors"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
-                <EyeOff className="size-4" />
+                <EyeOff className="size-5" />
               ) : (
-                <Eye className="size-4" />
+                <Eye className="size-5" />
               )}
             </button>
           </div>
@@ -234,34 +234,34 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full h-11 rounded-lg bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#2F5C9B] text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all border-0 disabled:opacity-50 cursor-pointer"
+          className="w-full h-12 rounded-xl bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white font-semibold shadow-lg hover:shadow-xl hover:from-[#2F5C9B]/90 hover:to-[#5CA5CD]/90 transition-all border-0 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {isLoading ? (
             <>
-              <Loader2 className="size-4 animate-spin" />
+              <Loader2 className="size-5 animate-spin" />
               Creating account...
             </>
           ) : (
-            'Sign Up'
+            'Create Account'
           )}
         </Button>
       </form>
 
       {/* Divider */}
       <div className="flex items-center my-6">
-        <div className="flex-1 h-px bg-gray-200" />
-        <span className="px-4 text-xs text-gray-400 uppercase">or</span>
-        <div className="flex-1 h-px bg-gray-200" />
+        <div className="flex-1 h-px bg-gray-300" />
+        <span className="px-4 text-xs text-gray-500 uppercase tracking-wide">or</span>
+        <div className="flex-1 h-px bg-gray-300" />
       </div>
 
       {/* Switch to Login */}
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-[#4A5568]">
         Already have an account?{' '}
         <button
           onClick={onSwitchToLogin}
-          className="text-[#5CA5CD] font-semibold hover:text-[#2F5C9B] transition-colors"
+          className="text-[#2F5C9B] font-semibold hover:text-[#5CA5CD] transition-colors underline-offset-4 hover:underline"
         >
-          Log In
+          Sign In
         </button>
       </p>
     </div>
