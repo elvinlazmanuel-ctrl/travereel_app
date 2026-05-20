@@ -113,7 +113,7 @@ export default function StepCountry() {
         </h2>
         <p className="text-sm text-muted-foreground">Select a country for your adventure</p>
         {isDetectingLocation && (
-          <div className="flex items-center gap-2 mt-2 text-xs text-[#2EC4B6]">
+          <div className="flex items-center gap-2 mt-2 text-xs text-[#5CA5CD]">
             <Loader2 className="size-3 animate-spin" />
             <span>Detecting your location...</span>
           </div>
@@ -152,7 +152,7 @@ export default function StepCountry() {
                   onClick={() => handleSelect(country.name)}
                   className={`relative flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
                     wizardData.country === country.name
-                      ? 'border-[#FF6B6B] bg-[#FF6B6B]/5 shadow-sm'
+                      ? 'border-[#2F5C9B] bg-[#2F5C9B]/5 shadow-sm'
                       : 'border-gray-100 bg-white hover:border-gray-200 hover:bg-gray-50'
                   }`}
                 >
@@ -161,7 +161,7 @@ export default function StepCountry() {
                     {country.name}
                   </span>
                   {wizardData.country === country.name && (
-                    <Check className="size-4 text-[#FF6B6B] shrink-0" />
+                    <Check className="size-4 text-[#2F5C9B] shrink-0" />
                   )}
                   {visaFree && (
                     <div className="absolute -top-1 -right-1 bg-green-500 text-white rounded-full p-0.5" title="Visa-free entry">
@@ -191,7 +191,7 @@ export default function StepCountry() {
                 onClick={() => handleSelect(country.name)}
                 className={`relative w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
                   wizardData.country === country.name
-                    ? 'border-[#FF6B6B] bg-[#FF6B6B]/5 shadow-sm'
+                    ? 'border-[#2F5C9B] bg-[#2F5C9B]/5 shadow-sm'
                     : 'border-transparent hover:bg-gray-50'
                 }`}
               >
@@ -200,7 +200,7 @@ export default function StepCountry() {
                   {country.name}
                 </span>
                 {wizardData.country === country.name && (
-                  <Check className="size-4 text-[#FF6B6B] shrink-0" />
+                  <Check className="size-4 text-[#2F5C9B] shrink-0" />
                 )}
                 {visaFree && (
                   <div className="bg-green-100 text-green-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">

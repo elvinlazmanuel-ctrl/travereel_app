@@ -48,7 +48,7 @@ export default function StepActivities() {
           <motion.div
             className="h-full rounded-full"
             style={{
-              background: 'linear-gradient(90deg, #FF6B6B, #FF8C42, #FFBA49)',
+              background: 'linear-gradient(90deg, #2F5C9B, #5CA5CD, #E58BEA)',
             }}
             animate={{
               width: `${Math.min((selectedActivities.length / activityCategories.length) * 100, 100)}%`,
@@ -72,14 +72,14 @@ export default function StepActivities() {
               onClick={() => toggleActivity(activity.id)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-full border-2 transition-all ${
                 isSelected
-                  ? 'border-[#FF6B6B] bg-[#FF6B6B]/5 shadow-sm'
+                  ? 'border-[#2F5C9B] bg-[#2F5C9B]/5 shadow-sm'
                   : 'border-gray-100 bg-white hover:border-gray-200'
               }`}
             >
               <span className="text-lg">{activity.emoji}</span>
               <span
                 className={`text-sm font-medium ${
-                  isSelected ? 'text-[#FF6B6B]' : 'text-foreground'
+                  isSelected ? 'text-[#2F5C9B]' : 'text-foreground'
                 }`}
               >
                 {activity.label}
@@ -88,7 +88,7 @@ export default function StepActivities() {
                 <motion.svg
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="size-4 text-[#FF6B6B]"
+                  className="size-4 text-[#2F5C9B]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -107,7 +107,7 @@ export default function StepActivities() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 rounded-xl bg-gradient-to-r from-[#FF6B6B]/5 via-[#FF8C42]/5 to-[#FFBA49]/5 border border-[#FF6B6B]/20"
+          className="p-4 rounded-xl bg-gradient-to-r from-[#2F5C9B]/5 via-[#5CA5CD]/5 to-[#E58BEA]/5 border border-[#2F5C9B]/20"
         >
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
             Selected Activities

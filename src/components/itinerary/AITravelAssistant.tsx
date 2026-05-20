@@ -126,9 +126,9 @@ export function AITravelAssistant({ userId, onClose }: AITravelAssistantProps) {
         className="bg-card w-full sm:max-w-lg h-[90vh] sm:h-[600px] rounded-t-2xl sm:rounded-2xl flex flex-col overflow-hidden"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border bg-gradient-to-r from-[#2EC4B6]/10 to-[#FF6B6B]/10">
+        <div className="flex items-center justify-between p-4 border-b border-border bg-gradient-to-r from-[#5CA5CD]/10 to-[#2F5C9B]/10">
           <div className="flex items-center gap-3">
-            <div className="size-10 bg-gradient-to-br from-[#2EC4B6] to-[#FF6B6B] rounded-full flex items-center justify-center">
+            <div className="size-10 bg-gradient-to-br from-[#5CA5CD] to-[#2F5C9B] rounded-full flex items-center justify-center">
               <Bot className="size-5 text-white" />
             </div>
             <div>
@@ -155,7 +155,7 @@ export function AITravelAssistant({ userId, onClose }: AITravelAssistantProps) {
               >
                 {message.role === 'assistant' && (
                   <Avatar className="size-8 shrink-0">
-                    <AvatarFallback className="bg-gradient-to-br from-[#2EC4B6] to-[#FF6B6B] text-white text-xs">
+                    <AvatarFallback className="bg-gradient-to-br from-[#5CA5CD] to-[#2F5C9B] text-white text-xs">
                       AI
                     </AvatarFallback>
                   </Avatar>
@@ -164,7 +164,7 @@ export function AITravelAssistant({ userId, onClose }: AITravelAssistantProps) {
                 <div
                   className={`max-w-[75%] rounded-2xl px-4 py-3 ${
                     message.role === 'user'
-                      ? 'bg-[#2EC4B6] text-white'
+                      ? 'bg-[#5CA5CD] text-white'
                       : 'bg-muted'
                   }`}
                 >
@@ -202,7 +202,7 @@ export function AITravelAssistant({ userId, onClose }: AITravelAssistantProps) {
             {isLoading && (
               <div className="flex gap-3">
                 <Avatar className="size-8 shrink-0">
-                  <AvatarFallback className="bg-gradient-to-br from-[#2EC4B6] to-[#FF6B6B] text-white text-xs">
+                  <AvatarFallback className="bg-gradient-to-br from-[#5CA5CD] to-[#2F5C9B] text-white text-xs">
                     AI
                   </AvatarFallback>
                 </Avatar>
@@ -245,7 +245,7 @@ export function AITravelAssistant({ userId, onClose }: AITravelAssistantProps) {
               onClick={() => sendMessage(input)}
               disabled={!input.trim() || isLoading}
               size="icon"
-              className="rounded-full bg-[#2EC4B6] hover:bg-[#2EC4B6]/90"
+              className="rounded-full bg-[#5CA5CD] hover:bg-[#5CA5CD]/90"
             >
               <Send className="size-4" />
             </Button>

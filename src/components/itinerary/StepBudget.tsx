@@ -148,7 +148,7 @@ export default function StepBudget() {
             className="h-full rounded-full transition-all duration-500 ease-out"
             style={{
               width: `${rangePercent}%`,
-              background: 'linear-gradient(90deg, #2EC4B6, #FFBA49, #FF8C42, #FF6B6B)',
+              background: 'linear-gradient(90deg, #5CA5CD, #E58BEA, #5CA5CD, #2F5C9B)',
             }}
           />
         </div>
@@ -171,7 +171,7 @@ export default function StepBudget() {
             onClick={() => setWizardData({ budget: cat.amount })}
             className={`p-3 rounded-xl border-2 transition-all text-left ${
               category.label === cat.label
-                ? 'border-[#FF6B6B] shadow-sm'
+                ? 'border-[#2F5C9B] shadow-sm'
                 : 'border-transparent hover:border-gray-200'
             } ${cat.color}`}
           >
@@ -184,8 +184,8 @@ export default function StepBudget() {
 
       {/* Summary */}
       {wizardData.budget > 0 && (
-        <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
-          <Wallet className="size-5 text-[#2EC4B6]" />
+        <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#5CA5CD]/5 to-[#E58BEA]/5 border border-[#5CA5CD]/20">
+          <Wallet className="size-5 text-[#5CA5CD]" />
           <div>
             <p className="text-sm font-semibold text-foreground">
               {currencySymbol(wizardData.currency)}{wizardData.budget.toLocaleString()} {wizardData.currency}

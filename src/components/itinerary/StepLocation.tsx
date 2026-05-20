@@ -189,7 +189,7 @@ export default function StepLocation() {
               onClick={() => handleSelect(loc.name)}
               className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
                 wizardData.location === loc.name
-                  ? 'border-[#FF6B6B] bg-[#FF6B6B]/5 shadow-sm'
+                  ? 'border-[#2F5C9B] bg-[#2F5C9B]/5 shadow-sm'
                   : 'border-gray-100 bg-white hover:border-gray-200 hover:bg-gray-50'
               }`}
             >
@@ -198,7 +198,7 @@ export default function StepLocation() {
                 {loc.name}
               </span>
               {wizardData.location === loc.name && (
-                <Check className="size-4 text-[#FF6B6B] shrink-0" />
+                <Check className="size-4 text-[#2F5C9B] shrink-0" />
               )}
             </button>
           ))}
@@ -209,7 +209,7 @@ export default function StepLocation() {
       {!showCustom ? (
         <button
           onClick={() => setShowCustom(true)}
-          className="flex items-center gap-2 text-sm font-medium text-[#2EC4B6] hover:text-[#2EC4B6]/80 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-[#5CA5CD] hover:text-[#5CA5CD]/80 transition-colors"
         >
           <Plus className="size-4" />
           Add custom location
@@ -231,7 +231,7 @@ export default function StepLocation() {
           <Button
             onClick={handleAddCustom}
             size="sm"
-            className="bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white shrink-0"
+            className="bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white shrink-0"
           >
             Add
           </Button>
@@ -241,8 +241,8 @@ export default function StepLocation() {
       {/* Selected Location Display */}
       {wizardData.location && (
         <div className="space-y-3">
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#FF6B6B]/5 to-[#FF8C42]/5 border border-[#FF6B6B]/20">
-            <MapPin className="size-5 text-[#FF6B6B]" />
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5 border border-[#2F5C9B]/20">
+            <MapPin className="size-5 text-[#2F5C9B]" />
             <div>
               <p className="text-sm font-semibold text-foreground">{wizardData.location}</p>
               <p className="text-xs text-muted-foreground">{wizardData.country}</p>

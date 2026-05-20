@@ -22,8 +22,9 @@ export default function TopBar() {
         <div className="glass rounded-2xl shadow-glass border border-white/20 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
           <div className="flex items-center justify-between h-14 px-4">
             {/* Logo with travel theme */}
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] bg-clip-text text-transparent tracking-tight hover:scale-105 transition-transform cursor-default">
-              ✈️ Travereel
+            <h1 className="flex items-center gap-2 text-xl font-bold text-gradient-sky hover:scale-105 transition-transform cursor-default">
+              <img src="/new-logo.png" alt="Travereel" className="h-8 w-8" />
+              Travereel
             </h1>
             
             {/* Action buttons */}
@@ -31,13 +32,13 @@ export default function TopBar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all"
+                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 transition-all"
                 onClick={() => setCurrentView('friends')}
                 aria-label="Friends"
               >
-                <UserPlus className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+                <UserPlus className="size-5 text-muted-foreground hover:text-[#2F5C9B] transition-colors" />
                 {pendingFriendRequestCount > 0 && (
-                  <span className="absolute top-0.5 right-0.5 min-w-[18px] h-4.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white text-[10px] font-bold flex items-center justify-center px-1 shadow-md animate-pulse">
+                  <span className="absolute top-0.5 right-0.5 min-w-[18px] h-4.5 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white text-[10px] font-bold flex items-center justify-center px-1 shadow-md animate-pulse">
                     {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
                   </span>
                 )}
@@ -45,25 +46,25 @@ export default function TopBar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all"
+                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 transition-all"
                 onClick={() => setCurrentView('notifications')}
                 aria-label="Notifications"
               >
-                <Bell className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+                <Bell className="size-5 text-muted-foreground hover:text-[#2F5C9B] transition-colors" />
                 {hasUnreadNotifications && (
-                  <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] shadow-md animate-pulse" />
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] shadow-md animate-pulse" />
                 )}
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all"
+                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 transition-all"
                 onClick={() => setCurrentView('messages')}
                 aria-label="Messages"
               >
-                <Mail className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+                <Mail className="size-5 text-muted-foreground hover:text-[#2F5C9B] transition-colors" />
                 {hasUnreadMessages && (
-                  <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] shadow-md animate-pulse" />
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] shadow-md animate-pulse" />
                 )}
               </Button>
             </div>
@@ -80,8 +81,8 @@ export default function TopBar() {
         <div className="glass rounded-2xl shadow-glass border border-white/20 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
           <div className="flex items-center justify-between h-14 px-4">
             <h1 className="text-lg font-semibold text-gradient-sunset">🧭 Discover</h1>
-            <Button variant="ghost" size="icon" className="rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all" aria-label="Search">
-              <Search className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+            <Button variant="ghost" size="icon" className="rounded-xl hover:bg-gradient-to-br hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 transition-all" aria-label="Search">
+              <Search className="size-5 text-muted-foreground hover:text-[#2F5C9B] transition-colors" />
             </Button>
           </div>
         </div>
@@ -115,7 +116,7 @@ export default function TopBar() {
                     {currentUser?.username || 'Profile'}
                   </span>
                   <svg
-                    className="size-4 text-muted-foreground group-hover:text-[#2EC4B6] transition-colors"
+                    className="size-4 text-muted-foreground group-hover:text-[#2F5C9B] transition-colors"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -134,18 +135,14 @@ export default function TopBar() {
                   <Settings className="size-4 mr-2" />
                   Settings
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={logout} className="text-[#FF6B6B]">
+                <DropdownMenuItem onClick={logout} className="text-[#E58BEA]">
                   <LogOut className="size-4 mr-2" />
                   Log Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button variant="ghost" size="icon" className="rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all" aria-label="Menu">
-              <div className="flex flex-col gap-0.5">
-                <div className="w-5 h-0.5 bg-muted-foreground rounded transition-colors group-hover:text-[#2EC4B6]" />
-                <div className="w-5 h-0.5 bg-muted-foreground rounded transition-colors" />
-                <div className="w-5 h-0.5 bg-muted-foreground rounded transition-colors" />
-              </div>
+            <Button variant="ghost" size="icon" className="rounded-xl hover:bg-gradient-to-br hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 transition-all" aria-label="Settings" onClick={() => setCurrentView('settings')}>
+              <Settings className="size-5 text-muted-foreground hover:text-[#2F5C9B] transition-colors" />
             </Button>
           </div>
         </div>
@@ -209,7 +206,7 @@ export default function TopBar() {
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all"
+            className="rounded-xl hover:bg-gradient-to-br hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 transition-all"
             onClick={() => {
               if (previousView) {
                 setCurrentView(previousView)
@@ -219,7 +216,7 @@ export default function TopBar() {
             }}
             aria-label="Go back"
           >
-            <ArrowLeft className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+            <ArrowLeft className="size-5 text-muted-foreground hover:text-[#2F5C9B] transition-colors" />
           </Button>
           <h2 className="text-lg font-semibold text-gradient-sunset">{getTitle()}</h2>
         </div>

@@ -193,7 +193,7 @@ export default function AIGenerateResult() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-          className="size-16 rounded-full bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] p-1 mb-6"
+          className="size-16 rounded-full bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] p-1 mb-6"
         >
           <div className="size-full rounded-full bg-white flex items-center justify-center">
             <span className="text-2xl">✨</span>
@@ -206,7 +206,7 @@ export default function AIGenerateResult() {
           Creating a personalized itinerary for {wizardData.location}, {wizardData.country}
         </p>
         <div className="flex items-center gap-2 mb-4">
-          <Clock className="size-4 text-[#FF8C42]" />
+          <Clock className="size-4 text-[#5CA5CD]" />
           <span className="text-sm font-medium text-foreground">
             {elapsedTime}s elapsed
           </span>
@@ -215,7 +215,7 @@ export default function AIGenerateResult() {
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className="size-2 rounded-full bg-[#FF8C42]"
+              className="size-2 rounded-full bg-[#5CA5CD]"
               animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
               transition={{
                 duration: 1,
@@ -234,7 +234,7 @@ export default function AIGenerateResult() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] py-12">
         <div className="size-16 rounded-full bg-red-50 flex items-center justify-center mb-4">
-          <AlertCircle className="size-8 text-[#FF6B6B]" />
+          <AlertCircle className="size-8 text-[#2F5C9B]" />
         </div>
         <h3 className="text-lg font-bold text-foreground mb-2">
           {isTimeout ? 'Request Timed Out' : 'Something went wrong'}
@@ -253,7 +253,7 @@ export default function AIGenerateResult() {
         <div className="flex gap-3">
           <Button
             onClick={generateItinerary}
-            className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white"
+            className="bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white"
           >
             <RefreshCw className="size-4 mr-2" />
             Try Again
@@ -274,7 +274,7 @@ export default function AIGenerateResult() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="size-10 rounded-xl bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] flex items-center justify-center">
+        <div className="size-10 rounded-xl bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] flex items-center justify-center">
           <span className="text-lg">✨</span>
         </div>
         <div>
@@ -287,26 +287,26 @@ export default function AIGenerateResult() {
 
       {/* Budget Overview */}
       <div className="grid grid-cols-3 gap-2">
-        <div className="p-3 rounded-xl bg-[#FF6B6B]/5 border border-[#FF6B6B]/10 text-center">
+        <div className="p-3 rounded-xl bg-[#2F5C9B]/5 border border-[#2F5C9B]/10 text-center">
           <p className="text-xs text-muted-foreground mb-1">Your Budget</p>
-          <p className="text-sm font-bold text-[#FF6B6B]">
+          <p className="text-sm font-bold text-[#2F5C9B]">
             {currencySymbol(wizardData.currency)}{wizardData.budget.toLocaleString()}
           </p>
         </div>
-        <div className="p-3 rounded-xl bg-[#FF8C42]/5 border border-[#FF8C42]/10 text-center">
+        <div className="p-3 rounded-xl bg-[#5CA5CD]/5 border border-[#5CA5CD]/10 text-center">
           <p className="text-xs text-muted-foreground mb-1">Est. Cost</p>
-          <p className="text-sm font-bold text-[#FF8C42]">
+          <p className="text-sm font-bold text-[#5CA5CD]">
             ${result.totalEstimatedCost.toLocaleString()}
           </p>
         </div>
         <div className="p-3 rounded-xl border text-center"
           style={{
-            borderColor: budgetRemaining >= 0 ? '#2EC4B6' : '#FF6B6B',
+            borderColor: budgetRemaining >= 0 ? '#5CA5CD' : '#2F5C9B',
             background: budgetRemaining >= 0 ? 'rgba(46,196,182,0.05)' : 'rgba(255,107,107,0.05)',
           }}
         >
           <p className="text-xs text-muted-foreground mb-1">Remaining</p>
-          <p className={`text-sm font-bold ${budgetRemaining >= 0 ? 'text-[#2EC4B6]' : 'text-[#FF6B6B]'}`}>
+          <p className={`text-sm font-bold ${budgetRemaining >= 0 ? 'text-[#5CA5CD]' : 'text-[#2F5C9B]'}`}>
             ${budgetRemaining.toLocaleString()}
           </p>
         </div>
@@ -327,7 +327,7 @@ export default function AIGenerateResult() {
                 className="size-10 rounded-lg flex items-center justify-center shrink-0 font-bold text-white text-sm"
                 style={{
                   background: `linear-gradient(135deg, ${
-                    index === 0 ? '#FF6B6B, #FF8C42' : index === result.days.length - 1 ? '#2EC4B6, #FFBA49' : '#FF8C42, #FFBA49'
+                    index === 0 ? '#2F5C9B, #5CA5CD' : index === result.days.length - 1 ? '#5CA5CD, #E58BEA' : '#5CA5CD, #E58BEA'
                   })`,
                 }}
               >
@@ -361,8 +361,8 @@ export default function AIGenerateResult() {
                   <CardContent className="px-4 pb-4 pt-0 space-y-3">
                     {/* Route */}
                     {day.route && (
-                      <div className="flex items-start gap-2 p-3 rounded-lg bg-[#2EC4B6]/5 border border-[#2EC4B6]/10">
-                        <Route className="size-4 text-[#2EC4B6] shrink-0 mt-0.5" />
+                      <div className="flex items-start gap-2 p-3 rounded-lg bg-[#5CA5CD]/5 border border-[#5CA5CD]/10">
+                        <Route className="size-4 text-[#5CA5CD] shrink-0 mt-0.5" />
                         <p className="text-xs text-gray-600">{day.route}</p>
                       </div>
                     )}
@@ -375,7 +375,7 @@ export default function AIGenerateResult() {
                           className="flex gap-3 p-3 rounded-lg bg-gray-50"
                         >
                           <div className="flex flex-col items-center shrink-0">
-                            <div className="size-2 rounded-full bg-[#FF8C42]" />
+                            <div className="size-2 rounded-full bg-[#5CA5CD]" />
                             {actIndex < day.activities.length - 1 && (
                               <div className="w-0.5 h-full bg-gray-200 mt-1" />
                             )}
@@ -403,7 +403,7 @@ export default function AIGenerateResult() {
                                 </span>
                               )}
                               {activity.cost > 0 && (
-                                <span className="flex items-center gap-1 text-[10px] text-[#FF8C42] font-medium">
+                                <span className="flex items-center gap-1 text-[10px] text-[#5CA5CD] font-medium">
                                   <Wallet className="size-3" />
                                   ${activity.cost}
                                 </span>
@@ -446,7 +446,7 @@ export default function AIGenerateResult() {
         <Button
           onClick={handleSave}
           disabled={saving}
-          className="w-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white h-12 text-base font-semibold"
+          className="w-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white h-12 text-base font-semibold"
         >
           {saving ? (
             <motion.div
@@ -465,7 +465,7 @@ export default function AIGenerateResult() {
           <Button
             variant="outline"
             onClick={generateItinerary}
-            className="flex-1 border-[#FF8C42]/30 text-[#FF8C42] hover:bg-[#FF8C42]/5"
+            className="flex-1 border-[#5CA5CD]/30 text-[#5CA5CD] hover:bg-[#5CA5CD]/5"
           >
             <RefreshCw className="size-4 mr-2" />
             Regenerate
@@ -473,7 +473,7 @@ export default function AIGenerateResult() {
           <Button
             variant="outline"
             onClick={handleSwitchToManual}
-            className="flex-1 border-[#2EC4B6]/30 text-[#2EC4B6] hover:bg-[#2EC4B6]/5"
+            className="flex-1 border-[#5CA5CD]/30 text-[#5CA5CD] hover:bg-[#5CA5CD]/5"
           >
             <Pencil className="size-4 mr-2" />
             Edit

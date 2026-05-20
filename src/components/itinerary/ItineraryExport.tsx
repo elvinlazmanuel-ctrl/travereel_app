@@ -255,7 +255,7 @@ END:VEVENT
         onClick={exportPDF}
         disabled={exporting !== null}
         size="sm"
-        className="flex-1 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:opacity-90"
+        className="flex-1 bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white hover:opacity-90"
       >
         {exporting === 'pdf' ? (
           <Loader2 className="size-4 mr-2 animate-spin" />
@@ -270,7 +270,7 @@ END:VEVENT
         disabled={exporting !== null}
         size="sm"
         variant="outline"
-        className="flex-1 border-[#2EC4B6] text-[#2EC4B6] hover:bg-[#2EC4B6]/5"
+        className="flex-1 border-[#5CA5CD] text-[#5CA5CD] hover:bg-[#5CA5CD]/5"
       >
         {exporting === 'ics' ? (
           <Loader2 className="size-4 mr-2 animate-spin" />

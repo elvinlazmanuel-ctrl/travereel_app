@@ -52,7 +52,7 @@ function getStatusConfig(status: Itinerary['status']) {
     case 'post-travel':
       return {
         label: 'Post-Travel',
-        bgClass: 'bg-[#FF6B6B]/15 text-[#FF6B6B] border-[#FF6B6B]/25',
+        bgClass: 'bg-[#2F5C9B]/15 text-[#2F5C9B] border-[#2F5C9B]/25',
       }
     default:
       return {

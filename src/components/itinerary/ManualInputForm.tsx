@@ -225,7 +225,7 @@ export default function ManualInputForm() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="size-10 rounded-xl bg-gradient-to-br from-[#2EC4B6] to-[#FFBA49] flex items-center justify-center">
+        <div className="size-10 rounded-xl bg-gradient-to-br from-[#5CA5CD] to-[#E58BEA] flex items-center justify-center">
           <Route className="size-5 text-white" />
         </div>
         <div>
@@ -253,10 +253,10 @@ export default function ManualInputForm() {
                 style={{
                   background: `linear-gradient(135deg, ${
                     day.dayNumber === 1
-                      ? '#FF6B6B, #FF8C42'
+                      ? '#2F5C9B, #5CA5CD'
                       : day.dayNumber === days.length
-                      ? '#2EC4B6, #FFBA49'
-                      : '#FF8C42, #FFBA49'
+                      ? '#5CA5CD, #E58BEA'
+                      : '#5CA5CD, #E58BEA'
                   })`,
                 }}
               >
@@ -284,7 +284,7 @@ export default function ManualInputForm() {
                     className="p-1 rounded hover:bg-red-50 transition-colors"
                     aria-label="Remove day"
                   >
-                    <Trash2 className="size-3.5 text-gray-300 hover:text-[#FF6B6B]" />
+                    <Trash2 className="size-3.5 text-gray-300 hover:text-[#2F5C9B]" />
                   </button>
                 )}
                 {day.expanded ? (
@@ -365,7 +365,7 @@ export default function ManualInputForm() {
                                 className="p-1 rounded hover:bg-red-50"
                                 aria-label="Remove activity"
                               >
-                                <X className="size-3.5 text-gray-400 hover:text-[#FF6B6B]" />
+                                <X className="size-3.5 text-gray-400 hover:text-[#2F5C9B]" />
                               </button>
                             </div>
                           </div>
@@ -424,7 +424,7 @@ export default function ManualInputForm() {
                         variant="outline"
                         size="sm"
                         onClick={() => addActivity(day.id)}
-                        className="w-full border-dashed border-[#2EC4B6]/40 text-[#2EC4B6] hover:bg-[#2EC4B6]/5 hover:border-[#2EC4B6]"
+                        className="w-full border-dashed border-[#5CA5CD]/40 text-[#5CA5CD] hover:bg-[#5CA5CD]/5 hover:border-[#5CA5CD]"
                       >
                         <Plus className="size-4 mr-1" />
                         Add Activity
@@ -442,7 +442,7 @@ export default function ManualInputForm() {
       <Button
         variant="outline"
         onClick={addDay}
-        className="w-full border-dashed border-[#FF8C42]/40 text-[#FF8C42] hover:bg-[#FF8C42]/5 hover:border-[#FF8C42]"
+        className="w-full border-dashed border-[#5CA5CD]/40 text-[#5CA5CD] hover:bg-[#5CA5CD]/5 hover:border-[#5CA5CD]"
       >
         <Plus className="size-4 mr-2" />
         Add Day
@@ -462,12 +462,12 @@ export default function ManualInputForm() {
                 onClick={() => toggleRequirement(req)}
                 className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all text-left ${
                   checked
-                    ? 'border-[#2EC4B6] bg-[#2EC4B6]/5'
+                    ? 'border-[#5CA5CD] bg-[#5CA5CD]/5'
                     : 'border-gray-100 hover:border-gray-200'
                 }`}
               >
                 {checked ? (
-                  <CheckSquare className="size-4 text-[#2EC4B6] shrink-0" />
+                  <CheckSquare className="size-4 text-[#5CA5CD] shrink-0" />
                 ) : (
                   <Square className="size-4 text-gray-300 shrink-0" />
                 )}
@@ -485,7 +485,7 @@ export default function ManualInputForm() {
         <Button
           onClick={handleSave}
           disabled={saving}
-          className="w-full bg-gradient-to-r from-[#2EC4B6] to-[#FFBA49] text-white h-12 text-base font-semibold"
+          className="w-full bg-gradient-to-r from-[#5CA5CD] to-[#E58BEA] text-white h-12 text-base font-semibold"
         >
           {saving ? (
             <motion.div

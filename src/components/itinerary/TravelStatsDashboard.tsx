@@ -122,7 +122,7 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
     return (
       <Card className="p-6">
         <div className="flex flex-col items-center justify-center py-12">
-          <Loader2 className="size-8 animate-spin text-[#FF6B6B] mb-3" />
+          <Loader2 className="size-8 animate-spin text-[#2F5C9B] mb-3" />
           <p className="text-sm text-gray-500">Loading your travel stats...</p>
         </div>
       </Card>
@@ -146,22 +146,22 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
       label: 'Total Trips',
       value: stats.totalTrips,
       icon: MapPin,
-      color: 'from-[#FF6B6B] to-[#FF8C42]',
-      bgColor: 'bg-[#FF6B6B]/10',
+      color: 'from-[#2F5C9B] to-[#5CA5CD]',
+      bgColor: 'bg-[#2F5C9B]/10',
     },
     {
       label: 'Countries',
       value: stats.totalCountries,
       icon: Globe,
-      color: 'from-[#2EC4B6] to-[#16B5A8]',
-      bgColor: 'bg-[#2EC4B6]/10',
+      color: 'from-[#5CA5CD] to-[#16B5A8]',
+      bgColor: 'bg-[#5CA5CD]/10',
     },
     {
       label: 'Cities',
       value: stats.totalCities,
       icon: MapPin,
-      color: 'from-[#FFBA49] to-[#FFA500]',
-      bgColor: 'bg-[#FFBA49]/10',
+      color: 'from-[#E58BEA] to-[#FFA500]',
+      bgColor: 'bg-[#E58BEA]/10',
     },
     {
       label: 'Total Days',
@@ -195,7 +195,7 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
         className="text-center"
       >
         <div className="inline-flex items-center gap-2 mb-2">
-          <Award className="size-6 text-[#FFBA49]" />
+          <Award className="size-6 text-[#E58BEA]" />
           <h2 className="text-2xl font-bold text-gray-900">Your Travel Journey</h2>
         </div>
         {stats.firstTripDate && (
@@ -236,15 +236,15 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
         >
           <Card className="p-4">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-              <Clock className="size-4 text-[#FF6B6B]" />
+              <Clock className="size-4 text-[#2F5C9B]" />
               Trip Records
             </h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-3 rounded-lg bg-gradient-to-br from-[#FF6B6B]/5 to-[#FF8C42]/5 border border-[#FF6B6B]/10">
+              <div className="p-3 rounded-lg bg-gradient-to-br from-[#2F5C9B]/5 to-[#5CA5CD]/5 border border-[#2F5C9B]/10">
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Longest Trip</p>
                 <p className="text-xl font-bold text-gray-900 dark:text-white">{stats.longestTrip} days</p>
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-br from-[#2EC4B6]/5 to-[#16B5A8]/5 border border-[#2EC4B6]/10">
+              <div className="p-3 rounded-lg bg-gradient-to-br from-[#5CA5CD]/5 to-[#16B5A8]/5 border border-[#5CA5CD]/10">
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Shortest Trip</p>
                 <p className="text-xl font-bold text-gray-900 dark:text-white">{stats.shortestTrip} days</p>
               </div>
@@ -262,7 +262,7 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
         >
           <Card className="p-4">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-              <Star className="size-4 text-[#FFBA49]" />
+              <Star className="size-4 text-[#E58BEA]" />
               Destinations
             </h3>
             
@@ -274,7 +274,7 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
                     <Badge
                       key={country}
                       variant="secondary"
-                      className="bg-[#2EC4B6]/10 text-[#2EC4B6] hover:bg-[#2EC4B6]/20"
+                      className="bg-[#5CA5CD]/10 text-[#5CA5CD] hover:bg-[#5CA5CD]/20"
                     >
                       {country}
                     </Badge>
@@ -291,7 +291,7 @@ export function TravelStatsDashboard({ userId }: TravelStatsDashboardProps) {
                     <Badge
                       key={city}
                       variant="secondary"
-                      className="bg-[#FFBA49]/10 text-[#FFBA49] hover:bg-[#FFBA49]/20"
+                      className="bg-[#E58BEA]/10 text-[#E58BEA] hover:bg-[#E58BEA]/20"
                     >
                       {city}
                     </Badge>

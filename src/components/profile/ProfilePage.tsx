@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Settings, Grid3X3, Map, Tag, ImagePlus, MessageCircle, Pencil, Users, FileText, ChevronRight } from 'lucide-react'
+import { Settings, Grid3X3, Map, Tag, ImagePlus, MessageCircle, Pencil, Users, FileText, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -43,6 +44,7 @@ export default function ProfilePage() {
   const [friends, setFriends] = useState<Array<{ id: string; username: string; name: string; avatar: string | null }>>([])
   const [friendsCount, setFriendsCount] = useState(0)
   const [isLoadingFriends, setIsLoadingFriends] = useState(true)
+  const [friendsCollapsed, setFriendsCollapsed] = useState(false)
 
   // Determine which profile we're viewing
   const isOwnProfile = currentView === 'profile' || (viewingUser?.id === currentUser?.id && currentView === 'user-profile')
@@ -302,24 +304,15 @@ export default function ProfilePage() {
     <div className="max-w-md mx-auto">
       {/* Profile Header - Travel Portfolio Style */}
       <div className="relative">
-        {/* Cover Photo Background */}
-        <div className="h-32 bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/10" />
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-4 left-8 text-white/30 text-6xl">✈️</div>
-            <div className="absolute top-8 right-12 text-white/30 text-4xl">🌍</div>
-            <div className="absolute bottom-4 left-20 text-white/30 text-5xl">🗺️</div>
-          </div>
-        </div>
-
-        <div className="px-4 pb-2 -mt-12 relative z-10">
+        {/* Avatar with Travel Ring - No Banner */}
+        <div className="px-4 pt-4 relative z-10">
           <div className="flex items-end gap-4">
             {/* Avatar with Travel Ring */}
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#2EC4B6] p-1">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] p-1">
                 <Avatar className="size-24 border-4 border-white dark:border-slate-900">
                   <AvatarImage src={avatarUrl} alt={name} />
-                  <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B] to-[#2EC4B6] text-2xl font-bold text-white">
+                  <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-2xl font-bold text-white">
                     {name.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -369,7 +362,7 @@ export default function ProfilePage() {
               <>
                 <Button
                   variant="outline"
-                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all border-white/20"
+                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 transition-all border-white/20"
                   onClick={handleEditProfile}
                 >
                   <Pencil className="size-4 mr-1.5" />
@@ -377,13 +370,13 @@ export default function ProfilePage() {
                 </Button>
                 <Button
                   variant="outline"
-                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#2EC4B6]/10 hover:to-[#FFBA49]/10 transition-all border-white/20 relative"
+                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#5CA5CD]/10 hover:to-[#E58BEA]/10 transition-all border-white/20 relative"
                   onClick={() => setCurrentView('friends')}
                 >
                   <Users className="size-4 mr-1.5" />
                   Friends
                   {pendingFriendRequestCount > 0 && (
-                    <span className="ml-1 min-w-[18px] h-5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white text-[10px] font-bold flex items-center justify-center px-1 animate-pulse">
+                    <span className="ml-1 min-w-[18px] h-5 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white text-[10px] font-bold flex items-center justify-center px-1 animate-pulse">
                       {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
                     </span>
                   )}
@@ -391,7 +384,7 @@ export default function ProfilePage() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="size-10 rounded-xl glass hover:bg-gradient-to-r hover:from-[#FFBA49]/10 hover:to-[#FF6B6B]/10 transition-all border-white/20"
+                  className="size-10 rounded-xl glass hover:bg-gradient-to-r hover:from-[#E58BEA]/10 hover:to-[#2F5C9B]/10 transition-all border-white/20"
                   onClick={() => setCurrentView('settings')}
                 >
                   <Settings className="size-4" />
@@ -404,8 +397,8 @@ export default function ProfilePage() {
                   disabled={isFollowLoading}
                   className={`flex-1 h-10 text-sm rounded-xl transition-all ${
                     isFollowing
-                      ? 'glass text-muted-foreground hover:bg-gradient-to-r hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 border-white/20'
-                      : 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:shadow-lg hover:shadow-[#FF6B6B]/30'
+                      ? 'glass text-muted-foreground hover:bg-gradient-to-r hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 border-white/20'
+                      : 'bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white hover:shadow-lg hover:shadow-[#2F5C9B]/30'
                   }`}
                 >
                   {isFollowLoading ? '...' : isFollowing ? 'Following' : 'Follow'}
@@ -413,7 +406,7 @@ export default function ProfilePage() {
                 <Button
                   variant="outline"
                   onClick={handleMessage}
-                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#2EC4B6]/10 hover:to-[#FFBA49]/10 transition-all border-white/20"
+                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#5CA5CD]/10 hover:to-[#E58BEA]/10 transition-all border-white/20"
                 >
                   <MessageCircle className="size-4 mr-1.5" />
                   Message
@@ -424,73 +417,98 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Friends Section - Enhanced */}
+      {/* Friends Section - Collapsible */}
       <AnimatePresence>
         {!isLoadingFriends && friendsCount > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+          <Collapsible
+            open={!friendsCollapsed}
+            onOpenChange={(open) => setFriendsCollapsed(!open)}
             className="px-4 py-4"
           >
-            <div className="glass rounded-xl p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-gradient-to-r from-[#2EC4B6]/20 to-[#FFBA49]/20">
-                    <Users className="size-4 text-[#2EC4B6]" />
+            <CollapsibleTrigger asChild>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="glass rounded-xl p-4 cursor-pointer hover:bg-[#2F5C9B]/5 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 rounded-lg bg-gradient-to-r from-[#2F5C9B]/20 to-[#5CA5CD]/20">
+                      <Users className="size-4 text-[#2F5C9B]" />
+                    </div>
+                    <h3 className="text-sm font-bold text-foreground">{friendsCount} Friends</h3>
                   </div>
-                  <h3 className="text-sm font-bold text-foreground">{friendsCount} Friends</h3>
+                  <div className="flex items-center gap-2">
+                    {friendsCount > 8 && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setCurrentView('friends')
+                        }}
+                        className="flex items-center gap-0.5 text-[#2F5C9B] text-xs font-semibold hover:opacity-80 transition-opacity mr-2"
+                      >
+                        See All
+                        <ChevronRight className="size-3" />
+                      </button>
+                    )}
+                    {friendsCollapsed ? (
+                      <ChevronDown className="size-4 text-muted-foreground" />
+                    ) : (
+                      <ChevronUp className="size-4 text-muted-foreground" />
+                    )}
+                  </div>
                 </div>
-                {friendsCount > 8 && (
-                  <button
-                    onClick={() => setCurrentView('friends')}
-                    className="flex items-center gap-0.5 text-[#2EC4B6] text-xs font-semibold hover:opacity-80 transition-opacity"
-                  >
-                    See All
-                    <ChevronRight className="size-3" />
-                  </button>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-4 overflow-x-auto scrollbar-none pb-1">
-              {displayFriends.map((friend, index) => (
-                <motion.button
-                  key={friend.id}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2, delay: index * 0.05 }}
-                  onClick={() => handleFriendClick(friend)}
-                  className="flex flex-col items-center gap-1 flex-shrink-0 outline-none group"
-                >
-                  <Avatar className="size-14 border-2 border-transparent group-hover:border-[#2EC4B6]/20 transition-colors">
-                    <AvatarImage
-                      src={friend.avatar || `https://picsum.photos/seed/${friend.id}/100/100`}
-                      alt={friend.name}
-                    />
-                    <AvatarFallback className="bg-gradient-to-br from-[#2EC4B6]/20 to-[#FFBA49]/20 text-xs font-bold text-[#2EC4B6]">
-                      {friend.name.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="text-[11px] text-muted-foreground max-w-[56px] truncate">{friend.username || friend.name}</span>
-                </motion.button>
-              ))}
-              {friendsCount > 8 && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2, delay: displayFriends.length * 0.05 }}
-                  onClick={() => setCurrentView('friends')}
-                  className="flex flex-col items-center justify-center gap-1 flex-shrink-0 outline-none group"
-                >
-                  <div className="size-14 rounded-full border-2 border-dashed border-[#2EC4B6]/30 flex items-center justify-center group-hover:border-[#2EC4B6]/60 transition-colors">
-                    <ChevronRight className="size-5 text-[#2EC4B6]/60 group-hover:text-[#2EC4B6] transition-colors" />
-                  </div>
-                  <span className="text-[11px] text-[#2EC4B6] font-medium">See All</span>
-                </motion.button>
-              )}
-            </div>
-          </motion.div>
+              </motion.div>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="flex gap-4 overflow-x-auto scrollbar-none py-3">
+                  {displayFriends.map((friend, index) => (
+                    <motion.button
+                      key={friend.id}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.2, delay: index * 0.05 }}
+                      onClick={() => handleFriendClick(friend)}
+                      className="flex flex-col items-center gap-1 flex-shrink-0 outline-none group"
+                    >
+                      <Avatar className="size-14 border-2 border-transparent group-hover:border-[#2F5C9B]/20 transition-colors">
+                        <AvatarImage
+                          src={friend.avatar || `https://picsum.photos/seed/${friend.id}/100/100`}
+                          alt={friend.name}
+                        />
+                        <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-xs font-bold text-[#2F5C9B]">
+                          {friend.name.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-[11px] text-muted-foreground max-w-[56px] truncate">{friend.username || friend.name}</span>
+                    </motion.button>
+                  ))}
+                  {friendsCount > 8 && (
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.2, delay: displayFriends.length * 0.05 }}
+                      onClick={() => setCurrentView('friends')}
+                      className="flex flex-col items-center justify-center gap-1 flex-shrink-0 outline-none group"
+                    >
+                      <div className="size-14 rounded-full border-2 border-dashed border-[#2F5C9B]/30 flex items-center justify-center group-hover:border-[#2F5C9B]/60 transition-colors">
+                        <ChevronRight className="size-5 text-[#2F5C9B]/60 group-hover:text-[#2F5C9B] transition-colors" />
+                      </div>
+                      <span className="text-[11px] text-[#2F5C9B] font-medium">See All</span>
+                    </motion.button>
+                  )}
+                </div>
+              </motion.div>
+            </CollapsibleContent>
+          </Collapsible>
         )}
       </AnimatePresence>
 
@@ -523,7 +541,7 @@ export default function ProfilePage() {
           <TabsList className="w-full h-12 glass rounded-xl p-1 justify-around bg-transparent">
             <TabsTrigger
               value="posts"
-              className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FF6B6B]/20 data-[state=active]:to-[#2EC4B6]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+              className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#2F5C9B]/20 data-[state=active]:to-[#5CA5CD]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
             >
               <Grid3X3 className="size-4" />
               <span className="text-xs font-medium">Posts</span>
@@ -538,7 +556,7 @@ export default function ProfilePage() {
             {isOwnProfile && (
               <TabsTrigger
                 value="albums"
-                className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FFBA49]/20 data-[state=active]:to-[#FF6B6B]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+                className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#5CA5CD]/20 data-[state=active]:to-[#E58BEA]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
               >
                 <span className="text-base">📸</span>
                 <span className="text-xs font-medium">Albums</span>
@@ -579,8 +597,8 @@ export default function ProfilePage() {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-[#FFF5F0] via-[#FFF0E5] to-[#E8FAF8] dark:from-[#2a1f1a] dark:via-[#2a2218] dark:to-[#1a2a28] flex flex-col items-center justify-center gap-1 p-2">
-                      <FileText className="size-6 text-[#FF8C42]/60" />
+                    <div className="w-full h-full bg-gradient-to-br from-[#F0F4FF] via-[#F0F8FF] to-[#E8F4F8] dark:from-[#1a1f2a] dark:via-[#1a2228] dark:to-[#1a2828] flex flex-col items-center justify-center gap-1 p-2">
+                      <FileText className="size-6 text-[#2F5C9B]/60" />
                       {post.caption && (
                         <p className="text-[10px] text-muted-foreground text-center leading-tight line-clamp-3">
                           {post.caption.slice(0, 60)}{post.caption.length > 60 ? '...' : ''}
@@ -661,9 +679,9 @@ export default function ProfilePage() {
           </DialogHeader>
           <div className="space-y-4">
             <div className="flex justify-center">
-              <Avatar className="size-20 border-2 border-[#FF6B6B]/20">
+              <Avatar className="size-20 border-2 border-[#2F5C9B]/20">
                 <AvatarImage src={currentUser?.avatar || undefined} alt={name} />
-                <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-lg font-bold text-[#FF6B6B]">
+                <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-lg font-bold text-[#2F5C9B]">
                   {name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -698,7 +716,7 @@ export default function ProfilePage() {
             <Button
               onClick={handleSaveProfile}
               disabled={isSaving}
-              className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:opacity-90 rounded-lg"
+              className="bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white hover:opacity-90 rounded-lg"
             >
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>

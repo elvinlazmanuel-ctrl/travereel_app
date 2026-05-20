@@ -215,9 +215,9 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'travel': return 'bg-[#FF6B6B]/10 text-[#FF6B6B] border-[#FF6B6B]/20'
-      case 'social': return 'bg-[#2EC4B6]/10 text-[#2EC4B6] border-[#2EC4B6]/20'
-      case 'content': return 'bg-[#FFBA49]/10 text-[#FFBA49] border-[#FFBA49]/20'
+      case 'travel': return 'bg-[#2F5C9B]/10 text-[#2F5C9B] border-[#2F5C9B]/20'
+      case 'social': return 'bg-[#5CA5CD]/10 text-[#5CA5CD] border-[#5CA5CD]/20'
+      case 'content': return 'bg-[#E58BEA]/10 text-[#E58BEA] border-[#E58BEA]/20'
       case 'milestone': return 'bg-[#9B5DE5]/10 text-[#9B5DE5] border-[#9B5DE5]/20'
       default: return 'bg-gray-100 text-gray-600 border-gray-200'
     }
@@ -227,7 +227,7 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
     return (
       <Card className="p-6">
         <div className="flex flex-col items-center justify-center py-12">
-          <Loader2 className="size-8 animate-spin text-[#FFBA49] mb-3" />
+          <Loader2 className="size-8 animate-spin text-[#E58BEA] mb-3" />
           <p className="text-sm text-gray-500">Loading achievements...</p>
         </div>
       </Card>
@@ -243,7 +243,7 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
         className="text-center"
       >
         <div className="inline-flex items-center gap-2 mb-3">
-          <Trophy className="size-8 text-[#FFBA49]" />
+          <Trophy className="size-8 text-[#E58BEA]" />
           <h2 className="text-2xl font-bold text-gray-900">Achievements</h2>
         </div>
         
@@ -252,7 +252,7 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
             <span className="text-sm font-medium text-gray-700">
               {unlockedCount} / {totalCount} Unlocked
             </span>
-            <span className="text-sm font-bold text-[#FFBA49]">
+            <span className="text-sm font-bold text-[#E58BEA]">
               {Math.round(progressPercent)}%
             </span>
           </div>
@@ -267,7 +267,7 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
               onClick={() => setFilter(filterType)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filter === filterType
-                  ? 'bg-[#FF6B6B] text-white'
+                  ? 'bg-[#2F5C9B] text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
@@ -297,7 +297,7 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
               <Card
                 className={`p-4 transition-all ${
                   isUnlocked
-                    ? 'border-2 border-[#FFBA49] bg-gradient-to-br from-[#FFBA49]/5 to-transparent'
+                    ? 'border-2 border-[#E58BEA] bg-gradient-to-br from-[#E58BEA]/5 to-transparent'
                     : 'border-gray-200 opacity-75'
                 }`}
               >
@@ -306,7 +306,7 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
                   <div
                     className={`size-12 rounded-xl flex items-center justify-center text-2xl ${
                       isUnlocked
-                        ? 'bg-gradient-to-br from-[#FFBA49]/20 to-[#FF6B6B]/20'
+                        ? 'bg-gradient-to-br from-[#E58BEA]/20 to-[#2F5C9B]/20'
                         : 'bg-gray-100 grayscale'
                     }`}
                   >
@@ -324,7 +324,7 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
                         {achievement.title}
                       </h3>
                       {isUnlocked && (
-                        <Check className="size-4 text-[#FFBA49] shrink-0" />
+                        <Check className="size-4 text-[#E58BEA] shrink-0" />
                       )}
                     </div>
 
@@ -355,7 +355,7 @@ export function AchievementSystem({ userId }: AchievementSystemProps) {
 
                     {/* Unlocked Date */}
                     {isUnlocked && userAch && (
-                      <p className="text-[10px] text-[#FFBA49] mt-2 flex items-center gap-1">
+                      <p className="text-[10px] text-[#E58BEA] mt-2 flex items-center gap-1">
                         <Sparkles className="size-3" />
                         Unlocked {new Date(userAch.unlockedAt).toLocaleDateString()}
                       </p>

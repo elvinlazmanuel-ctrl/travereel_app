@@ -449,12 +449,12 @@ export default function UserProfilePage() {
       {/* Profile Info */}
       <div className="px-4 pt-4 pb-2">
         <div className="flex items-center gap-5">
-          <Avatar className="size-20 border-2 border-[#2EC4B6]/20">
+          <Avatar className="size-20 border-2 border-[#5CA5CD]/20">
             <AvatarImage
               src={user.avatar || `https://picsum.photos/seed/${user.id}/200/200`}
               alt={user.name || 'User'}
             />
-            <AvatarFallback className="bg-gradient-to-br from-[#2EC4B6]/20 to-[#FFBA49]/20 text-lg font-bold text-[#2EC4B6]">
+            <AvatarFallback className="bg-gradient-to-br from-[#5CA5CD]/20 to-[#E58BEA]/20 text-lg font-bold text-[#5CA5CD]">
               {(user.name || 'U').charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
@@ -487,7 +487,7 @@ export default function UserProfilePage() {
             <Button
               onClick={handleUnfriend}
               disabled={isFriendActionLoading}
-              className="flex-1 h-9 text-sm rounded-lg font-medium bg-[#2EC4B6]/10 text-[#2EC4B6] border border-[#2EC4B6]/20 hover:bg-[#FF6B6B]/10 hover:text-[#FF6B6B] hover:border-[#FF6B6B]/20 transition-colors"
+              className="flex-1 h-9 text-sm rounded-lg font-medium bg-[#5CA5CD]/10 text-[#5CA5CD] border border-[#5CA5CD]/20 hover:bg-[#2F5C9B]/10 hover:text-[#2F5C9B] hover:border-[#2F5C9B]/20 transition-colors"
             >
               {isFriendActionLoading ? <Loader2 className="size-4 animate-spin mr-1.5" /> : (
                 <>
@@ -499,7 +499,7 @@ export default function UserProfilePage() {
           ) : friendRequestStatus === 'pending_sent' ? (
             <Button
               disabled
-              className="flex-1 h-9 text-sm rounded-lg font-medium bg-[#FF8C42]/10 text-[#FF8C42] border border-[#FF8C42]/20"
+              className="flex-1 h-9 text-sm rounded-lg font-medium bg-[#5CA5CD]/10 text-[#5CA5CD] border border-[#5CA5CD]/20"
             >
               <Clock className="size-4 mr-1.5" />
               Request Sent
@@ -508,7 +508,7 @@ export default function UserProfilePage() {
             <Button
               onClick={handleAcceptFriendRequest}
               disabled={isFriendActionLoading}
-              className="flex-1 h-9 text-sm rounded-lg font-medium bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white"
+              className="flex-1 h-9 text-sm rounded-lg font-medium bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white"
             >
               {isFriendActionLoading ? <Loader2 className="size-4 animate-spin" /> : (
                 <>
@@ -521,7 +521,7 @@ export default function UserProfilePage() {
             <Button
               onClick={handleSendFriendRequest}
               disabled={isFriendActionLoading}
-              className="flex-1 h-9 text-sm rounded-lg font-medium bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white"
+              className="flex-1 h-9 text-sm rounded-lg font-medium bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white"
             >
               {isFriendActionLoading ? <Loader2 className="size-4 animate-spin" /> : (
                 <>
@@ -543,7 +543,7 @@ export default function UserProfilePage() {
           <Button
             variant="outline"
             onClick={handleMessage}
-            className="flex-1 h-9 text-sm rounded-lg border-gray-200 hover:border-[#2EC4B6] hover:text-[#2EC4B6]"
+            className="flex-1 h-9 text-sm rounded-lg border-gray-200 hover:border-[#5CA5CD] hover:text-[#5CA5CD]"
           >
             <MessageCircle className="size-4 mr-1.5" />
             Message
@@ -565,7 +565,7 @@ export default function UserProfilePage() {
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5">
-                    <Users className="size-4 text-[#2EC4B6]" />
+                    <Users className="size-4 text-[#5CA5CD]" />
                     <h3 className="text-sm font-semibold text-foreground">{friendsCount} Friends</h3>
                   </div>
                 </div>
@@ -579,12 +579,12 @@ export default function UserProfilePage() {
                       onClick={() => handleFriendClick(friend)}
                       className="flex flex-col items-center gap-1 flex-shrink-0 outline-none group"
                     >
-                      <Avatar className="size-14 border-2 border-transparent group-hover:border-[#2EC4B6]/20 transition-colors">
+                      <Avatar className="size-14 border-2 border-transparent group-hover:border-[#5CA5CD]/20 transition-colors">
                         <AvatarImage
                           src={friend.avatar || `https://picsum.photos/seed/${friend.id}/100/100`}
                           alt={friend.name}
                         />
-                        <AvatarFallback className="bg-gradient-to-br from-[#2EC4B6]/20 to-[#FFBA49]/20 text-xs font-bold text-[#2EC4B6]">
+                        <AvatarFallback className="bg-gradient-to-br from-[#5CA5CD]/20 to-[#E58BEA]/20 text-xs font-bold text-[#5CA5CD]">
                           {friend.name.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -627,14 +627,14 @@ export default function UserProfilePage() {
           <TabsList className="w-full h-11 bg-transparent border-b border-gray-200 rounded-none p-0 justify-around">
             <TabsTrigger
               value="posts"
-              className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#2EC4B6] data-[state=active]:bg-transparent px-0 gap-1.5"
+              className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#5CA5CD] data-[state=active]:bg-transparent px-0 gap-1.5"
             >
               <Grid3X3 className="size-4" />
               <span className="text-xs">Posts</span>
             </TabsTrigger>
             <TabsTrigger
               value="itineraries"
-              className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#2EC4B6] data-[state=active]:bg-transparent px-0 gap-1.5"
+              className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#5CA5CD] data-[state=active]:bg-transparent px-0 gap-1.5"
             >
               <Map className="size-4" />
               <span className="text-xs">Itineraries</span>
@@ -665,7 +665,7 @@ export default function UserProfilePage() {
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-[#FFF5F0] via-[#FFF0E5] to-[#E8FAF8] dark:from-[#2a1f1a] dark:via-[#2a2218] dark:to-[#1a2a28] flex flex-col items-center justify-center gap-1 p-2">
-                        <FileText className="size-6 text-[#FF8C42]/60" />
+                        <FileText className="size-6 text-[#5CA5CD]/60" />
                         {post.caption && (
                           <p className="text-[10px] text-muted-foreground text-center leading-tight line-clamp-3">
                             {post.caption.slice(0, 60)}{post.caption.length > 60 ? '...' : ''}
@@ -777,8 +777,8 @@ function BlockedAccountState() {
 function PrivateAccountState() {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center px-6">
-      <div className="size-16 rounded-full bg-gradient-to-br from-[#2EC4B6]/10 to-[#FFBA49]/10 flex items-center justify-center mb-4">
-        <Lock className="size-7 text-[#2EC4B6]" />
+      <div className="size-16 rounded-full bg-gradient-to-br from-[#5CA5CD]/10 to-[#E58BEA]/10 flex items-center justify-center mb-4">
+        <Lock className="size-7 text-[#5CA5CD]" />
       </div>
       <h3 className="text-lg font-semibold text-foreground mb-1">
         This account is private

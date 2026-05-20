@@ -157,7 +157,7 @@ export default function FollowSheet({ open, onOpenChange, userId, initialTab = '
                 >
                   <Avatar className="size-10">
                     <AvatarImage src={user.avatar || undefined} alt={user.username} />
-                    <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-[#FF6B6B] text-sm">
+                    <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-[#2F5C9B] text-sm">
                       {user.username.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -173,7 +173,7 @@ export default function FollowSheet({ open, onOpenChange, userId, initialTab = '
                     className={`h-8 rounded-lg text-xs min-w-[80px] ${
                       isFollowing
                         ? 'border-gray-200 text-foreground hover:border-red-300 hover:text-red-500'
-                        : 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:opacity-90'
+                        : 'bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white hover:opacity-90'
                     }`}
                     onClick={() => handleFollowToggle(user)}
                     disabled={followLoading === user.id}
@@ -216,13 +216,13 @@ export default function FollowSheet({ open, onOpenChange, userId, initialTab = '
           <TabsList className="w-full h-10 bg-transparent border-b border-gray-200 rounded-none p-0 justify-around">
             <TabsTrigger
               value="followers"
-              className="flex-1 h-10 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent"
+              className="flex-1 h-10 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#2F5C9B] data-[state=active]:bg-transparent"
             >
               <span className="text-xs">Followers ({followersCount})</span>
             </TabsTrigger>
             <TabsTrigger
               value="following"
-              className="flex-1 h-10 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent"
+              className="flex-1 h-10 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#2F5C9B] data-[state=active]:bg-transparent"
             >
               <span className="text-xs">Following ({followingCount})</span>
             </TabsTrigger>

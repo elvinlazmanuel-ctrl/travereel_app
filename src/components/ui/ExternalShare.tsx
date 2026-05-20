@@ -108,7 +108,7 @@ export function ExternalShare({ type, title, description, url, image }: External
       <Button
         onClick={handleNativeShare}
         size="sm"
-        className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:opacity-90"
+        className="bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white hover:opacity-90"
       >
         <Share2 className="size-4 mr-2" />
         Share
@@ -121,7 +121,7 @@ export function ExternalShare({ type, title, description, url, image }: External
       <Button
         onClick={() => setShowShareSheet(!showShareSheet)}
         size="sm"
-        className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:opacity-90"
+        className="bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white hover:opacity-90"
       >
         <Share2 className="size-4 mr-2" />
         Share

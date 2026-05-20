@@ -217,7 +217,7 @@ function CircularProgress({ percentage, size = 64, strokeWidth = 5 }: { percenta
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#2EC4B6"
+          stroke="#5CA5CD"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -433,7 +433,7 @@ export default function DuringTravel() {
             className="px-4 pt-4 space-y-2"
           >
             <div className="flex items-center gap-1.5 mb-1">
-              <Activity className="size-3.5 text-[#FF6B6B]" />
+              <Activity className="size-3.5 text-[#2F5C9B]" />
               <span className="text-xs font-semibold text-foreground">Live Alerts</span>
               <Badge variant="secondary" className="h-4 text-[9px] px-1.5 bg-red-100 text-red-600">
                 {visibleAlerts.length} active
@@ -473,7 +473,7 @@ export default function DuringTravel() {
             {/* Trip Progress Bar */}
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-1.5">
-                <TrendingUp className="size-3.5 text-[#2EC4B6]" />
+                <TrendingUp className="size-3.5 text-[#5CA5CD]" />
                 <span className="text-xs font-semibold text-foreground">Trip Progress</span>
               </div>
               <span className="text-[11px] text-muted-foreground">
@@ -524,7 +524,7 @@ export default function DuringTravel() {
               </div>
               <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49]"
+                  className="h-full rounded-full bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA]"
                   initial={{ width: 0 }}
                   animate={{ width: todayTotal > 0 ? `${(todayCompleted / todayTotal) * 100}%` : '0%' }}
                   transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -557,7 +557,7 @@ export default function DuringTravel() {
                   onClick={() => setSelectedDay(day.dayNumber)}
                   className={`flex-shrink-0 flex flex-col items-center px-2.5 py-1.5 rounded-xl transition-all min-w-[56px] ${
                     isActive
-                      ? 'bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] text-white shadow-md'
+                      ? 'bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] text-white shadow-md'
                       : isAllDone
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : isCurrentTravelDay
@@ -579,7 +579,7 @@ export default function DuringTravel() {
                   {dayActivities.length > 0 && !isActive && (
                     <div className="w-full max-w-[40px] h-0.5 bg-gray-200 rounded-full mt-1 overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${isAllDone ? 'bg-emerald-400' : 'bg-[#FF8C42]'}`}
+                        className={`h-full rounded-full ${isAllDone ? 'bg-emerald-400' : 'bg-[#5CA5CD]'}`}
                         style={{ width: `${(dayCompleted / dayActivities.length) * 100}%` }}
                       />
                     </div>
@@ -616,7 +616,7 @@ export default function DuringTravel() {
         <div className="px-4 py-2">
           <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-3">
             <div className="flex items-center gap-1 mb-2">
-              <MapPin className="size-3.5 text-[#FF6B6B]" />
+              <MapPin className="size-3.5 text-[#2F5C9B]" />
               <span className="text-xs font-medium text-foreground">
                 Day {selectedDay} Route
               </span>
@@ -636,13 +636,13 @@ export default function DuringTravel() {
                             ? 'border-emerald-400 bg-emerald-400'
                             : isSkipped
                               ? 'border-gray-300 bg-gray-300'
-                              : 'border-[#FF8C42] bg-white'
+                              : 'border-[#5CA5CD] bg-white'
                         }`}
                       >
                         {isCompleted && <CheckCircle2 className="size-3 text-white" />}
                         {isSkipped && <SkipForward className="size-2.5 text-white" />}
                         {!isCompleted && !isSkipped && (
-                          <div className="size-1.5 rounded-full bg-[#FF8C42]" />
+                          <div className="size-1.5 rounded-full bg-[#5CA5CD]" />
                         )}
                       </div>
                       <span className="text-[9px] text-gray-400 mt-1 max-w-[60px] text-center truncate">
@@ -807,8 +807,8 @@ export default function DuringTravel() {
           <CardContent className="p-3.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="size-9 rounded-lg bg-[#FF8C42]/10 flex items-center justify-center">
-                  <Wallet className="size-4 text-[#FF8C42]" />
+                <div className="size-9 rounded-lg bg-[#5CA5CD]/10 flex items-center justify-center">
+                  <Wallet className="size-4 text-[#5CA5CD]" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Spent Today</p>
@@ -826,7 +826,7 @@ export default function DuringTravel() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-[#FF8C42] hover:text-[#FF8C42] hover:bg-[#FF8C42]/10 text-xs gap-1 h-8"
+                className="text-[#5CA5CD] hover:text-[#5CA5CD] hover:bg-[#5CA5CD]/10 text-xs gap-1 h-8"
                 onClick={() => setCurrentView('budget-tracker')}
               >
                 View Full Budget

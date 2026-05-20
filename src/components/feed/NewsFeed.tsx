@@ -20,7 +20,7 @@ function FeedSkeleton() {
           <div className="flex gap-3 overflow-hidden">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="flex flex-col items-center gap-2 shrink-0">
-                <Skeleton className="size-16 rounded-full bg-gradient-to-br from-[#FF6B6B]/10 to-[#2EC4B6]/10" />
+                <Skeleton className="size-16 rounded-full bg-gradient-to-br from-[#2F5C9B]/10 to-[#5CA5CD]/10" />
                 <Skeleton className="h-2.5 w-12 rounded" />
               </div>
             ))}
@@ -34,14 +34,14 @@ function FeedSkeleton() {
           <div className="glass rounded-2xl overflow-hidden">
             {/* Author row */}
             <div className="flex items-center gap-3 px-5 py-4">
-              <Skeleton className="size-12 rounded-full bg-gradient-to-br from-[#FF6B6B]/20 to-[#2EC4B6]/20" />
+              <Skeleton className="size-12 rounded-full bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20" />
               <div className="space-y-2 flex-1">
                 <Skeleton className="h-4 w-32 rounded" />
                 <Skeleton className="h-3 w-24 rounded" />
               </div>
             </div>
             {/* Image */}
-            <Skeleton className="w-full aspect-[4/3] bg-gradient-to-br from-[#FF6B6B]/5 to-[#2EC4B6]/5" />
+            <Skeleton className="w-full aspect-[4/3] bg-gradient-to-br from-[#2F5C9B]/5 to-[#5CA5CD]/5" />
             {/* Actions */}
             <div className="flex items-center justify-between px-5 py-3">
               <div className="flex gap-3">
@@ -67,8 +67,8 @@ function EmptyFeed() {
         transition={{ duration: 0.5 }}
         className="relative mb-6"
       >
-        <div className="size-24 rounded-full bg-gradient-to-br from-[#FF6B6B]/20 via-[#FF8C42]/20 to-[#FFBA49]/20 flex items-center justify-center">
-          <Compass className="size-12 text-[#FF6B6B]" strokeWidth={1.5} />
+        <div className="size-24 rounded-full bg-gradient-to-br from-[#2F5C9B]/20 via-[#5CA5CD]/20 to-[#E58BEA]/20 flex items-center justify-center">
+          <Compass className="size-12 text-[#2F5C9B]" strokeWidth={1.5} />
         </div>
         <div className="absolute -top-2 -right-2 text-4xl animate-bounce">✈️</div>
         <div className="absolute -bottom-2 -left-2 text-3xl animate-pulse">🌍</div>
@@ -92,7 +92,7 @@ function LoadingMoreSpinner() {
     <div className="flex items-center justify-center py-8">
       <div className="glass px-6 py-3 rounded-full shadow-glass">
         <div className="flex items-center gap-3">
-          <Loader2 className="size-5 text-[#FF6B6B] animate-spin" />
+          <Loader2 className="size-5 text-[#2F5C9B] animate-spin" />
           <span className="text-sm text-foreground font-medium">Loading more adventures...</span>
         </div>
       </div>

@@ -364,19 +364,19 @@ export default function PostCard({ post }: PostCardProps) {
       {/* Author Row - Magazine Style */}
       <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-white/50 to-transparent dark:from-slate-800/50 border-b border-border/30">
         <div className="flex items-center gap-3">
-          <Avatar className="size-12 cursor-pointer ring-2 ring-[#FF6B6B]/20 hover:ring-[#FF6B6B]/50 transition-all hover:scale-105" onClick={handleAuthorClick}>
+          <Avatar className="size-12 cursor-pointer ring-2 ring-[#2F5C9B]/20 hover:ring-[#2F5C9B]/50 transition-all hover:scale-105" onClick={handleAuthorClick}>
             <AvatarImage
               src={authorAvatar}
               alt={authorUsername}
             />
-            <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B] to-[#2EC4B6] text-white text-sm font-semibold">
+            <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-white text-sm font-semibold">
               {authorUsername.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
             <button
               onClick={handleAuthorClick}
-              className="text-sm font-semibold text-foreground text-left hover:text-[#FF6B6B] transition-colors flex items-center gap-2"
+              className="text-sm font-semibold text-foreground text-left hover:text-[#2F5C9B] transition-colors flex items-center gap-2"
             >
               @{authorUsername}
               {post.isSponsored && (
@@ -389,7 +389,7 @@ export default function PostCard({ post }: PostCardProps) {
             {post.location && (
               <button
                 onClick={() => setShowMapDialog(true)}
-                className="flex items-center gap-1 text-xs text-[#FF6B6B] hover:text-[#FF8C42] transition-colors mt-0.5 font-medium"
+                className="flex items-center gap-1 text-xs text-[#2F5C9B] hover:text-[#5CA5CD] transition-colors mt-0.5 font-medium"
               >
                 <MapPin className="size-3.5" />
                 {post.location}
@@ -402,7 +402,7 @@ export default function PostCard({ post }: PostCardProps) {
                   post.sharedToCommunity!.name,
                   post.sharedToCommunity!.image
                 )}
-                className="flex items-center gap-1 text-xs text-[#2EC4B6] hover:text-[#2EC4B6]/80 transition-colors font-medium mt-0.5"
+                className="flex items-center gap-1 text-xs text-[#5CA5CD] hover:text-[#5CA5CD]/80 transition-colors font-medium mt-0.5"
               >
                 <Globe className="size-3.5" />
                 {post.sharedToCommunity.name}
@@ -428,7 +428,7 @@ export default function PostCard({ post }: PostCardProps) {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setShowDeleteDialog(true)}
-                  className="cursor-pointer text-[#FF6B6B] focus:text-[#FF6B6B]"
+                  className="cursor-pointer text-[#2F5C9B] focus:text-[#2F5C9B]"
                 >
                   <Trash2 className="size-4 mr-2" />
                   Delete
@@ -541,7 +541,7 @@ export default function PostCard({ post }: PostCardProps) {
       {/* Text-only post content area - Magazine Style */}
       {isTextOnly && post.caption && (
         <div
-          className="relative px-6 py-6 select-none bg-gradient-to-br from-[#FF6B6B]/5 via-[#FF8C42]/5 to-[#2EC4B6]/5 dark:from-[#2a1f1a] dark:via-[#2a2218] dark:to-[#1a2a28] cursor-pointer border-l-4 border-[#FF6B6B]/30"
+          className="relative px-6 py-6 select-none bg-gradient-to-br from-[#2F5C9B]/5 via-[#5CA5CD]/5 to-[#5CA5CD]/5 dark:from-[#2a1f1a] dark:via-[#2a2218] dark:to-[#1a2a28] cursor-pointer border-l-4 border-[#2F5C9B]/30"
           onClick={handleDoubleTap}
         >
           {/* Double-tap heart animation for text-only */}
@@ -555,7 +555,7 @@ export default function PostCard({ post }: PostCardProps) {
                 className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
               >
                 <Heart
-                  className="size-24 text-[#FF6B6B] drop-shadow-lg fill-[#FF6B6B]"
+                  className="size-24 text-[#2F5C9B] drop-shadow-lg fill-[#2F5C9B]"
                   strokeWidth={0}
                 />
               </motion.div>
@@ -564,7 +564,7 @@ export default function PostCard({ post }: PostCardProps) {
 
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-0.5">
-              <FileText className="size-5 text-[#FF8C42]/60" />
+              <FileText className="size-5 text-[#5CA5CD]/60" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
@@ -602,7 +602,7 @@ export default function PostCard({ post }: PostCardProps) {
       )}
 
       {/* Action Row - Glass Morphism Style */}
-      <div className="flex items-center justify-between px-5 py-3 border-t border-border/30 bg-gradient-to-r from-[#FF6B6B]/5 to-[#2EC4B6]/5 backdrop-blur-sm">
+      <div className="flex items-center justify-between px-5 py-3 border-t border-border/30 bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <ReactionPicker
             currentReaction={userReaction}
@@ -615,7 +615,7 @@ export default function PostCard({ post }: PostCardProps) {
             aria-label="Comments"
             onClick={() => setShowComments(true)}
           >
-            <MessageCircle className="size-6 text-foreground group-hover/icon:text-[#2EC4B6] transition-colors" />
+            <MessageCircle className="size-6 text-foreground group-hover/icon:text-[#5CA5CD] transition-colors" />
           </motion.button>
           <motion.button
             whileTap={{ scale: 0.85 }}
@@ -623,7 +623,7 @@ export default function PostCard({ post }: PostCardProps) {
             aria-label="Share"
             onClick={() => setShowShareMenu(true)}
           >
-            <Send className="size-6 text-foreground -rotate-12 group-hover/icon:text-[#FFBA49] transition-colors" />
+            <Send className="size-6 text-foreground -rotate-12 group-hover/icon:text-[#E58BEA] transition-colors" />
           </motion.button>
         </div>
         <motion.button
@@ -635,8 +635,8 @@ export default function PostCard({ post }: PostCardProps) {
           <Bookmark
             className={`size-6 transition-all ${
               isBookmarked 
-                ? 'text-[#FFBA49] fill-[#FFBA49] drop-shadow-sm' 
-                : 'text-foreground group-hover/icon:text-[#FFBA49]'
+                ? 'text-[#E58BEA] fill-[#E58BEA] drop-shadow-sm' 
+                : 'text-foreground group-hover/icon:text-[#E58BEA]'
             }`}
           />
         </motion.button>
@@ -655,7 +655,7 @@ export default function PostCard({ post }: PostCardProps) {
           <p className="text-sm text-foreground">
             <button
               onClick={handleAuthorClick}
-              className="font-semibold mr-1.5 hover:text-[#FF6B6B] transition-colors"
+              className="font-semibold mr-1.5 hover:text-[#2F5C9B] transition-colors"
             >
               {authorUsername}
             </button>
@@ -688,7 +688,7 @@ export default function PostCard({ post }: PostCardProps) {
       {post.tags.length > 0 && (
         <div className="px-4 pb-1 flex flex-wrap gap-1">
           {post.tags.map((tag, i) => (
-            <span key={i} className="text-xs text-[#FF8C42] font-medium">
+            <span key={i} className="text-xs text-[#5CA5CD] font-medium">
               #{tag}
             </span>
           ))}
@@ -731,7 +731,7 @@ export default function PostCard({ post }: PostCardProps) {
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}
-              className="bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white"
+              className="bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white"
             >
               {isDeleting ? (
                 <span className="flex items-center gap-2">
@@ -809,7 +809,7 @@ export default function PostCard({ post }: PostCardProps) {
             <Button
               onClick={handleEditSubmit}
               disabled={isEditing}
-              className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] hover:from-[#FF6B6B]/90 hover:to-[#FF8C42]/90 text-white border-0 rounded-lg"
+              className="bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] hover:from-[#2F5C9B]/90 hover:to-[#5CA5CD]/90 text-white border-0 rounded-lg"
             >
               {isEditing ? (
                 <span className="flex items-center gap-2">
@@ -840,7 +840,7 @@ export default function PostCard({ post }: PostCardProps) {
                 onClick={() => setReportReason(reason)}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
                   reportReason === reason
-                    ? 'bg-[#FF6B6B]/10 text-[#FF6B6B] font-medium'
+                    ? 'bg-[#2F5C9B]/10 text-[#2F5C9B] font-medium'
                     : 'hover:bg-muted text-muted-foreground'
                 }`}
               >
@@ -859,7 +859,7 @@ export default function PostCard({ post }: PostCardProps) {
             <Button
               onClick={handleReport}
               disabled={!reportReason.trim() || isReporting}
-              className="bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white rounded-lg"
+              className="bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white rounded-lg"
             >
               {isReporting ? 'Submitting...' : 'Submit Report'}
             </Button>
@@ -872,7 +872,7 @@ export default function PostCard({ post }: PostCardProps) {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <MapPin className="size-5 text-[#2EC4B6]" />
+              <MapPin className="size-5 text-[#5CA5CD]" />
               Location
             </DialogTitle>
             <DialogDescription>

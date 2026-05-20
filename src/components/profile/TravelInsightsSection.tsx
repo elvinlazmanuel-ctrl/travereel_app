@@ -23,7 +23,7 @@ export function TravelInsightsSection({ userId }: TravelInsightsProps) {
         className="w-full flex items-center justify-between group"
       >
         <div className="flex items-center gap-3">
-          <div className="size-10 rounded-xl bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] flex items-center justify-center">
+          <div className="size-10 rounded-xl bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] flex items-center justify-center">
             <Sparkles className="size-5 text-white" />
           </div>
           <div className="text-left">
@@ -59,7 +59,7 @@ export function TravelInsightsSection({ userId }: TravelInsightsProps) {
                   onClick={() => setActiveInsight('overview')}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                     activeInsight === 'overview'
-                      ? 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white shadow-md'
+                      ? 'bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white shadow-md'
                       : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
@@ -70,7 +70,7 @@ export function TravelInsightsSection({ userId }: TravelInsightsProps) {
                   onClick={() => setActiveInsight('year')}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                     activeInsight === 'year'
-                      ? 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white shadow-md'
+                      ? 'bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white shadow-md'
                       : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
@@ -81,7 +81,7 @@ export function TravelInsightsSection({ userId }: TravelInsightsProps) {
                   onClick={() => setActiveInsight('stats')}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                     activeInsight === 'stats'
-                      ? 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white shadow-md'
+                      ? 'bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white shadow-md'
                       : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
@@ -92,7 +92,7 @@ export function TravelInsightsSection({ userId }: TravelInsightsProps) {
                   onClick={() => setActiveInsight('achievements')}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                     activeInsight === 'achievements'
-                      ? 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white shadow-md'
+                      ? 'bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white shadow-md'
                       : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
@@ -114,10 +114,10 @@ export function TravelInsightsSection({ userId }: TravelInsightsProps) {
                     <div className="grid grid-cols-2 gap-3">
                       <button
                         onClick={() => setActiveInsight('stats')}
-                        className="p-4 rounded-xl bg-gradient-to-br from-[#FF6B6B]/10 to-[#FF8C42]/10 border border-[#FF6B6B]/20 hover:border-[#FF6B6B]/40 transition-colors text-left"
+                        className="p-4 rounded-xl bg-gradient-to-br from-[#2F5C9B]/10 to-[#5CA5CD]/10 border border-[#2F5C9B]/20 hover:border-[#2F5C9B]/40 transition-colors text-left"
                       >
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="size-8 rounded-lg bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] flex items-center justify-center">
+                          <div className="size-8 rounded-lg bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] flex items-center justify-center">
                             <Map className="size-4 text-white" />
                           </div>
                           <span className="text-sm font-semibold text-foreground">Travel Stats</span>
@@ -127,10 +127,10 @@ export function TravelInsightsSection({ userId }: TravelInsightsProps) {
 
                       <button
                         onClick={() => setActiveInsight('achievements')}
-                        className="p-4 rounded-xl bg-gradient-to-br from-[#FFBA49]/10 to-[#FFD700]/10 border border-[#FFBA49]/20 hover:border-[#FFBA49]/40 transition-colors text-left"
+                        className="p-4 rounded-xl bg-gradient-to-br from-[#E58BEA]/10 to-[#FFD700]/10 border border-[#E58BEA]/20 hover:border-[#E58BEA]/40 transition-colors text-left"
                       >
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="size-8 rounded-lg bg-gradient-to-br from-[#FFBA49] to-[#FFD700] flex items-center justify-center">
+                          <div className="size-8 rounded-lg bg-gradient-to-br from-[#E58BEA] to-[#FFD700] flex items-center justify-center">
                             <span className="text-lg">🏆</span>
                           </div>
                           <span className="text-sm font-semibold text-foreground">Achievements</span>
@@ -141,10 +141,10 @@ export function TravelInsightsSection({ userId }: TravelInsightsProps) {
 
                     <button
                       onClick={() => setActiveInsight('year')}
-                      className="w-full p-4 rounded-xl bg-gradient-to-br from-[#2EC4B6]/10 to-[#16B5A8]/10 border border-[#2EC4B6]/20 hover:border-[#2EC4B6]/40 transition-colors text-left"
+                      className="w-full p-4 rounded-xl bg-gradient-to-br from-[#5CA5CD]/10 to-[#16B5A8]/10 border border-[#5CA5CD]/20 hover:border-[#5CA5CD]/40 transition-colors text-left"
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="size-8 rounded-lg bg-gradient-to-br from-[#2EC4B6] to-[#16B5A8] flex items-center justify-center">
+                        <div className="size-8 rounded-lg bg-gradient-to-br from-[#5CA5CD] to-[#16B5A8] flex items-center justify-center">
                           <Sparkles className="size-4 text-white" />
                         </div>
                         <span className="text-sm font-semibold text-foreground">Year in Review</span>

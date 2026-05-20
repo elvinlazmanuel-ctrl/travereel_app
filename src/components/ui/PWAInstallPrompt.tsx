@@ -101,7 +101,7 @@ export default function PWAInstallPrompt() {
 
             {/* Content */}
             <div className="flex items-start gap-3">
-              <div className="size-12 rounded-xl bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] flex items-center justify-center shrink-0">
+              <div className="size-12 rounded-xl bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] flex items-center justify-center shrink-0">
                 <Download className="size-6 text-white" />
               </div>
 
@@ -129,7 +129,7 @@ export default function PWAInstallPrompt() {
                   <Button
                     onClick={handleInstall}
                     size="sm"
-                    className="flex-1 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:opacity-90"
+                    className="flex-1 bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white hover:opacity-90"
                   >
                     <Download className="size-4 mr-1" />
                     Install App

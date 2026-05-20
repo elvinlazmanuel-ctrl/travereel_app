@@ -157,7 +157,7 @@ export default function StepTravelDates() {
 
       {/* Trip Duration Display */}
       {tripDuration > 0 && (
-        <div className="p-4 rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
+        <div className="p-4 rounded-xl bg-gradient-to-r from-[#5CA5CD]/5 to-[#E58BEA]/5 border border-[#5CA5CD]/20">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-semibold text-foreground">
@@ -165,7 +165,7 @@ export default function StepTravelDates() {
               </p>
               <p className="text-xs text-muted-foreground">Trip Duration</p>
             </div>
-            <Badge className="bg-[#2EC4B6]/10 text-[#2EC4B6] border-0">
+            <Badge className="bg-[#5CA5CD]/10 text-[#5CA5CD] border-0">
               {wizardData.departureDate && formatDate(wizardData.departureDate)}
             </Badge>
           </div>

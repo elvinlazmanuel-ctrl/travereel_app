@@ -132,7 +132,7 @@ export function PhotoAlbums({ userId, isOwnProfile }: PhotoAlbumsProps) {
           <Button
             size="sm"
             onClick={() => setShowCreateDialog(true)}
-            className="bg-[#FF6B6B] hover:bg-[#FF6B6B]/90"
+            className="bg-[#2F5C9B] hover:bg-[#2F5C9B]/90"
           >
             <Plus className="size-4 mr-2" />
             New Album
@@ -250,7 +250,7 @@ export function PhotoAlbums({ userId, isOwnProfile }: PhotoAlbumsProps) {
                 </Button>
                 <Button
                   onClick={handleCreateAlbum}
-                  className="flex-1 bg-[#FF6B6B] hover:bg-[#FF6B6B]/90"
+                  className="flex-1 bg-[#2F5C9B] hover:bg-[#2F5C9B]/90"
                 >
                   Create
                 </Button>

@@ -15,9 +15,9 @@ const travelTypes = [
     description: 'Just me exploring',
     icon: User,
     count: '1 person',
-    color: 'from-[#FF6B6B] to-[#FF8C42]',
-    bgColor: 'bg-[#FF6B6B]/10',
-    borderColor: 'border-[#FF6B6B]',
+    color: 'from-[#2F5C9B] to-[#5CA5CD]',
+    bgColor: 'bg-[#2F5C9B]/10',
+    borderColor: 'border-[#2F5C9B]',
   },
   {
     id: 'couple',
@@ -25,9 +25,9 @@ const travelTypes = [
     description: 'With my partner',
     icon: Heart,
     count: '2 people',
-    color: 'from-[#FF8C42] to-[#FFBA49]',
-    bgColor: 'bg-[#FF8C42]/10',
-    borderColor: 'border-[#FF8C42]',
+    color: 'from-[#5CA5CD] to-[#E58BEA]',
+    bgColor: 'bg-[#5CA5CD]/10',
+    borderColor: 'border-[#5CA5CD]',
   },
   {
     id: 'group',
@@ -35,9 +35,9 @@ const travelTypes = [
     description: 'Friends together',
     icon: Users,
     count: '3-10 people',
-    color: 'from-[#2EC4B6] to-[#FFBA49]',
-    bgColor: 'bg-[#2EC4B6]/10',
-    borderColor: 'border-[#2EC4B6]',
+    color: 'from-[#5CA5CD] to-[#E58BEA]',
+    bgColor: 'bg-[#5CA5CD]/10',
+    borderColor: 'border-[#5CA5CD]',
   },
   {
     id: 'family',
@@ -45,9 +45,9 @@ const travelTypes = [
     description: 'Family adventure',
     icon: Baby,
     count: '2+ people',
-    color: 'from-[#FFBA49] to-[#FF6B6B]',
-    bgColor: 'bg-[#FFBA49]/10',
-    borderColor: 'border-[#FFBA49]',
+    color: 'from-[#E58BEA] to-[#2F5C9B]',
+    bgColor: 'bg-[#E58BEA]/10',
+    borderColor: 'border-[#E58BEA]',
   },
 ]
 
@@ -121,7 +121,7 @@ export default function StepTravelType() {
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute top-2 right-2 size-5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] flex items-center justify-center"
+                  className="absolute top-2 right-2 size-5 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] flex items-center justify-center"
                 >
                   <svg className="size-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -145,8 +145,8 @@ export default function StepTravelType() {
           >
             <div className="space-y-4 pt-2">
               {/* Tag instruction */}
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-[#2EC4B6]/5 border border-[#2EC4B6]/20">
-                <UserPlus className="size-4 text-[#2EC4B6] shrink-0" />
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-[#5CA5CD]/5 border border-[#5CA5CD]/20">
+                <UserPlus className="size-4 text-[#5CA5CD] shrink-0" />
                 <p className="text-xs text-gray-600">
                   Tag your companions so they can view and collaborate on the itinerary
                 </p>
@@ -179,7 +179,7 @@ export default function StepTravelType() {
                     onClick={handleAddCompanion}
                     disabled={!companionName.trim()}
                     size="icon"
-                    className="bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white shrink-0"
+                    className="bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white shrink-0"
                   >
                     <Plus className="size-4" />
                   </Button>
@@ -201,7 +201,7 @@ export default function StepTravelType() {
                         exit={{ x: 20, opacity: 0 }}
                         className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100"
                       >
-                        <div className="size-8 rounded-full bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] flex items-center justify-center">
+                        <div className="size-8 rounded-full bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] flex items-center justify-center">
                           <span className="text-xs font-bold text-white">
                             {c.name.charAt(0).toUpperCase()}
                           </span>
@@ -217,7 +217,7 @@ export default function StepTravelType() {
                           className="p-1 rounded-full hover:bg-red-50 transition-colors"
                           aria-label={`Remove ${c.name}`}
                         >
-                          <X className="size-4 text-gray-400 hover:text-[#FF6B6B]" />
+                          <X className="size-4 text-gray-400 hover:text-[#2F5C9B]" />
                         </button>
                       </motion.div>
                     ))}

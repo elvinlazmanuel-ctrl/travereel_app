@@ -431,7 +431,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
                       ref={editInputRef}
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      className="h-8 text-sm rounded-md border-[#FF6B6B]/40 focus:border-[#FF6B6B] focus:ring-[#FF6B6B]/20 bg-white"
+                      className="h-8 text-sm rounded-md border-[#2F5C9B]/40 focus:border-[#2F5C9B] focus:ring-[#2F5C9B]/20 bg-white"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault()
@@ -445,7 +445,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
                     <div className="flex items-center gap-1.5">
                       <Button
                         size="sm"
-                        className="h-6 px-2.5 text-[11px] rounded-md bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white"
+                        className="h-6 px-2.5 text-[11px] rounded-md bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white"
                         onClick={() => handleSaveEdit(reply.id)}
                         disabled={isSavingEdit || !editContent.trim()}
                       >
@@ -478,7 +478,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
                       <span className="font-semibold text-foreground">{reply.author.username}</span>{' '}
                       {reply.author.username !== parentUsername && (
                         <>
-                          <span className="text-[#FF6B6B]/70 font-medium text-xs mr-0.5">
+                          <span className="text-[#2F5C9B]/70 font-medium text-xs mr-0.5">
                             @{parentUsername}
                           </span>{' '}
                         </>
@@ -547,7 +547,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
                       ref={editInputRef}
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      className="h-8 text-sm rounded-md border-[#FF6B6B]/40 focus:border-[#FF6B6B] focus:ring-[#FF6B6B]/20 bg-white"
+                      className="h-8 text-sm rounded-md border-[#2F5C9B]/40 focus:border-[#2F5C9B] focus:ring-[#2F5C9B]/20 bg-white"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault()
@@ -561,7 +561,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
                     <div className="flex items-center gap-1.5">
                       <Button
                         size="sm"
-                        className="h-6 px-2.5 text-[11px] rounded-md bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white"
+                        className="h-6 px-2.5 text-[11px] rounded-md bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white"
                         onClick={() => handleSaveEdit(comment.id)}
                         disabled={isSavingEdit || !editContent.trim()}
                       >
@@ -727,7 +727,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
             >
               <div className="px-4 py-2 bg-muted border-t border-border flex items-center gap-2">
                 <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                  <CornerDownRight className="size-3.5 text-[#FF6B6B]/60 flex-shrink-0" />
+                  <CornerDownRight className="size-3.5 text-[#2F5C9B]/60 flex-shrink-0" />
                   <span className="text-xs text-muted-foreground truncate">
                     Replying to{' '}
                     <span className="font-semibold text-foreground">
@@ -750,7 +750,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
         {/* Comment input */}
         <div className="border-t border-border p-3 flex gap-2 items-center">
           <Avatar className="size-8 flex-shrink-0">
-            <AvatarFallback className="text-xs bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-[#FF6B6B]">
+            <AvatarFallback className="text-xs bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-[#2F5C9B]">
               {currentUser?.username?.charAt(0).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
@@ -769,7 +769,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
           />
           <Button
             size="icon"
-            className="size-9 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] hover:opacity-90 text-white flex-shrink-0"
+            className="size-9 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] hover:opacity-90 text-white flex-shrink-0"
             onClick={handleSubmit}
             disabled={!newComment.trim() || isSubmitting}
           >
@@ -798,7 +798,7 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deleteConfirmId && handleDeleteComment(deleteConfirmId)}
-              className="bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white"
+              className="bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white"
             >
               {deletingId ? <Loader2 className="size-4 animate-spin mr-1" /> : null}
               Delete

@@ -153,14 +153,14 @@ export default function ItineraryWizard() {
                       transition={{ duration: 0.3 }}
                       style={{
                         background: i <= wizardStep
-                          ? 'linear-gradient(90deg, #FF6B6B, #FF8C42)'
+                          ? 'linear-gradient(90deg, #2F5C9B, #5CA5CD)'
                           : 'transparent',
                       }}
                     />
                   </div>
                   <span
                     className={`text-[9px] font-medium ${
-                      i <= wizardStep ? 'text-[#FF8C42]' : 'text-gray-300'
+                      i <= wizardStep ? 'text-[#5CA5CD]' : 'text-gray-300'
                     }`}
                   >
                     {stepLabels[i]}
@@ -203,7 +203,7 @@ export default function ItineraryWizard() {
             <Button
               onClick={handleNext}
               disabled={!canGoNext()}
-              className="flex-1 h-12 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white font-semibold disabled:opacity-50"
+              className="flex-1 h-12 bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white font-semibold disabled:opacity-50"
             >
               {wizardStep === 7 ? 'Continue' : 'Next'}
             </Button>

@@ -88,7 +88,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
 
   if (!isOpen) {
     return (
-      <Card className="p-6 bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] text-white">
+      <Card className="p-6 bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] text-white">
         <div className="text-center">
           <Sparkles className="size-12 mx-auto mb-3 animate-pulse" />
           <h3 className="text-2xl font-bold mb-2">Your {year} in Travel</h3>
@@ -97,7 +97,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
           </p>
           <Button
             onClick={() => setIsOpen(true)}
-            className="bg-white text-[#FF6B6B] hover:bg-gray-100"
+            className="bg-white text-[#2F5C9B] hover:bg-gray-100"
           >
             View Your Year <ChevronRight className="size-4 ml-2" />
           </Button>
@@ -110,7 +110,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
     return (
       <Card className="p-6">
         <div className="flex flex-col items-center justify-center py-12">
-          <div className="size-12 rounded-full bg-gradient-to-br from-[#FF6B6B] to-[#FFBA49] animate-spin mb-3" />
+          <div className="size-12 rounded-full bg-gradient-to-br from-[#2F5C9B] to-[#E58BEA] animate-spin mb-3" />
           <p className="text-sm text-gray-500">Preparing your travel story...</p>
         </div>
       </Card>
@@ -122,7 +122,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
   const slides = [
     // Slide 1: Welcome
     {
-      bg: 'from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49]',
+      bg: 'from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA]',
       content: (
         <div className="text-center text-white">
           <motion.div
@@ -154,7 +154,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
 
     // Slide 2: Total Trips
     {
-      bg: 'from-[#2EC4B6] via-[#16B5A8] to-[#0EA5A0]',
+      bg: 'from-[#5CA5CD] via-[#16B5A8] to-[#0EA5A0]',
       content: (
         <div className="text-center text-white">
           <motion.div
@@ -270,7 +270,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
 
     // Slide 6: Longest Trip
     {
-      bg: 'from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49]',
+      bg: 'from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA]',
       content: (
         <div className="text-center text-white">
           <motion.p
@@ -301,7 +301,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
 
     // Slide 7: Travel Months
     {
-      bg: 'from-[#2EC4B6] via-[#16B5A8] to-[#0EA5A0]',
+      bg: 'from-[#5CA5CD] via-[#16B5A8] to-[#0EA5A0]',
       content: (
         <div className="text-center text-white">
           <motion.h2
@@ -326,7 +326,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
                     animate={{ scale: 1 }}
                     transition={{ delay: index * 0.05 }}
                     className={`w-14 h-14 rounded-lg flex items-center justify-center text-sm font-medium ${
-                      traveled ? 'bg-white text-[#2EC4B6]' : 'bg-white/20'
+                      traveled ? 'bg-white text-[#5CA5CD]' : 'bg-white/20'
                     }`}
                   >
                     {month}
@@ -341,7 +341,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
 
     // Slide 8: Thank You
     {
-      bg: 'from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49]',
+      bg: 'from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA]',
       content: (
         <div className="text-center text-white">
           <motion.div
@@ -373,7 +373,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
           >
             <Button
               onClick={() => setIsOpen(false)}
-              className="bg-white text-[#FF6B6B] hover:bg-gray-100"
+              className="bg-white text-[#2F5C9B] hover:bg-gray-100"
             >
               <Share2 className="size-4 mr-2" />
               Share
@@ -449,7 +449,7 @@ export function YearInReview({ userId, year }: YearInReviewProps) {
               onClick={() => setCurrentSlide(index)}
               className={`w-2 h-2 rounded-full transition-all ${
                 index === currentSlide
-                  ? 'bg-[#FF6B6B] w-6'
+                  ? 'bg-[#2F5C9B] w-6'
                   : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />

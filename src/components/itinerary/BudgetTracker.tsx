@@ -44,10 +44,10 @@ import { toast } from 'sonner'
 
 // Category colors - warm theme
 const CATEGORY_COLORS: Record<string, string> = {
-  Accommodation: '#FF6B6B',
-  Food: '#FF8C42',
-  Transport: '#FFBA49',
-  Activities: '#2EC4B6',
+  Accommodation: '#2F5C9B',
+  Food: '#5CA5CD',
+  Transport: '#E58BEA',
+  Activities: '#5CA5CD',
   Shopping: '#E879A8',
   Other: '#A78BFA',
 }
@@ -356,10 +356,10 @@ export default function BudgetTracker() {
 
   // Progress bar color based on spending
   const getProgressColor = () => {
-    if (spentPercentage >= 90) return 'bg-[#FF6B6B]'
-    if (spentPercentage >= 70) return 'bg-[#FF8C42]'
-    if (spentPercentage >= 50) return 'bg-[#FFBA49]'
-    return 'bg-[#2EC4B6]'
+    if (spentPercentage >= 90) return 'bg-[#2F5C9B]'
+    if (spentPercentage >= 70) return 'bg-[#5CA5CD]'
+    if (spentPercentage >= 50) return 'bg-[#E58BEA]'
+    return 'bg-[#5CA5CD]'
   }
 
   if (!selectedItinerary) {
@@ -385,7 +385,7 @@ export default function BudgetTracker() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] p-5 text-white shadow-lg"
+        className="rounded-2xl bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] p-5 text-white shadow-lg"
       >
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -434,7 +434,7 @@ export default function BudgetTracker() {
           <Card className="border-gray-100 shadow-sm">
             <CardHeader className="pb-2 pt-4 px-4">
               <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Users className="size-4 text-[#FF8C42]" />
+                <Users className="size-4 text-[#5CA5CD]" />
                 Per-Person Breakdown
               </CardTitle>
             </CardHeader>
@@ -459,7 +459,7 @@ export default function BudgetTracker() {
                           person.balance > 0
                             ? 'text-emerald-600'
                             : person.balance < 0
-                              ? 'text-[#FF6B6B]'
+                              ? 'text-[#2F5C9B]'
                               : 'text-muted-foreground'
                         }`}
                       >
@@ -485,7 +485,7 @@ export default function BudgetTracker() {
         <Card className="border-gray-100 shadow-sm">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <Receipt className="size-4 text-[#FFBA49]" />
+              <Receipt className="size-4 text-[#E58BEA]" />
               Spending by Category
             </CardTitle>
           </CardHeader>
@@ -559,7 +559,7 @@ export default function BudgetTracker() {
         <Card className="border-gray-100 shadow-sm">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <Receipt className="size-4 text-[#2EC4B6]" />
+              <Receipt className="size-4 text-[#5CA5CD]" />
               Expenses
               <Badge variant="secondary" className="ml-auto text-xs bg-gray-100 text-gray-600">
                 {budgetItems.length}
@@ -644,7 +644,7 @@ export default function BudgetTracker() {
                                     <Button
                                       variant="ghost"
                                       size="icon"
-                                      className="size-6 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-[#FF6B6B]"
+                                      className="size-6 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-[#2F5C9B]"
                                       onClick={() => handleDeleteExpense(item.id)}
                                     >
                                       <Trash2 className="size-3.5" />
@@ -675,7 +675,7 @@ export default function BudgetTracker() {
           <Card className="border-gray-100 shadow-sm">
             <CardHeader className="pb-2 pt-4 px-4">
               <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <ArrowRight className="size-4 text-[#FF6B6B]" />
+                <ArrowRight className="size-4 text-[#2F5C9B]" />
                 Settle Up
               </CardTitle>
             </CardHeader>
@@ -687,7 +687,7 @@ export default function BudgetTracker() {
                     className="flex items-center justify-between rounded-lg border border-gray-100 px-3 py-2.5"
                   >
                     <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <div className="size-7 rounded-full bg-[#FF6B6B]/10 flex items-center justify-center text-xs font-medium text-[#FF6B6B] flex-shrink-0">
+                      <div className="size-7 rounded-full bg-[#2F5C9B]/10 flex items-center justify-center text-xs font-medium text-[#2F5C9B] flex-shrink-0">
                         {settlement.from.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0">
@@ -699,12 +699,12 @@ export default function BudgetTracker() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 ml-2">
-                      <span className="text-sm font-semibold text-[#FF6B6B]">
+                      <span className="text-sm font-semibold text-[#2F5C9B]">
                         {formatCurrency(settlement.amount, currency)}
                       </span>
                       <Button
                         size="sm"
-                        className="h-7 text-xs bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white px-2.5"
+                        className="h-7 text-xs bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white px-2.5"
                         onClick={() => {
                           toast.success(`Settlement of ${formatCurrency(settlement.amount, currency)} marked as settled`)
                         }}
@@ -735,7 +735,7 @@ export default function BudgetTracker() {
             transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.3 }}
           >
             <Button
-              className="size-14 rounded-full shadow-lg bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] hover:opacity-90 text-white"
+              className="size-14 rounded-full shadow-lg bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] hover:opacity-90 text-white"
               size="icon"
             >
               <Plus className="size-6" />
@@ -816,7 +816,7 @@ export default function BudgetTracker() {
                     size="sm"
                     className={`flex-1 text-xs h-8 capitalize ${
                       formSplitType === type
-                        ? 'bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white'
+                        ? 'bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white'
                         : 'border-gray-200 text-gray-600'
                     }`}
                     onClick={() => setFormSplitType(type)}
@@ -836,7 +836,7 @@ export default function BudgetTracker() {
                     <Checkbox
                       checked={formSplitAmong.includes(t.id)}
                       onCheckedChange={() => toggleSplitPerson(t.id)}
-                      className="data-[state=checked]:bg-[#2EC4B6] data-[state=checked]:border-[#2EC4B6]"
+                      className="data-[state=checked]:bg-[#5CA5CD] data-[state=checked]:border-[#5CA5CD]"
                     />
                     <span className="text-sm text-foreground flex-1">{t.name}</span>
                     {formSplitType === 'custom' && formSplitAmong.includes(t.id) && (
@@ -871,7 +871,7 @@ export default function BudgetTracker() {
 
             {/* Add Button */}
             <Button
-              className="w-full h-11 bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] hover:opacity-90 text-white font-semibold"
+              className="w-full h-11 bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] hover:opacity-90 text-white font-semibold"
               onClick={handleAddExpense}
               disabled={!formName.trim() || !formAmount || isSubmitting}
             >

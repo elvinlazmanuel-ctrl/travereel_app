@@ -135,7 +135,7 @@ export function WeatherForecast({ location, country, departureDate, returnDate }
     return (
       <Card className="p-4">
         <div className="flex items-center justify-center py-8">
-          <Loader2 className="size-8 animate-spin text-[#FF6B6B]" />
+          <Loader2 className="size-8 animate-spin text-[#2F5C9B]" />
         </div>
       </Card>
     )
@@ -172,7 +172,7 @@ export function WeatherForecast({ location, country, departureDate, returnDate }
 
       {/* Current Weather Highlight */}
       {weather[0] && (
-        <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-[#FFBA49]/10 to-[#FF6B6B]/10 border border-[#FFBA49]/20">
+        <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-[#E58BEA]/10 to-[#2F5C9B]/10 border border-[#E58BEA]/20">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-gray-500 mb-1">Today</p>
@@ -233,7 +233,7 @@ export function WeatherForecast({ location, country, departureDate, returnDate }
 
       {/* Travel Tip */}
       {departureDate && (
-        <div className="mt-4 p-3 rounded-lg bg-[#2EC4B6]/5 border border-[#2EC4B6]/20">
+        <div className="mt-4 p-3 rounded-lg bg-[#5CA5CD]/5 border border-[#5CA5CD]/20">
           <p className="text-xs text-gray-600">
             <strong>Travel Tip:</strong> Check weather closer to your departure date ({new Date(departureDate).toLocaleDateString()}) for more accurate forecasts.
           </p>

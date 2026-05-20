@@ -63,14 +63,14 @@ export default function StoryBar() {
           >
             <div className="relative">
               {/* Animated gradient ring */}
-              <div className="p-[3px] rounded-full bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] group-hover:shadow-lg group-hover:shadow-[#FF6B6B]/40 transition-all hover:scale-105">
+              <div className="p-[3px] rounded-full bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] group-hover:shadow-lg group-hover:shadow-[#2F5C9B]/40 transition-all hover:scale-105">
                 <div className="p-[2px] rounded-full bg-white dark:bg-slate-900">
                   <Avatar className="size-16">
                     <AvatarImage
                       src={currentUser?.avatar || undefined}
                       alt={currentUser?.name || 'You'}
                     />
-                    <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B] to-[#2EC4B6] text-white text-base font-semibold">
+                    <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-white text-base font-semibold">
                       {currentUser?.name?.charAt(0)?.toUpperCase() || 'U'}
                     </AvatarFallback>
                   </Avatar>
@@ -79,7 +79,7 @@ export default function StoryBar() {
               {/* Plus icon with animation */}
               <motion.div 
                 whileHover={{ scale: 1.15, rotate: 90 }}
-                className="absolute -bottom-1 -right-1 flex items-center justify-center size-7 rounded-full bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] border-2 border-white dark:border-slate-900 shadow-lg"
+                className="absolute -bottom-1 -right-1 flex items-center justify-center size-7 rounded-full bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] border-2 border-white dark:border-slate-900 shadow-lg"
               >
                 <Plus className="size-4 text-white" strokeWidth={3} />
               </motion.div>
@@ -106,7 +106,7 @@ export default function StoryBar() {
                 <div
                   className={`p-[3px] rounded-full transition-all hover:scale-105 ${
                     group.hasUnviewed
-                      ? 'bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] group-hover:shadow-lg group-hover:shadow-[#FF6B6B]/40'
+                      ? 'bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] group-hover:shadow-lg group-hover:shadow-[#2F5C9B]/40'
                       : 'bg-gray-300 dark:bg-gray-600 group-hover:bg-gray-400 dark:group-hover:bg-gray-500'
                   }`}
                 >
@@ -122,7 +122,7 @@ export default function StoryBar() {
                     </Avatar>
                   </div>
                 </div>
-                <span className="text-xs text-foreground font-medium truncate w-20 text-center group-hover:text-[#FF6B6B] transition-colors">
+                <span className="text-xs text-foreground font-medium truncate w-20 text-center group-hover:text-[#2F5C9B] transition-colors">
                   {latestStory.author.username}
                 </span>
               </motion.button>

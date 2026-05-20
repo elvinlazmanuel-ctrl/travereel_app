@@ -251,7 +251,7 @@ export default function CreatePost() {
         <Button
           onClick={handleSubmit}
           disabled={isSubmitting || !canSubmit}
-          className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] hover:from-[#FF6B6B]/90 hover:to-[#FF8C42]/90 text-white border-0 rounded-lg px-5 shadow-sm disabled:opacity-50"
+          className="bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] hover:from-[#2F5C9B]/90 hover:to-[#5CA5CD]/90 text-white border-0 rounded-lg px-5 shadow-sm disabled:opacity-50"
         >
           {isSubmitting ? (
             isUploading ? (
@@ -271,7 +271,7 @@ export default function CreatePost() {
             initial={{ scaleX: 0 }}
             animate={{ scaleX: uploadProgress / 100 }}
             exit={{ scaleX: 0 }}
-            className="h-1 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] origin-left"
+            className="h-1 bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] origin-left"
             transition={{ duration: 0.3 }}
           />
         )}
@@ -309,7 +309,7 @@ export default function CreatePost() {
                   {selectedFiles.map((sf, i) => (
                     <div
                       key={sf.preview}
-                      className="relative size-16 rounded-lg overflow-hidden flex-shrink-0 border-2 border-transparent hover:border-[#FF8C42] transition-colors cursor-pointer"
+                      className="relative size-16 rounded-lg overflow-hidden flex-shrink-0 border-2 border-transparent hover:border-[#5CA5CD] transition-colors cursor-pointer"
                       onClick={() => {
                         // Move this image to first position
                         setSelectedFiles(prev => {
@@ -326,7 +326,7 @@ export default function CreatePost() {
                           e.stopPropagation()
                           removeFile(i)
                         }}
-                        className="absolute -top-1 -right-1 size-5 rounded-full bg-[#FF6B6B] flex items-center justify-center"
+                        className="absolute -top-1 -right-1 size-5 rounded-full bg-[#2F5C9B] flex items-center justify-center"
                         aria-label="Remove photo"
                       >
                         <X className="size-3 text-white" />
@@ -336,7 +336,7 @@ export default function CreatePost() {
                   {selectedFiles.length < 5 && (
                     <button
                       onClick={handlePhotoClick}
-                      className="size-16 rounded-lg border-2 border-dashed border-border flex items-center justify-center flex-shrink-0 hover:border-[#FF8C42] transition-colors cursor-pointer"
+                      className="size-16 rounded-lg border-2 border-dashed border-border flex items-center justify-center flex-shrink-0 hover:border-[#5CA5CD] transition-colors cursor-pointer"
                     >
                       <ImageIcon className="size-5 text-muted-foreground" />
                     </button>
@@ -348,7 +348,7 @@ export default function CreatePost() {
               {selectedFiles.length < 5 && selectedFiles.length === 1 && (
                 <button
                   onClick={handlePhotoClick}
-                  className="w-full h-9 text-xs border-dashed border-border text-muted-foreground hover:text-[#FF8C42] hover:border-[#FF8C42] flex items-center justify-center rounded-md border cursor-pointer transition-colors bg-background"
+                  className="w-full h-9 text-xs border-dashed border-border text-muted-foreground hover:text-[#5CA5CD] hover:border-[#5CA5CD] flex items-center justify-center rounded-md border cursor-pointer transition-colors bg-background"
                 >
                   <ImageIcon className="size-3.5 mr-1.5" />
                   Add More Photos ({5 - selectedFiles.length} remaining)
@@ -356,13 +356,13 @@ export default function CreatePost() {
               )}
             </div>
           ) : (
-            <div className="w-full aspect-square rounded-2xl bg-gradient-to-br from-[#FFF5F0] via-[#FFF0E5] to-[#E8FAF8] flex flex-col items-center justify-center gap-3 border-2 border-dashed border-[#FF8C42]/30 hover:border-[#FF8C42]/50 transition-colors overflow-hidden relative">
+            <div className="w-full aspect-square rounded-2xl bg-gradient-to-br from-[#FFF5F0] via-[#FFF0E5] to-[#E8FAF8] flex flex-col items-center justify-center gap-3 border-2 border-dashed border-[#5CA5CD]/30 hover:border-[#5CA5CD]/50 transition-colors overflow-hidden relative">
               <button
                 onClick={handlePhotoClick}
                 className="flex flex-col items-center justify-center gap-3 cursor-pointer w-full h-full"
               >
-                <div className="flex items-center justify-center size-16 rounded-full bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20">
-                  <Camera className="size-8 text-[#FF8C42]" strokeWidth={1.5} />
+                <div className="flex items-center justify-center size-16 rounded-full bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20">
+                  <Camera className="size-8 text-[#5CA5CD]" strokeWidth={1.5} />
                 </div>
                 <p className="text-sm text-muted-foreground font-medium">Tap to add photos</p>
                 <p className="text-xs text-muted-foreground/70">Share your travel moments</p>
@@ -373,7 +373,7 @@ export default function CreatePost() {
                   <span className="text-[11px] text-muted-foreground uppercase">or</span>
                   <div className="flex-1 h-px bg-border" />
                 </div>
-                <p className="text-xs text-[#FF8C42] font-medium">Post text only — no photos needed</p>
+                <p className="text-xs text-[#5CA5CD] font-medium">Post text only — no photos needed</p>
               </div>
             </div>
           )}
@@ -396,7 +396,7 @@ export default function CreatePost() {
               src={currentUser?.avatar || undefined}
               alt={currentUser?.name || 'You'}
             />
-            <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-[#FF8C42] text-sm font-semibold">
+            <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-[#5CA5CD] text-sm font-semibold">
               {currentUser?.name?.charAt(0)?.toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
@@ -420,7 +420,7 @@ export default function CreatePost() {
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
             placeholder="Share your travel experience..."
-            className="min-h-[100px] resize-none border-border focus:border-[#FF8C42] focus:ring-[#FF8C42]/20 rounded-xl text-sm"
+            className="min-h-[100px] resize-none border-border focus:border-[#5CA5CD] focus:ring-[#5CA5CD]/20 rounded-xl text-sm"
           />
         </div>
 
@@ -444,7 +444,7 @@ export default function CreatePost() {
                 setTimeout(() => setShowCitySuggestions(false), 200)
               }}
               placeholder="Search for a city..."
-              className="pl-9 border-border focus:border-[#FF8C42] focus:ring-[#FF8C42]/20 rounded-xl text-sm"
+              className="pl-9 border-border focus:border-[#5CA5CD] focus:ring-[#5CA5CD]/20 rounded-xl text-sm"
             />
             {/* City suggestions dropdown */}
             <AnimatePresence>
@@ -459,9 +459,9 @@ export default function CreatePost() {
                     <button
                       key={city}
                       onMouseDown={() => selectCity(city)}
-                      className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-foreground hover:bg-[#FF8C42]/5 transition-colors text-left"
+                      className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-foreground hover:bg-[#5CA5CD]/5 transition-colors text-left"
                     >
-                      <MapPin className="size-3.5 text-[#FF8C42] flex-shrink-0" />
+                      <MapPin className="size-3.5 text-[#5CA5CD] flex-shrink-0" />
                       <span>{city}</span>
                     </button>
                   ))}
@@ -493,7 +493,7 @@ export default function CreatePost() {
               onKeyDown={handleTagKeyDown}
               onBlur={handleAddTag}
               placeholder="Add tags (press Enter)"
-              className="pl-9 border-border focus:border-[#FF8C42] focus:ring-[#FF8C42]/20 rounded-xl text-sm"
+              className="pl-9 border-border focus:border-[#5CA5CD] focus:ring-[#5CA5CD]/20 rounded-xl text-sm"
             />
           </div>
           {tags.length > 0 && (
@@ -502,11 +502,11 @@ export default function CreatePost() {
                 <Badge
                   key={tag}
                   variant="secondary"
-                  className="bg-[#FF8C42]/10 text-[#FF8C42] hover:bg-[#FF8C42]/20 cursor-pointer rounded-lg text-xs font-medium border-0"
+                  className="bg-[#5CA5CD]/10 text-[#5CA5CD] hover:bg-[#5CA5CD]/20 cursor-pointer rounded-lg text-xs font-medium border-0"
                   onClick={() => handleRemoveTag(tag)}
                 >
                   #{tag}
-                  <span className="ml-1 text-[#FF8C42]/60">&times;</span>
+                  <span className="ml-1 text-[#5CA5CD]/60">&times;</span>
                 </Badge>
               ))}
             </div>
@@ -519,7 +519,7 @@ export default function CreatePost() {
           <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-3">
               {isPublic ? (
-                <Globe className="size-5 text-[#2EC4B6]" />
+                <Globe className="size-5 text-[#5CA5CD]" />
               ) : (
                 <Lock className="size-5 text-muted-foreground" />
               )}
@@ -535,14 +535,14 @@ export default function CreatePost() {
             <Switch
               checked={isPublic}
               onCheckedChange={setIsPublic}
-              className="data-[state=checked]:bg-[#2EC4B6]"
+              className="data-[state=checked]:bg-[#5CA5CD]"
             />
           </div>
 
           {/* Memory toggle */}
           <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-3">
-              <Clock className="size-5 text-[#FFBA49]" />
+              <Clock className="size-5 text-[#E58BEA]" />
               <div>
                 <p className="text-sm font-medium text-foreground">Memory</p>
                 <p className="text-xs text-muted-foreground">
@@ -553,7 +553,7 @@ export default function CreatePost() {
             <Switch
               checked={isMemory}
               onCheckedChange={setIsMemory}
-              className="data-[state=checked]:bg-[#FFBA49]"
+              className="data-[state=checked]:bg-[#E58BEA]"
             />
           </div>
         </div>

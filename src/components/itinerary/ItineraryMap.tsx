@@ -105,7 +105,7 @@ export function ItineraryMap({ location, country, days_plan }: ItineraryMapProps
       <Card className="p-4">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <Loader2 className="size-8 animate-spin text-[#FF6B6B] mx-auto mb-2" />
+            <Loader2 className="size-8 animate-spin text-[#2F5C9B] mx-auto mb-2" />
             <p className="text-sm text-gray-500">Loading map...</p>
           </div>
         </div>
@@ -153,7 +153,7 @@ export function ItineraryMap({ location, country, days_plan }: ItineraryMapProps
             {/* @ts-ignore */}
             <Popup>
               <div className="text-center">
-                <MapPin className="size-4 mx-auto mb-1 text-[#FF6B6B]" />
+                <MapPin className="size-4 mx-auto mb-1 text-[#2F5C9B]" />
                 <p className="font-semibold">{location}</p>
                 <p className="text-xs text-gray-500">{country}</p>
               </div>
@@ -165,7 +165,7 @@ export function ItineraryMap({ location, country, days_plan }: ItineraryMapProps
       {/* Location Info */}
       <div className="p-3 bg-white border-t border-gray-100">
         <div className="flex items-center gap-2">
-          <MapPin className="size-4 text-[#FF6B6B]" />
+          <MapPin className="size-4 text-[#2F5C9B]" />
           <div>
             <p className="text-sm font-semibold text-gray-900">
               {location}, {country}

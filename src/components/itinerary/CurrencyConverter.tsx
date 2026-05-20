@@ -205,7 +205,7 @@ export function CurrencyConverter({
       </div>
 
       {/* Result */}
-      <div className="p-4 rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
+      <div className="p-4 rounded-xl bg-gradient-to-r from-[#5CA5CD]/5 to-[#E58BEA]/5 border border-[#5CA5CD]/20">
         <div className="flex items-start justify-between">
           <div>
             <p className="text-xs text-gray-500 mb-1">Converted Amount</p>
@@ -239,7 +239,7 @@ export function CurrencyConverter({
             onClick={() => setAmount(quickAmount)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               amount === quickAmount
-                ? 'bg-[#FF6B6B] text-white'
+                ? 'bg-[#2F5C9B] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >

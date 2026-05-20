@@ -26,10 +26,10 @@ export default function StepTravelDetails() {
 
       {/* Flight Details Section */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-[#FF6B6B]/5 to-[#FF8C42]/5 border border-[#FF6B6B]/20">
+        <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5 border border-[#2F5C9B]/20">
           <div className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-[#FF6B6B]/10 flex items-center justify-center">
-              <Plane className="size-4 text-[#FF6B6B]" />
+            <div className="size-8 rounded-lg bg-[#2F5C9B]/10 flex items-center justify-center">
+              <Plane className="size-4 text-[#2F5C9B]" />
             </div>
             <div>
               <p className="text-sm font-semibold text-foreground">Flight Details</p>
@@ -39,12 +39,12 @@ export default function StepTravelDetails() {
           <Switch
             checked={hasFlightDetails}
             onCheckedChange={setHasFlightDetails}
-            className="data-[state=checked]:bg-[#FF6B6B]"
+            className="data-[state=checked]:bg-[#2F5C9B]"
           />
         </div>
 
         {hasFlightDetails && (
-          <div className="space-y-3 pl-2 border-l-2 border-[#FF6B6B]/20 ml-4">
+          <div className="space-y-3 pl-2 border-l-2 border-[#2F5C9B]/20 ml-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-foreground mb-1.5">
@@ -114,10 +114,10 @@ export default function StepTravelDetails() {
 
       {/* Hotel Details Section */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
+        <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-[#5CA5CD]/5 to-[#E58BEA]/5 border border-[#5CA5CD]/20">
           <div className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-[#2EC4B6]/10 flex items-center justify-center">
-              <Hotel className="size-4 text-[#2EC4B6]" />
+            <div className="size-8 rounded-lg bg-[#5CA5CD]/10 flex items-center justify-center">
+              <Hotel className="size-4 text-[#5CA5CD]" />
             </div>
             <div>
               <p className="text-sm font-semibold text-foreground">Accommodation</p>
@@ -127,12 +127,12 @@ export default function StepTravelDetails() {
           <Switch
             checked={hasHotel}
             onCheckedChange={setHasHotel}
-            className="data-[state=checked]:bg-[#2EC4B6]"
+            className="data-[state=checked]:bg-[#5CA5CD]"
           />
         </div>
 
         {!hasHotel && (
-          <div className="pl-2 border-l-2 border-[#2EC4B6]/20 ml-4">
+          <div className="pl-2 border-l-2 border-[#5CA5CD]/20 ml-4">
             <div className="p-3 rounded-lg bg-amber-50 border border-amber-200">
               <div className="flex items-start gap-2">
                 <MapPin className="size-4 text-amber-600 mt-0.5 flex-shrink-0" />
@@ -155,13 +155,13 @@ export default function StepTravelDetails() {
           <p className="text-xs font-semibold text-foreground mb-2">Your Travel Details:</p>
           {wizardData.departureTime && (
             <div className="flex items-center gap-2 text-xs text-gray-600">
-              <Plane className="size-3 text-[#FF6B6B]" />
+              <Plane className="size-3 text-[#2F5C9B]" />
               <span>Departure: {wizardData.departureDate || 'TBD'} at {wizardData.departureTime}</span>
             </div>
           )}
           {wizardData.arrivalTime && (
             <div className="flex items-center gap-2 text-xs text-gray-600">
-              <Plane className="size-3 text-[#2EC4B6]" />
+              <Plane className="size-3 text-[#5CA5CD]" />
               <span>Arrival: {wizardData.returnDate || 'TBD'} at {wizardData.arrivalTime}</span>
             </div>
           )}

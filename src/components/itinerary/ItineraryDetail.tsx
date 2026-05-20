@@ -114,7 +114,7 @@ function getStatusBadge(status: Itinerary['status']) {
     case 'during-travel':
       return { label: 'During Travel', bgClass: 'bg-emerald-100 text-emerald-700 border-emerald-200' }
     case 'post-travel':
-      return { label: 'Post-Travel', bgClass: 'bg-[#FF6B6B]/15 text-[#FF6B6B] border-[#FF6B6B]/25' }
+      return { label: 'Post-Travel', bgClass: 'bg-[#2F5C9B]/15 text-[#2F5C9B] border-[#2F5C9B]/25' }
     default:
       return { label: 'Unknown', bgClass: 'bg-muted text-muted-foreground border-border' }
   }
@@ -437,7 +437,7 @@ export default function ItineraryDetail() {
                             ? 'bg-emerald-100 text-emerald-600 ring-2 ring-emerald-300'
                             : 'bg-rose-100 text-rose-600 ring-2 ring-rose-300'
                           : isCompleted
-                          ? 'bg-[#2EC4B6] text-white'
+                          ? 'bg-[#5CA5CD] text-white'
                           : 'bg-gray-100 text-gray-400'
                       }`}
                     >
@@ -452,7 +452,7 @@ export default function ItineraryDetail() {
                         isActive
                           ? 'text-foreground'
                           : isCompleted
-                          ? 'text-[#2EC4B6]'
+                          ? 'text-[#5CA5CD]'
                           : 'text-gray-400'
                       }`}
                     >
@@ -462,7 +462,7 @@ export default function ItineraryDetail() {
                   {index < 2 && (
                     <div
                       className={`h-0.5 w-8 -mt-4 rounded-full transition-colors ${
-                        currentIndex < phaseIndex ? 'bg-[#2EC4B6]' : 'bg-gray-200'
+                        currentIndex < phaseIndex ? 'bg-[#5CA5CD]' : 'bg-gray-200'
                       }`}
                     />
                   )}
@@ -476,7 +476,7 @@ export default function ItineraryDetail() {
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs text-[#FF8C42] hover:text-[#FF8C42] hover:bg-[#FF8C42]/10 h-8"
+            className="text-xs text-[#5CA5CD] hover:text-[#5CA5CD] hover:bg-[#5CA5CD]/10 h-8"
             onClick={() => setCurrentView('budget-tracker')}
           >
             <Wallet className="size-3.5 mr-1" />
@@ -548,7 +548,7 @@ export default function ItineraryDetail() {
                             ? 'bg-emerald-100 text-emerald-600 ring-2 ring-emerald-300'
                             : 'bg-rose-100 text-rose-600 ring-2 ring-rose-300'
                           : isCompleted
-                          ? 'bg-[#2EC4B6] text-white'
+                          ? 'bg-[#5CA5CD] text-white'
                           : 'bg-gray-100 text-gray-400'
                       }`}
                     >
@@ -563,7 +563,7 @@ export default function ItineraryDetail() {
                         isActive
                           ? 'text-foreground'
                           : isCompleted
-                          ? 'text-[#2EC4B6]'
+                          ? 'text-[#5CA5CD]'
                           : 'text-gray-400'
                       }`}
                     >
@@ -573,7 +573,7 @@ export default function ItineraryDetail() {
                   {index < 2 && (
                     <div
                       className={`h-0.5 w-8 -mt-4 rounded-full transition-colors ${
-                        currentIndex < phaseIndex ? 'bg-[#2EC4B6]' : 'bg-gray-200'
+                        currentIndex < phaseIndex ? 'bg-[#5CA5CD]' : 'bg-gray-200'
                       }`}
                     />
                   )}
@@ -587,7 +587,7 @@ export default function ItineraryDetail() {
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs text-[#FF8C42] hover:text-[#FF8C42] hover:bg-[#FF8C42]/10 h-8"
+            className="text-xs text-[#5CA5CD] hover:text-[#5CA5CD] hover:bg-[#5CA5CD]/10 h-8"
             onClick={() => setCurrentView('budget-tracker')}
           >
             <Wallet className="size-3.5 mr-1" />
@@ -596,7 +596,7 @@ export default function ItineraryDetail() {
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs text-[#FF6B6B] hover:text-[#FF6B6B] hover:bg-[#FF6B6B]/10 h-8"
+            className="text-xs text-[#2F5C9B] hover:text-[#2F5C9B] hover:bg-[#2F5C9B]/10 h-8"
             onClick={() => changeStatus('pre-travel')}
             disabled={isChangingStatus}
           >
@@ -642,7 +642,7 @@ export default function ItineraryDetail() {
                           ? 'bg-emerald-100 text-emerald-600 ring-2 ring-emerald-300'
                           : 'bg-rose-100 text-rose-600 ring-2 ring-rose-300'
                         : isCompleted
-                        ? 'bg-[#2EC4B6] text-white'
+                        ? 'bg-[#5CA5CD] text-white'
                         : 'bg-gray-100 text-gray-400'
                     }`}
                   >
@@ -657,7 +657,7 @@ export default function ItineraryDetail() {
                       isActive
                         ? 'text-foreground'
                         : isCompleted
-                        ? 'text-[#2EC4B6]'
+                        ? 'text-[#5CA5CD]'
                         : 'text-gray-400'
                     }`}
                   >
@@ -667,7 +667,7 @@ export default function ItineraryDetail() {
                 {index < 2 && (
                   <div
                     className={`h-0.5 w-8 -mt-4 rounded-full transition-colors ${
-                      currentIndex < phaseIndex ? 'bg-[#2EC4B6]' : 'bg-gray-200'
+                      currentIndex < phaseIndex ? 'bg-[#5CA5CD]' : 'bg-gray-200'
                     }`}
                   />
                 )}
@@ -728,8 +728,8 @@ export default function ItineraryDetail() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {isPublic ? (
-              <div className="size-7 rounded-full bg-[#2EC4B6]/10 flex items-center justify-center">
-                <Globe className="size-3.5 text-[#2EC4B6]" />
+              <div className="size-7 rounded-full bg-[#5CA5CD]/10 flex items-center justify-center">
+                <Globe className="size-3.5 text-[#5CA5CD]" />
               </div>
             ) : (
               <div className="size-7 rounded-full bg-gray-100 flex items-center justify-center">
@@ -749,7 +749,7 @@ export default function ItineraryDetail() {
             checked={isPublic}
             onCheckedChange={toggleVisibility}
             disabled={isUpdatingVisibility}
-            className="data-[state=checked]:bg-[#2EC4B6]"
+            className="data-[state=checked]:bg-[#5CA5CD]"
           />
         </div>
       </motion.div>
@@ -764,7 +764,7 @@ export default function ItineraryDetail() {
         {/* Start Trip */}
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button className="flex-1 h-11 bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] hover:opacity-90 text-white font-semibold">
+            <Button className="flex-1 h-11 bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] hover:opacity-90 text-white font-semibold">
               <Play className="size-4 mr-1.5" />
               Start Trip
             </Button>
@@ -781,7 +781,7 @@ export default function ItineraryDetail() {
               <AlertDialogAction
                 onClick={() => changeStatus('during-travel')}
                 disabled={isChangingStatus}
-                className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white"
+                className="bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white"
               >
                 {isChangingStatus ? 'Starting...' : "Let's Go!"}
               </AlertDialogAction>
@@ -792,7 +792,7 @@ export default function ItineraryDetail() {
         {/* Budget Tracker */}
         <Button
           variant="outline"
-          className="h-11 border-[#FF8C42] text-[#FF8C42] hover:bg-[#FF8C42]/10 font-semibold"
+          className="h-11 border-[#5CA5CD] text-[#5CA5CD] hover:bg-[#5CA5CD]/10 font-semibold"
           onClick={() => setCurrentView('budget-tracker')}
         >
           <Wallet className="size-4 mr-1.5" />
@@ -804,7 +804,7 @@ export default function ItineraryDetail() {
           <AlertDialogTrigger asChild>
             <Button
               variant="outline"
-              className="h-11 border-gray-200 text-gray-400 hover:text-[#FF6B6B] hover:border-[#FF6B6B]/30"
+              className="h-11 border-gray-200 text-gray-400 hover:text-[#2F5C9B] hover:border-[#2F5C9B]/30"
               size="icon"
             >
               <Trash2 className="size-4" />
@@ -813,7 +813,7 @@ export default function ItineraryDetail() {
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle className="flex items-center gap-2">
-                <AlertTriangle className="size-5 text-[#FF6B6B]" />
+                <AlertTriangle className="size-5 text-[#2F5C9B]" />
                 Delete Itinerary
               </AlertDialogTitle>
               <AlertDialogDescription>
@@ -824,7 +824,7 @@ export default function ItineraryDetail() {
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDelete}
-                className="bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white"
+                className="bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white"
               >
                 Delete
               </AlertDialogAction>
@@ -842,13 +842,13 @@ export default function ItineraryDetail() {
       >
         {/* Budget Overview Card */}
         <Card
-          className="border-gray-100 shadow-sm cursor-pointer hover:border-[#FF8C42]/30 transition-colors"
+          className="border-gray-100 shadow-sm cursor-pointer hover:border-[#5CA5CD]/30 transition-colors"
           onClick={() => setCurrentView('budget-tracker')}
         >
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <div className="size-8 rounded-lg bg-gradient-to-br from-[#FF8C42]/20 to-[#FFBA49]/20 flex items-center justify-center">
-                <Wallet className="size-4 text-[#FF8C42]" />
+              <div className="size-8 rounded-lg bg-gradient-to-br from-[#5CA5CD]/20 to-[#E58BEA]/20 flex items-center justify-center">
+                <Wallet className="size-4 text-[#5CA5CD]" />
               </div>
               <span className="text-xs font-semibold text-muted-foreground">Budget</span>
             </div>
@@ -859,7 +859,7 @@ export default function ItineraryDetail() {
               <>
                 <div className="mt-2 h-1.5 rounded-full bg-gray-100 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#FF8C42] to-[#FFBA49] transition-all"
+                    className="h-full rounded-full bg-gradient-to-r from-[#5CA5CD] to-[#E58BEA] transition-all"
                     style={{ width: `${budgetProgress}%` }}
                   />
                 </div>
@@ -871,7 +871,7 @@ export default function ItineraryDetail() {
                 </p>
               </>
             )}
-            <div className="flex items-center gap-0.5 mt-2 text-[#FF8C42]">
+            <div className="flex items-center gap-0.5 mt-2 text-[#5CA5CD]">
               <span className="text-[10px] font-medium">View details</span>
               <ChevronRight className="size-3" />
             </div>
@@ -882,8 +882,8 @@ export default function ItineraryDetail() {
         <Card className="border-gray-100 shadow-sm">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <div className="size-8 rounded-lg bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 flex items-center justify-center">
-                <Calendar className="size-4 text-[#FF6B6B]" />
+              <div className="size-8 rounded-lg bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 flex items-center justify-center">
+                <Calendar className="size-4 text-[#2F5C9B]" />
               </div>
               <span className="text-xs font-semibold text-muted-foreground">Itinerary</span>
             </div>
@@ -895,9 +895,9 @@ export default function ItineraryDetail() {
               {itinerary.daysPlan.slice(0, 4).map((day) => (
                 <div
                   key={day.id}
-                  className="size-5 rounded bg-[#FF6B6B]/10 flex items-center justify-center"
+                  className="size-5 rounded bg-[#2F5C9B]/10 flex items-center justify-center"
                 >
-                  <span className="text-[8px] font-bold text-[#FF6B6B]">{day.dayNumber}</span>
+                  <span className="text-[8px] font-bold text-[#2F5C9B]">{day.dayNumber}</span>
                 </div>
               ))}
               {itinerary.daysPlan.length > 4 && (
@@ -916,21 +916,21 @@ export default function ItineraryDetail() {
           transition={{ delay: 0.09 }}
         >
           <Card className={`border shadow-sm ${
-            daysUntilDeparture <= 3 ? 'border-[#FF6B6B]/30 bg-[#FF6B6B]/5' :
-            daysUntilDeparture <= 7 ? 'border-[#FF8C42]/30 bg-[#FF8C42]/5' :
-            'border-[#2EC4B6]/30 bg-[#2EC4B6]/5'
+            daysUntilDeparture <= 3 ? 'border-[#2F5C9B]/30 bg-[#2F5C9B]/5' :
+            daysUntilDeparture <= 7 ? 'border-[#5CA5CD]/30 bg-[#5CA5CD]/5' :
+            'border-[#5CA5CD]/30 bg-[#5CA5CD]/5'
           }`}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className={`size-10 rounded-full flex items-center justify-center ${
-                  daysUntilDeparture <= 3 ? 'bg-[#FF6B6B]/10' :
-                  daysUntilDeparture <= 7 ? 'bg-[#FF8C42]/10' :
-                  'bg-[#2EC4B6]/10'
+                  daysUntilDeparture <= 3 ? 'bg-[#2F5C9B]/10' :
+                  daysUntilDeparture <= 7 ? 'bg-[#5CA5CD]/10' :
+                  'bg-[#5CA5CD]/10'
                 }`}>
                   <Bell className={`size-5 ${
-                    daysUntilDeparture <= 3 ? 'text-[#FF6B6B]' :
-                    daysUntilDeparture <= 7 ? 'text-[#FF8C42]' :
-                    'text-[#2EC4B6]'
+                    daysUntilDeparture <= 3 ? 'text-[#2F5C9B]' :
+                    daysUntilDeparture <= 7 ? 'text-[#5CA5CD]' :
+                    'text-[#5CA5CD]'
                   }`} />
                 </div>
                 <div className="flex-1">
@@ -947,9 +947,9 @@ export default function ItineraryDetail() {
                   </p>
                 </div>
                 <Badge className={`text-xs ${
-                  daysUntilDeparture <= 3 ? 'bg-[#FF6B6B]/15 text-[#FF6B6B]' :
-                  daysUntilDeparture <= 7 ? 'bg-[#FF8C42]/15 text-[#FF8C42]' :
-                  'bg-[#2EC4B6]/15 text-[#2EC4B6]'
+                  daysUntilDeparture <= 3 ? 'bg-[#2F5C9B]/15 text-[#2F5C9B]' :
+                  daysUntilDeparture <= 7 ? 'bg-[#5CA5CD]/15 text-[#5CA5CD]' :
+                  'bg-[#5CA5CD]/15 text-[#5CA5CD]'
                 }`}>
                   {daysUntilDeparture}d
                 </Badge>
@@ -972,8 +972,8 @@ export default function ItineraryDetail() {
               className="w-full flex items-center justify-between"
             >
               <div className="flex items-center gap-2">
-                <div className="size-8 rounded-lg bg-gradient-to-br from-[#2EC4B6]/20 to-[#FFBA49]/20 flex items-center justify-center">
-                  <FileText className="size-4 text-[#2EC4B6]" />
+                <div className="size-8 rounded-lg bg-gradient-to-br from-[#5CA5CD]/20 to-[#E58BEA]/20 flex items-center justify-center">
+                  <FileText className="size-4 text-[#5CA5CD]" />
                 </div>
                 <span className="text-sm font-semibold text-foreground">Essential Info</span>
               </div>
@@ -983,22 +983,22 @@ export default function ItineraryDetail() {
             {showEssentialInfo && (
               <div className="mt-3 pt-3 border-t border-gray-100 space-y-2.5">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <MapPin className="size-3.5 text-[#FF6B6B]" />
+                  <MapPin className="size-3.5 text-[#2F5C9B]" />
                   <span className="font-medium">Destination:</span>
                   <span>{itinerary.location}, {itinerary.country}</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Clock className="size-3.5 text-[#FF8C42]" />
+                  <Clock className="size-3.5 text-[#5CA5CD]" />
                   <span className="font-medium">Duration:</span>
                   <span>{itinerary.days} days</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <DollarSign className="size-3.5 text-[#2EC4B6]" />
+                  <DollarSign className="size-3.5 text-[#5CA5CD]" />
                   <span className="font-medium">Budget:</span>
                   <span>{formatCurrency(itinerary.budget, itinerary.currency)}</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Backpack className="size-3.5 text-[#FFBA49]" />
+                  <Backpack className="size-3.5 text-[#E58BEA]" />
                   <span className="font-medium">Travel Type:</span>
                   <span className="capitalize">{itinerary.travelType}</span>
                 </div>
@@ -1014,7 +1014,7 @@ export default function ItineraryDetail() {
                     href={`https://www.google.com/search?q=embassy+of+${encodeURIComponent(itinerary.country)}+contact`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[10px] text-[#FF8C42] font-medium hover:underline flex items-center gap-1"
+                    className="text-[10px] text-[#5CA5CD] font-medium hover:underline flex items-center gap-1"
                   >
                     <Phone className="size-3" />
                     Find Embassy Contact
@@ -1092,7 +1092,7 @@ export default function ItineraryDetail() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <div className="size-8 rounded-lg bg-gradient-to-br from-[#E879A8]/20 to-[#FF6B6B]/20 flex items-center justify-center">
+                <div className="size-8 rounded-lg bg-gradient-to-br from-[#E879A8]/20 to-[#2F5C9B]/20 flex items-center justify-center">
                   <Briefcase className="size-4 text-[#E879A8]" />
                 </div>
                 <div>
@@ -1121,7 +1121,7 @@ export default function ItineraryDetail() {
                 {/* Progress bar */}
                 <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden mb-3">
                   <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-[#E879A8] to-[#FF6B6B]"
+                    className="h-full rounded-full bg-gradient-to-r from-[#E879A8] to-[#2F5C9B]"
                     initial={{ width: 0 }}
                     animate={{
                       width: `${Object.keys(packingList).length > 0
@@ -1138,12 +1138,12 @@ export default function ItineraryDetail() {
                     <div
                       key={item}
                       className={`flex items-center gap-2 rounded-lg px-2.5 py-2 transition-colors ${
-                        checked ? 'bg-[#2EC4B6]/5' : 'bg-gray-50'
+                        checked ? 'bg-[#5CA5CD]/5' : 'bg-gray-50'
                       }`}
                       onClick={() => togglePackingItem(item)}
                     >
                       <div className={`size-4 rounded border-2 flex items-center justify-center ${
-                        checked ? 'bg-[#2EC4B6] border-[#2EC4B6]' : 'border-gray-300'
+                        checked ? 'bg-[#5CA5CD] border-[#5CA5CD]' : 'border-gray-300'
                       }`}>
                         {checked && <CheckCircle2 className="size-3 text-white" />}
                       </div>
@@ -1171,7 +1171,7 @@ export default function ItineraryDetail() {
         {/* Section Header */}
         <div className="flex items-center justify-between">
           <h3 className="text-base font-semibold text-foreground">Travel Tools</h3>
-          <Badge variant="secondary" className="text-[10px] bg-[#2EC4B6]/10 text-[#2EC4B6]">
+          <Badge variant="secondary" className="text-[10px] bg-[#5CA5CD]/10 text-[#5CA5CD]">
             NEW
           </Badge>
         </div>
@@ -1215,9 +1215,9 @@ export default function ItineraryDetail() {
           <CardContent className="p-0">
             <div className="px-4 pt-4 pb-2">
               <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Map className="size-4 text-[#FF6B6B]" />
+                <Map className="size-4 text-[#2F5C9B]" />
                 {activitiesWithLocation.length > 0 ? 'Activity Locations' : 'Destination'}
-                <Badge variant="secondary" className="text-[10px] bg-[#FF6B6B]/10 text-[#FF6B6B] ml-auto">
+                <Badge variant="secondary" className="text-[10px] bg-[#2F5C9B]/10 text-[#2F5C9B] ml-auto">
                   {activitiesWithLocation.length > 0 ? `${activitiesWithLocation.length} spots` : itinerary.location}
                 </Badge>
               </h3>
@@ -1231,7 +1231,7 @@ export default function ItineraryDetail() {
             <div className="px-4 pb-3">
               <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-3">
                 <div className="flex items-center gap-1.5">
-                  <MapPin className="size-3 text-[#FF6B6B]" />
+                  <MapPin className="size-3 text-[#2F5C9B]" />
                   <span className="text-xs text-muted-foreground">{itinerary.location}, {itinerary.country}</span>
                 </div>
                 {activitiesWithLocation.length > 0 && (
@@ -1241,7 +1241,7 @@ export default function ItineraryDetail() {
                         .filter((a) => a.latitude != null && a.longitude != null)
                         .map((activity) => (
                           <div key={activity.id} className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <span className="size-1.5 rounded-full bg-[#FF6B6B] shrink-0" />
+                            <span className="size-1.5 rounded-full bg-[#2F5C9B] shrink-0" />
                             <span className="font-medium text-foreground">Day {day.dayNumber}:</span>
                             <span>{activity.title}</span>
                             {activity.location && (
@@ -1256,7 +1256,7 @@ export default function ItineraryDetail() {
                   href={`https://www.openstreetmap.org/search?query=${encodeURIComponent(itinerary.location + ', ' + itinerary.country)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[10px] text-[#FF8C42] font-medium hover:underline"
+                  className="text-[10px] text-[#5CA5CD] font-medium hover:underline"
                 >
                   Open in OpenStreetMap
                 </a>
@@ -1307,7 +1307,7 @@ export default function ItineraryDetail() {
           <CardContent className="p-0">
             <div className="px-4 pt-4 pb-2">
               <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Calendar className="size-4 text-[#FF8C42]" />
+                <Calendar className="size-4 text-[#5CA5CD]" />
                 Days Plan
                 <Badge variant="secondary" className="text-[10px] bg-gray-100 text-muted-foreground ml-auto">
                   {itinerary.daysPlan.length} days
@@ -1335,8 +1335,8 @@ export default function ItineraryDetail() {
                     <AccordionItem key={day.id} value={day.id} className="border-gray-100">
                       <AccordionTrigger className="py-3 hover:no-underline">
                         <div className="flex items-center gap-2.5 text-left flex-1 min-w-0">
-                          <div className="size-8 rounded-lg bg-[#FF8C42]/10 flex items-center justify-center flex-shrink-0">
-                            <span className="text-xs font-bold text-[#FF8C42]">D{day.dayNumber}</span>
+                          <div className="size-8 rounded-lg bg-[#5CA5CD]/10 flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs font-bold text-[#5CA5CD]">D{day.dayNumber}</span>
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="text-sm font-medium text-foreground truncate">
@@ -1359,7 +1359,7 @@ export default function ItineraryDetail() {
                         {/* Route info */}
                         {day.route && (
                           <div className="flex items-center gap-1.5 mb-3 px-1">
-                            <MapPin className="size-3 text-[#FF6B6B]" />
+                            <MapPin className="size-3 text-[#2F5C9B]" />
                             <span className="text-xs text-muted-foreground">Route: {day.route}</span>
                           </div>
                         )}
@@ -1372,7 +1372,7 @@ export default function ItineraryDetail() {
                               className="flex items-start gap-2.5 rounded-lg border border-gray-100 px-3 py-2"
                             >
                               <div className="mt-0.5">
-                                <div className="size-2 rounded-full bg-[#FF8C42]" />
+                                <div className="size-2 rounded-full bg-[#5CA5CD]" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm text-foreground">{activity.title}</p>
@@ -1418,20 +1418,20 @@ export default function ItineraryDetail() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
         >
-          <Card className={`border shadow-sm transition-colors ${allChecked ? 'border-[#2EC4B6]/30 bg-[#2EC4B6]/5' : 'border-[#FFBA49]/30 bg-[#FFBA49]/5'}`}>
+          <Card className={`border shadow-sm transition-colors ${allChecked ? 'border-[#5CA5CD]/30 bg-[#5CA5CD]/5' : 'border-[#E58BEA]/30 bg-[#E58BEA]/5'}`}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-1">
                 <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <ListChecks className="size-4 text-[#2EC4B6]" />
+                  <ListChecks className="size-4 text-[#5CA5CD]" />
                   Trip Requirements
                 </h3>
                 <Badge
                   className={`text-[10px] border-0 ${
                     allChecked
-                      ? 'bg-[#2EC4B6]/15 text-[#2EC4B6]'
+                      ? 'bg-[#5CA5CD]/15 text-[#5CA5CD]'
                       : checkedCount > 0
-                        ? 'bg-[#FFBA49]/15 text-[#FF8C42]'
-                        : 'bg-[#FF6B6B]/15 text-[#FF6B6B]'
+                        ? 'bg-[#E58BEA]/15 text-[#5CA5CD]'
+                        : 'bg-[#2F5C9B]/15 text-[#2F5C9B]'
                   }`}
                 >
                   {checkedCount}/{totalRequirements}
@@ -1443,9 +1443,9 @@ export default function ItineraryDetail() {
                 <motion.div
                   className={`h-full rounded-full transition-colors ${
                     allChecked
-                      ? 'bg-[#2EC4B6]'
+                      ? 'bg-[#5CA5CD]'
                       : checkedCount > 0
-                        ? 'bg-gradient-to-r from-[#FF8C42] to-[#FFBA49]'
+                        ? 'bg-gradient-to-r from-[#5CA5CD] to-[#E58BEA]'
                         : 'bg-gray-200'
                   }`}
                   initial={{ width: 0 }}
@@ -1456,17 +1456,17 @@ export default function ItineraryDetail() {
 
               {/* Status message */}
               <div className={`flex items-center gap-2 mb-3 rounded-lg px-3 py-2 ${
-                allChecked ? 'bg-[#2EC4B6]/10' : 'bg-[#FFBA49]/10'
+                allChecked ? 'bg-[#5CA5CD]/10' : 'bg-[#E58BEA]/10'
               }`}>
                 {allChecked ? (
                   <>
-                    <CheckCircle2 className="size-4 text-[#2EC4B6] flex-shrink-0" />
-                    <p className="text-xs font-medium text-[#2EC4B6]">All set! You&apos;re ready for your trip.</p>
+                    <CheckCircle2 className="size-4 text-[#5CA5CD] flex-shrink-0" />
+                    <p className="text-xs font-medium text-[#5CA5CD]">All set! You&apos;re ready for your trip.</p>
                   </>
                 ) : (
                   <>
-                    <AlertTriangle className="size-4 text-[#FF8C42] flex-shrink-0" />
-                    <p className="text-xs font-medium text-[#FF8C42]">
+                    <AlertTriangle className="size-4 text-[#5CA5CD] flex-shrink-0" />
+                    <p className="text-xs font-medium text-[#5CA5CD]">
                       {totalRequirements - checkedCount} item{totalRequirements - checkedCount !== 1 ? 's' : ''} still needed before your trip
                     </p>
                   </>
@@ -1481,13 +1481,13 @@ export default function ItineraryDetail() {
                     <div
                       key={index}
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
-                        isChecked ? 'bg-[#2EC4B6]/5' : 'bg-white border border-gray-100'
+                        isChecked ? 'bg-[#5CA5CD]/5' : 'bg-white border border-gray-100'
                       }`}
                     >
                       <Checkbox
                         checked={isChecked}
                         onCheckedChange={() => toggleRequirement(req)}
-                        className="data-[state=checked]:bg-[#2EC4B6] data-[state=checked]:border-[#2EC4B6]"
+                        className="data-[state=checked]:bg-[#5CA5CD] data-[state=checked]:border-[#5CA5CD]"
                       />
                       <span
                         className={`text-sm transition-colors ${
@@ -1507,8 +1507,8 @@ export default function ItineraryDetail() {
                   variant="outline"
                   className={`w-full h-9 font-medium transition-all ${
                     reminderSent
-                      ? 'border-[#2EC4B6] text-[#2EC4B6] bg-[#2EC4B6]/10'
-                      : 'border-[#FF8C42]/30 text-[#FF8C42] hover:bg-[#FF8C42]/10 hover:border-[#FF8C42]'
+                      ? 'border-[#5CA5CD] text-[#5CA5CD] bg-[#5CA5CD]/10'
+                      : 'border-[#5CA5CD]/30 text-[#5CA5CD] hover:bg-[#5CA5CD]/10 hover:border-[#5CA5CD]'
                   }`}
                   onClick={sendReminder}
                   disabled={isSendingReminder || reminderSent}
@@ -1550,18 +1550,18 @@ export default function ItineraryDetail() {
                     key={companion.id}
                     className="flex items-center gap-2 rounded-full bg-gray-50 px-3 py-1.5"
                   >
-                    <div className="size-6 rounded-full bg-[#FF8C42]/10 flex items-center justify-center text-[10px] font-medium text-[#FF8C42]">
+                    <div className="size-6 rounded-full bg-[#5CA5CD]/10 flex items-center justify-center text-[10px] font-medium text-[#5CA5CD]">
                       {companion.name.charAt(0).toUpperCase()}
                     </div>
                     <span className="text-xs font-medium text-foreground">{companion.name}</span>
                   </div>
                 ))}
                 {currentUser && (
-                  <div className="flex items-center gap-2 rounded-full bg-[#FF6B6B]/10 px-3 py-1.5">
-                    <div className="size-6 rounded-full bg-[#FF6B6B]/20 flex items-center justify-center text-[10px] font-medium text-[#FF6B6B]">
+                  <div className="flex items-center gap-2 rounded-full bg-[#2F5C9B]/10 px-3 py-1.5">
+                    <div className="size-6 rounded-full bg-[#2F5C9B]/20 flex items-center justify-center text-[10px] font-medium text-[#2F5C9B]">
                       {currentUser.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-xs font-medium text-[#FF6B6B]">You (Organizer)</span>
+                    <span className="text-xs font-medium text-[#2F5C9B]">You (Organizer)</span>
                   </div>
                 )}
               </div>

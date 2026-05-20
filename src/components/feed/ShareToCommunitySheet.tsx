@@ -226,7 +226,7 @@ export default function ShareToCommunitySheet({
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Add a caption (optional)..."
-              className="h-9 text-sm rounded-lg border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2EC4B6] focus:ring-[#2EC4B6]/20"
+              className="h-9 text-sm rounded-lg border-gray-200 bg-gray-50 focus:bg-white focus:border-[#5CA5CD] focus:ring-[#5CA5CD]/20"
             />
           </div>
 
@@ -258,7 +258,7 @@ export default function ShareToCommunitySheet({
                                   alt={community.name}
                                 />
                               ) : (
-                                <AvatarFallback className="bg-gradient-to-br from-[#FF8C42]/20 to-[#FFBA49]/20 text-[#FF8C42] rounded-lg text-sm font-semibold">
+                                <AvatarFallback className="bg-gradient-to-br from-[#5CA5CD]/20 to-[#E58BEA]/20 text-[#5CA5CD] rounded-lg text-sm font-semibold">
                                   {community.name.charAt(0).toUpperCase()}
                                 </AvatarFallback>
                               )}
@@ -279,8 +279,8 @@ export default function ShareToCommunitySheet({
                             onClick={() => handleShare(community.id)}
                             className={`ml-3 h-8 px-4 text-xs rounded-lg shrink-0 ${
                               isShared
-                                ? 'bg-[#2EC4B6]/10 text-[#2EC4B6] hover:bg-[#2EC4B6]/10 border-0'
-                                : 'bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-white'
+                                ? 'bg-[#5CA5CD]/10 text-[#5CA5CD] hover:bg-[#5CA5CD]/10 border-0'
+                                : 'bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white'
                             }`}
                           >
                             {isCurrentlySharing ? (
@@ -321,7 +321,7 @@ export default function ShareToCommunitySheet({
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search friends..."
-                    className="h-9 pl-8 text-sm rounded-lg border-gray-200 bg-gray-50 focus:bg-white focus:border-[#FF6B6B] focus:ring-[#FF6B6B]/20"
+                    className="h-9 pl-8 text-sm rounded-lg border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2F5C9B] focus:ring-[#2F5C9B]/20"
                   />
                 </div>
               </div>
@@ -353,7 +353,7 @@ export default function ShareToCommunitySheet({
                                 {friend.avatar ? (
                                   <AvatarImage src={friend.avatar} alt={friend.username} />
                                 ) : (
-                                  <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-[#FF6B6B] text-sm font-semibold">
+                                  <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-[#2F5C9B] text-sm font-semibold">
                                     {friend.username.charAt(0).toUpperCase()}
                                   </AvatarFallback>
                                 )}
@@ -374,8 +374,8 @@ export default function ShareToCommunitySheet({
                               onClick={() => handleSendDM(friend.id)}
                               className={`ml-3 h-8 px-4 text-xs rounded-lg shrink-0 ${
                                 isSent
-                                  ? 'bg-[#FF6B6B]/10 text-[#FF6B6B] hover:bg-[#FF6B6B]/10 border-0'
-                                  : 'bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white'
+                                  ? 'bg-[#2F5C9B]/10 text-[#2F5C9B] hover:bg-[#2F5C9B]/10 border-0'
+                                  : 'bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white'
                               }`}
                             >
                               {isCurrentlySending ? (
@@ -414,8 +414,8 @@ export default function ShareToCommunitySheet({
 function EmptyCommunitiesState() {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center px-6">
-      <div className="size-14 rounded-full bg-gradient-to-br from-[#FF8C42]/10 to-[#FFBA49]/10 flex items-center justify-center mb-3">
-        <ImagePlus className="size-7 text-[#FF8C42]" />
+      <div className="size-14 rounded-full bg-gradient-to-br from-[#5CA5CD]/10 to-[#E58BEA]/10 flex items-center justify-center mb-3">
+        <ImagePlus className="size-7 text-[#5CA5CD]" />
       </div>
       <h3 className="text-sm font-semibold text-gray-900 mb-1">
         No communities joined
@@ -430,8 +430,8 @@ function EmptyCommunitiesState() {
 function EmptyFriendsState({ hasFriends }: { hasFriends: boolean }) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center px-6">
-      <div className="size-14 rounded-full bg-gradient-to-br from-[#FF6B6B]/10 to-[#FF8C42]/10 flex items-center justify-center mb-3">
-        <MessageCircle className="size-7 text-[#FF6B6B]" />
+      <div className="size-14 rounded-full bg-gradient-to-br from-[#2F5C9B]/10 to-[#5CA5CD]/10 flex items-center justify-center mb-3">
+        <MessageCircle className="size-7 text-[#2F5C9B]" />
       </div>
       <h3 className="text-sm font-semibold text-gray-900 mb-1">
         {hasFriends ? 'No matches found' : 'No friends yet'}

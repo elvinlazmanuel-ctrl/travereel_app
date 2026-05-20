@@ -49,10 +49,10 @@ import { useAppStore } from '@/lib/store'
 
 // Category colors - warm theme
 const CATEGORY_COLORS: Record<string, string> = {
-  Accommodation: '#FF6B6B',
-  Food: '#FF8C42',
-  Transport: '#FFBA49',
-  Activities: '#2EC4B6',
+  Accommodation: '#2F5C9B',
+  Food: '#5CA5CD',
+  Transport: '#E58BEA',
+  Activities: '#5CA5CD',
   Shopping: '#E879A8',
   Other: '#A78BFA',
 }
@@ -132,7 +132,7 @@ function StarRating({ rating, onRate }: { rating: number; onRate: (r: number) =>
           <Star
             className={`size-4 transition-colors ${
               star <= (hover || rating)
-                ? 'text-[#FFBA49] fill-[#FFBA49]'
+                ? 'text-[#E58BEA] fill-[#E58BEA]'
                 : 'text-gray-300'
             }`}
           />
@@ -519,7 +519,7 @@ export default function PostTravel() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl bg-gradient-to-br from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] p-5 text-white shadow-lg"
+        className="rounded-2xl bg-gradient-to-br from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] p-5 text-white shadow-lg"
       >
         <div className="flex items-start gap-3 mb-4">
           <span className="text-3xl">{flag}</span>
@@ -566,10 +566,10 @@ export default function PostTravel() {
         transition={{ delay: 0.03 }}
       >
         <Card className="border-gray-100 shadow-sm overflow-hidden">
-          <div className="bg-gradient-to-r from-[#FF6B6B]/5 via-[#FF8C42]/5 to-[#FFBA49]/5 px-4 pt-4 pb-3">
+          <div className="bg-gradient-to-r from-[#2F5C9B]/5 via-[#5CA5CD]/5 to-[#E58BEA]/5 px-4 pt-4 pb-3">
             <CardHeader className="p-0 pb-0">
               <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
-                <Share2 className="size-5 text-[#FF6B6B]" />
+                <Share2 className="size-5 text-[#2F5C9B]" />
                 Share Your Trip
               </CardTitle>
               <p className="text-xs text-muted-foreground mt-1">
@@ -581,7 +581,7 @@ export default function PostTravel() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 {isPublic ? (
-                  <Globe className="size-4 text-[#2EC4B6]" />
+                  <Globe className="size-4 text-[#5CA5CD]" />
                 ) : (
                   <Lock className="size-4 text-muted-foreground" />
                 )}
@@ -597,7 +597,7 @@ export default function PostTravel() {
               <Switch
                 checked={isPublic}
                 onCheckedChange={setIsPublic}
-                className="data-[state=checked]:bg-[#2EC4B6]"
+                className="data-[state=checked]:bg-[#5CA5CD]"
               />
             </div>
 
@@ -605,7 +605,7 @@ export default function PostTravel() {
               {/* Share as Post - Primary CTA */}
               <Sheet open={isShareSheetOpen} onOpenChange={setIsShareSheetOpen}>
                 <SheetTrigger asChild>
-                  <Button className="h-14 bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] hover:opacity-90 text-white font-semibold flex flex-col gap-0.5 rounded-xl">
+                  <Button className="h-14 bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] hover:opacity-90 text-white font-semibold flex flex-col gap-0.5 rounded-xl">
                     <Share2 className="size-5" />
                     <span className="text-[11px] font-medium">Share as Post</span>
                   </Button>
@@ -646,7 +646,7 @@ export default function PostTravel() {
                               onClick={() => canSelect && togglePhotoSelection(photo.id)}
                               className={`relative aspect-square rounded-lg overflow-hidden transition-all ${
                                 isSelected
-                                  ? 'ring-2 ring-[#FF8C42] ring-offset-1'
+                                  ? 'ring-2 ring-[#5CA5CD] ring-offset-1'
                                   : canSelect
                                     ? 'opacity-70 hover:opacity-100'
                                     : 'opacity-40 cursor-not-allowed'
@@ -659,7 +659,7 @@ export default function PostTravel() {
                                 loading="lazy"
                               />
                               {isSelected && (
-                                <div className="absolute top-1 right-1 size-5 rounded-full bg-[#FF8C42] flex items-center justify-center">
+                                <div className="absolute top-1 right-1 size-5 rounded-full bg-[#5CA5CD] flex items-center justify-center">
                                   <Check className="size-3 text-white" />
                                 </div>
                               )}
@@ -676,18 +676,18 @@ export default function PostTravel() {
 
                     <div className="flex items-center justify-between px-1">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        {isPublic ? <Globe className="size-4 text-[#2EC4B6]" /> : <Lock className="size-4" />}
+                        {isPublic ? <Globe className="size-4 text-[#5CA5CD]" /> : <Lock className="size-4" />}
                         {isPublic ? 'Public post' : 'Private post'}
                       </div>
                       <Switch
                         checked={isPublic}
                         onCheckedChange={setIsPublic}
-                        className="data-[state=checked]:bg-[#2EC4B6]"
+                        className="data-[state=checked]:bg-[#5CA5CD]"
                       />
                     </div>
 
                     <Button
-                      className="w-full h-11 bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] hover:opacity-90 text-white font-semibold"
+                      className="w-full h-11 bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] hover:opacity-90 text-white font-semibold"
                       onClick={handleShareAsPost}
                       disabled={isSharingPost || selectedPhotoIds.size === 0}
                     >
@@ -703,7 +703,7 @@ export default function PostTravel() {
                 className={`h-14 flex flex-col gap-0.5 rounded-xl font-semibold ${
                   savedMemory
                     ? 'border-emerald-300 text-emerald-600 bg-emerald-50'
-                    : 'border-[#2EC4B6] text-[#2EC4B6] hover:bg-[#2EC4B6]/10'
+                    : 'border-[#5CA5CD] text-[#5CA5CD] hover:bg-[#5CA5CD]/10'
                 }`}
                 onClick={handleSaveMemory}
                 disabled={isSavingMemory || savedMemory}
@@ -734,9 +734,9 @@ export default function PostTravel() {
         <Card className="border-gray-100 shadow-sm">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <Camera className="size-4 text-[#FF6B6B]" />
+              <Camera className="size-4 text-[#2F5C9B]" />
               Photo Memories
-              <Badge variant="secondary" className="ml-auto text-xs bg-[#FF6B6B]/10 text-[#FF6B6B]">
+              <Badge variant="secondary" className="ml-auto text-xs bg-[#2F5C9B]/10 text-[#2F5C9B]">
                 {photos.length}
               </Badge>
             </CardTitle>
@@ -856,7 +856,7 @@ export default function PostTravel() {
                             e.stopPropagation()
                             handleRemovePhoto(photo.id)
                           }}
-                          className="absolute top-1 right-1 size-5 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#FF6B6B]"
+                          className="absolute top-1 right-1 size-5 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#2F5C9B]"
                         >
                           <Trash2 className="size-3 text-white" />
                         </button>
@@ -879,7 +879,7 @@ export default function PostTravel() {
             />
             <Button
               variant="outline"
-              className="w-full mt-3 h-10 text-xs border-dashed border-gray-300 text-muted-foreground hover:text-[#FF8C42] hover:border-[#FF8C42]"
+              className="w-full mt-3 h-10 text-xs border-dashed border-gray-300 text-muted-foreground hover:text-[#5CA5CD] hover:border-[#5CA5CD]"
               onClick={() => fileInputRef.current?.click()}
             >
               <ImagePlus className="size-4 mr-1.5" />
@@ -899,13 +899,13 @@ export default function PostTravel() {
         <Card className="border-gray-100 shadow-sm">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <Wallet className="size-4 text-[#FFBA49]" />
+              <Wallet className="size-4 text-[#E58BEA]" />
               Trip Budget Report
               <div className="ml-auto flex items-center gap-1">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-[#2EC4B6] text-xs h-6 px-2 hover:bg-[#2EC4B6]/10"
+                  className="text-[#5CA5CD] text-xs h-6 px-2 hover:bg-[#5CA5CD]/10"
                   onClick={handleDownloadCSV}
                 >
                   <Download className="size-3 mr-0.5" />
@@ -914,7 +914,7 @@ export default function PostTravel() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-[#FF8C42] text-xs h-6 px-2 hover:bg-[#FF8C42]/10"
+                  className="text-[#5CA5CD] text-xs h-6 px-2 hover:bg-[#5CA5CD]/10"
                   onClick={() => setCurrentView('budget-tracker')}
                 >
                   Details
@@ -925,7 +925,7 @@ export default function PostTravel() {
           </CardHeader>
           <CardContent className="px-4 pb-4">
             {/* Budget vs Actual - Prominent Display */}
-            <div className="rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 p-3 mb-3">
+            <div className="rounded-xl bg-gradient-to-r from-[#5CA5CD]/5 to-[#E58BEA]/5 p-3 mb-3">
               <div className="flex items-center justify-between mb-2">
                 <div>
                   <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Total Budget</p>
@@ -933,7 +933,7 @@ export default function PostTravel() {
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Actual Spending</p>
-                  <p className={`text-lg font-bold ${isOverBudget ? 'text-[#FF6B6B]' : 'text-foreground'}`}>
+                  <p className={`text-lg font-bold ${isOverBudget ? 'text-[#2F5C9B]' : 'text-foreground'}`}>
                     {formatCurrency(totalSpent, currency)}
                   </p>
                 </div>
@@ -946,7 +946,7 @@ export default function PostTravel() {
                   animate={{ width: `${spentPercentage}%` }}
                   transition={{ duration: 0.8, ease: 'easeOut' }}
                   className={`h-full rounded-full ${
-                    spentPercentage >= 100 ? 'bg-[#FF6B6B]' : spentPercentage >= 90 ? 'bg-[#FF8C42]' : spentPercentage >= 70 ? 'bg-[#FFBA49]' : 'bg-[#2EC4B6]'
+                    spentPercentage >= 100 ? 'bg-[#2F5C9B]' : spentPercentage >= 90 ? 'bg-[#5CA5CD]' : spentPercentage >= 70 ? 'bg-[#E58BEA]' : 'bg-[#5CA5CD]'
                   }`}
                 />
               </div>
@@ -954,7 +954,7 @@ export default function PostTravel() {
               {/* Remaining or Over budget */}
               <div className="flex items-center justify-between mt-1.5">
                 <span className="text-[10px] text-muted-foreground">{spentPercentage.toFixed(0)}% used</span>
-                <span className={`text-xs font-medium ${isOverBudget ? 'text-[#FF6B6B]' : budgetRemaining === 0 ? 'text-[#FFBA49]' : 'text-[#2EC4B6]'}`}>
+                <span className={`text-xs font-medium ${isOverBudget ? 'text-[#2F5C9B]' : budgetRemaining === 0 ? 'text-[#E58BEA]' : 'text-[#5CA5CD]'}`}>
                   {isOverBudget
                     ? `Over budget by ${formatCurrency(Math.abs(budgetRemaining), currency)}`
                     : budgetRemaining === 0
@@ -1025,7 +1025,7 @@ export default function PostTravel() {
                           person.balance > 0
                             ? 'text-emerald-600'
                             : person.balance < 0
-                              ? 'text-[#FF6B6B]'
+                              ? 'text-[#2F5C9B]'
                               : 'text-muted-foreground'
                         }`}
                       >
@@ -1040,7 +1040,7 @@ export default function PostTravel() {
             {/* Download Budget Report Button */}
             <Button
               variant="outline"
-              className="w-full mt-3 h-10 text-xs border-[#2EC4B6]/30 text-[#2EC4B6] hover:bg-[#2EC4B6]/10 hover:border-[#2EC4B6]/50 font-medium"
+              className="w-full mt-3 h-10 text-xs border-[#5CA5CD]/30 text-[#5CA5CD] hover:bg-[#5CA5CD]/10 hover:border-[#5CA5CD]/50 font-medium"
               onClick={handleDownloadCSV}
             >
               <Download className="size-4 mr-1.5" />
@@ -1106,28 +1106,28 @@ export default function PostTravel() {
         <Card className="border-gray-100 shadow-sm">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <TrendingUp className="size-4 text-[#2EC4B6]" />
+              <TrendingUp className="size-4 text-[#5CA5CD]" />
               Trip Summary
             </CardTitle>
           </CardHeader>
           <CardContent className="px-4 pb-4">
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg bg-gradient-to-br from-[#FF6B6B]/10 to-[#FF8C42]/10 p-3">
-                <Calendar className="size-4 text-[#FF6B6B] mb-1" />
+              <div className="rounded-lg bg-gradient-to-br from-[#2F5C9B]/10 to-[#5CA5CD]/10 p-3">
+                <Calendar className="size-4 text-[#2F5C9B] mb-1" />
                 <p className="text-2xl font-bold text-foreground">{selectedItinerary.days}</p>
                 <p className="text-[10px] text-muted-foreground">Days Traveled</p>
               </div>
-              <div className="rounded-lg bg-gradient-to-br from-[#2EC4B6]/10 to-[#FFBA49]/10 p-3">
-                <CheckCircle2 className="size-4 text-[#2EC4B6] mb-1" />
+              <div className="rounded-lg bg-gradient-to-br from-[#5CA5CD]/10 to-[#E58BEA]/10 p-3">
+                <CheckCircle2 className="size-4 text-[#5CA5CD] mb-1" />
                 <p className="text-2xl font-bold text-foreground">{completedActivities.length}</p>
                 <p className="text-[10px] text-muted-foreground">Activities Done</p>
               </div>
-              <div className="rounded-lg bg-gradient-to-br from-[#FFBA49]/10 to-[#FF6B6B]/10 p-3">
-                <MapPin className="size-4 text-[#FFBA49] mb-1" />
+              <div className="rounded-lg bg-gradient-to-br from-[#E58BEA]/10 to-[#2F5C9B]/10 p-3">
+                <MapPin className="size-4 text-[#E58BEA] mb-1" />
                 <p className="text-2xl font-bold text-foreground">{new Set(selectedItinerary.daysPlan.map(d => d.title)).size}</p>
                 <p className="text-[10px] text-muted-foreground">Places Visited</p>
               </div>
-              <div className="rounded-lg bg-gradient-to-br from-[#E879A8]/10 to-[#FF8C42]/10 p-3">
+              <div className="rounded-lg bg-gradient-to-br from-[#E879A8]/10 to-[#5CA5CD]/10 p-3">
                 <Camera className="size-4 text-[#E879A8] mb-1" />
                 <p className="text-2xl font-bold text-foreground">{uploadedPhotos.length}</p>
                 <p className="text-[10px] text-muted-foreground">Photos Uploaded</p>
@@ -1147,9 +1147,9 @@ export default function PostTravel() {
           <Card className="border-gray-100 shadow-sm">
             <CardHeader className="pb-2 pt-4 px-4">
               <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Award className="size-4 text-[#FFBA49]" />
+                <Award className="size-4 text-[#E58BEA]" />
                 Trip Achievements
-                <Badge variant="secondary" className="ml-auto text-xs bg-[#FFBA49]/10 text-[#FFBA49]">
+                <Badge variant="secondary" className="ml-auto text-xs bg-[#E58BEA]/10 text-[#E58BEA]">
                   {earnedAchievements.length} earned
                 </Badge>
               </CardTitle>
@@ -1158,11 +1158,11 @@ export default function PostTravel() {
               <div className="grid grid-cols-2 gap-2">
                 {earnedAchievements.map((achievement) => {
                   const achievementData: Record<string, { name: string; icon: string; color: string }> = {
-                    'trip-completed': { name: 'Trip Completed', icon: '🎉', color: 'from-[#FF6B6B]/10 to-[#FF8C42]/10' },
-                    'budget-master': { name: 'Budget Master', icon: '💰', color: 'from-[#2EC4B6]/10 to-[#FFBA49]/10' },
-                    'activity-explorer': { name: 'Activity Explorer', icon: '🗺️', color: 'from-[#FF8C42]/10 to-[#FFBA49]/10' },
-                    'photo-enthusiast': { name: 'Photo Enthusiast', icon: '📸', color: 'from-[#E879A8]/10 to-[#FF6B6B]/10' },
-                    'multi-city': { name: 'Multi-City Traveler', icon: '🏙️', color: 'from-[#FFBA49]/10 to-[#2EC4B6]/10' },
+                    'trip-completed': { name: 'Trip Completed', icon: '🎉', color: 'from-[#2F5C9B]/10 to-[#5CA5CD]/10' },
+                    'budget-master': { name: 'Budget Master', icon: '💰', color: 'from-[#5CA5CD]/10 to-[#E58BEA]/10' },
+                    'activity-explorer': { name: 'Activity Explorer', icon: '🗺️', color: 'from-[#5CA5CD]/10 to-[#E58BEA]/10' },
+                    'photo-enthusiast': { name: 'Photo Enthusiast', icon: '📸', color: 'from-[#E879A8]/10 to-[#2F5C9B]/10' },
+                    'multi-city': { name: 'Multi-City Traveler', icon: '🏙️', color: 'from-[#E58BEA]/10 to-[#5CA5CD]/10' },
                   }
                   const data = achievementData[achievement] || { name: 'Achievement', icon: '⭐', color: 'from-gray-100 to-gray-50' }
                   return (
@@ -1242,9 +1242,9 @@ export default function PostTravel() {
         transition={{ delay: 0.2 }}
       >
         <Card className="border-gray-100 shadow-sm overflow-hidden">
-          <div className="bg-gradient-to-r from-[#2EC4B6]/10 via-[#FFBA49]/10 to-[#FF6B6B]/10 p-5">
+          <div className="bg-gradient-to-r from-[#5CA5CD]/10 via-[#E58BEA]/10 to-[#2F5C9B]/10 p-5">
             <div className="flex items-center gap-3 mb-3">
-              <div className="size-12 rounded-full bg-gradient-to-br from-[#2EC4B6] to-[#FFBA49] flex items-center justify-center flex-shrink-0">
+              <div className="size-12 rounded-full bg-gradient-to-br from-[#5CA5CD] to-[#E58BEA] flex items-center justify-center flex-shrink-0">
                 <Plane className="size-6 text-white" />
               </div>
               <div>
@@ -1253,7 +1253,7 @@ export default function PostTravel() {
               </div>
             </div>
             <Button
-              className="w-full h-11 bg-gradient-to-r from-[#2EC4B6] to-[#FFBA49] hover:opacity-90 text-white font-semibold rounded-xl"
+              className="w-full h-11 bg-gradient-to-r from-[#5CA5CD] to-[#E58BEA] hover:opacity-90 text-white font-semibold rounded-xl"
               onClick={handlePlanAnotherTrip}
             >
               <Plane className="size-4 mr-1.5" />

@@ -9,12 +9,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from '@/hooks/use-toast'
 
 const gradientStyles = [
-  { background: 'linear-gradient(to bottom right, #FF6B6B, #FF8C42)' },
-  { background: 'linear-gradient(to bottom right, #FF8C42, #FFBA49)' },
-  { background: 'linear-gradient(to bottom right, #2EC4B6, #FFBA49)' },
-  { background: 'linear-gradient(to bottom right, #FF6B6B, #E879A8)' },
-  { background: 'linear-gradient(to bottom right, #2EC4B6, #4ECDC4)' },
-  { background: 'linear-gradient(to bottom right, #FFBA49, #FF6B6B)' },
+  { background: 'linear-gradient(to bottom right, #2F5C9B, #5CA5CD)' },
+  { background: 'linear-gradient(to bottom right, #5CA5CD, #E58BEA)' },
+  { background: 'linear-gradient(to bottom right, #5CA5CD, #E58BEA)' },
+  { background: 'linear-gradient(to bottom right, #2F5C9B, #E879A8)' },
+  { background: 'linear-gradient(to bottom right, #5CA5CD, #4ECDC4)' },
+  { background: 'linear-gradient(to bottom right, #E58BEA, #2F5C9B)' },
   { background: 'linear-gradient(to bottom right, #667eea, #764ba2)' },
   { background: 'linear-gradient(to bottom right, #f093fb, #f5576c)' },
 ]
@@ -182,7 +182,7 @@ export default function CreateStory() {
           variant="ghost"
           onClick={handleShare}
           disabled={isSharing}
-          className="text-[#FF8C42] hover:bg-white/10 font-semibold text-sm"
+          className="text-[#5CA5CD] hover:bg-white/10 font-semibold text-sm"
         >
           {isSharing ? (
             isUploading ? (
@@ -344,8 +344,8 @@ export default function CreateStory() {
             className="px-4 py-2"
           >
             <div className="flex items-center justify-center gap-2">
-              <Loader2 className="size-4 animate-spin text-[#FF8C42]" />
-              <p className="text-[#FF8C42] text-sm">Uploading photo...</p>
+              <Loader2 className="size-4 animate-spin text-[#5CA5CD]" />
+              <p className="text-[#5CA5CD] text-sm">Uploading photo...</p>
             </div>
           </motion.div>
         )}
@@ -422,7 +422,7 @@ export default function CreateStory() {
             placeholder="Add a caption to your story..."
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/40 rounded-xl resize-none h-20 focus:border-[#FF8C42]/50 focus:ring-[#FF8C42]/20"
+            className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/40 rounded-xl resize-none h-20 focus:border-[#5CA5CD]/50 focus:ring-[#5CA5CD]/20"
             maxLength={200}
           />
           <span className="absolute bottom-2 right-3 text-xs text-white/30">
@@ -434,7 +434,7 @@ export default function CreateStory() {
         <Button
           onClick={handleShare}
           disabled={isSharing}
-          className="w-full h-12 bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity border-0"
+          className="w-full h-12 bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity border-0"
         >
           {isSharing ? (
             <>

@@ -524,15 +524,15 @@ export default function SettingsPage() {
       <div className="px-4 py-4">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <Avatar className="size-16 border-2 border-[#FF6B6B]/20">
+            <Avatar className="size-16 border-2 border-[#2F5C9B]/20">
               <AvatarImage src={avatarUrl} alt={name} />
-              <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-lg font-bold text-[#FF6B6B]">
+              <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-lg font-bold text-[#2F5C9B]">
                 {name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <button
               onClick={() => avatarInputRef.current?.click()}
-              className="absolute -bottom-0.5 -right-0.5 size-6 rounded-full bg-[#FF8C42] flex items-center justify-center border-2 border-card cursor-pointer hover:bg-[#FF8C42]/80 transition-colors"
+              className="absolute -bottom-0.5 -right-0.5 size-6 rounded-full bg-[#5CA5CD] flex items-center justify-center border-2 border-card cursor-pointer hover:bg-[#5CA5CD]/80 transition-colors"
               aria-label="Change profile picture"
             >
               <Camera className="size-3 text-white" />
@@ -554,7 +554,7 @@ export default function SettingsPage() {
           <Button
             variant="outline"
             size="sm"
-            className="text-xs rounded-lg border-border hover:border-[#FF8C42] hover:text-[#FF8C42]"
+            className="text-xs rounded-lg border-border hover:border-[#5CA5CD] hover:text-[#5CA5CD]"
             onClick={() => setEditProfileOpen(true)}
           >
             Edit
@@ -655,7 +655,7 @@ export default function SettingsPage() {
         <div className="flex-1 min-w-0">
           <p className="text-sm text-foreground">Default Currency</p>
           {detectedCountry && (
-            <p className="text-xs text-[#2EC4B6] flex items-center gap-1">
+            <p className="text-xs text-[#5CA5CD] flex items-center gap-1">
               <MapPin className="size-2.5" />
               Detected from {detectedCountry}
             </p>
@@ -732,7 +732,7 @@ export default function SettingsPage() {
         <motion.div whileTap={{ scale: 0.98 }}>
           <Button
             variant="outline"
-            className="w-full h-11 text-[#FF6B6B] border-[#FF6B6B]/30 hover:bg-[#FF6B6B]/10 hover:text-[#FF6B6B] hover:border-[#FF6B6B]/50 rounded-xl text-sm font-medium"
+            className="w-full h-11 text-[#2F5C9B] border-[#2F5C9B]/30 hover:bg-[#2F5C9B]/10 hover:text-[#2F5C9B] hover:border-[#2F5C9B]/50 rounded-xl text-sm font-medium"
             onClick={logout}
           >
             <LogOut className="size-4 mr-2" />
@@ -758,12 +758,12 @@ export default function SettingsPage() {
             {/* Avatar Upload Section */}
             <div className="flex flex-col items-center gap-3">
               <div className="relative">
-                <Avatar className="size-20 border-2 border-[#FF6B6B]/20">
+                <Avatar className="size-20 border-2 border-[#2F5C9B]/20">
                   <AvatarImage
                     src={avatarPreview || editAvatar || undefined}
                     alt="Profile picture preview"
                   />
-                  <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-2xl font-bold text-[#FF6B6B]">
+                  <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-2xl font-bold text-[#2F5C9B]">
                     {editName?.charAt(0)?.toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
@@ -778,7 +778,7 @@ export default function SettingsPage() {
                     }
                     input.click()
                   }}
-                  className="absolute -bottom-1 -right-1 size-7 rounded-full bg-[#FF8C42] flex items-center justify-center border-2 border-card cursor-pointer hover:bg-[#FF8C42]/80 transition-colors"
+                  className="absolute -bottom-1 -right-1 size-7 rounded-full bg-[#5CA5CD] flex items-center justify-center border-2 border-card cursor-pointer hover:bg-[#5CA5CD]/80 transition-colors"
                   aria-label="Upload profile picture"
                 >
                   <Camera className="size-3.5 text-white" />
@@ -786,7 +786,7 @@ export default function SettingsPage() {
                 {(avatarPreview || editAvatar) && (
                   <button
                     onClick={handleRemoveAvatarPreview}
-                    className="absolute -top-1 -right-1 size-5 rounded-full bg-[#FF6B6B] flex items-center justify-center cursor-pointer hover:bg-[#FF6B6B]/80 transition-colors"
+                    className="absolute -top-1 -right-1 size-5 rounded-full bg-[#2F5C9B] flex items-center justify-center cursor-pointer hover:bg-[#2F5C9B]/80 transition-colors"
                     aria-label="Remove profile picture"
                   >
                     <X className="size-3 text-white" />
@@ -841,13 +841,13 @@ export default function SettingsPage() {
                     }
                     input.click()
                   }}
-                  className="rounded-xl shrink-0 border-border hover:border-[#FF8C42] hover:text-[#FF8C42]"
+                  className="rounded-xl shrink-0 border-border hover:border-[#5CA5CD] hover:text-[#5CA5CD]"
                 >
                   <Upload className="size-4" />
                 </Button>
               </div>
               {avatarFile && (
-                <p className="text-xs text-[#2EC4B6] mt-1">
+                <p className="text-xs text-[#5CA5CD] mt-1">
                   File &quot;{avatarFile.name}&quot; will be uploaded on save
                 </p>
               )}
@@ -860,7 +860,7 @@ export default function SettingsPage() {
             <Button
               onClick={handleSaveProfile}
               disabled={isSaving}
-              className="rounded-xl bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white"
+              className="rounded-xl bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white"
             >
               {isSaving ? (
                 isUploadingAvatar ? (
@@ -922,7 +922,7 @@ export default function SettingsPage() {
             <Button variant="outline" onClick={() => setChangePasswordOpen(false)} className="rounded-xl">
               Cancel
             </Button>
-            <Button onClick={handleChangePassword} disabled={isSaving} className="rounded-xl bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white">
+            <Button onClick={handleChangePassword} disabled={isSaving} className="rounded-xl bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white">
               {isSaving ? <Loader2 className="size-4 animate-spin mr-1" /> : <Lock className="size-4 mr-1" />}
               Change Password
             </Button>
@@ -960,7 +960,7 @@ export default function SettingsPage() {
             <Button variant="outline" onClick={() => setChangeEmailOpen(false)} className="rounded-xl">
               Cancel
             </Button>
-            <Button onClick={handleChangeEmail} disabled={isSaving} className="rounded-xl bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white">
+            <Button onClick={handleChangeEmail} disabled={isSaving} className="rounded-xl bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white">
               {isSaving ? <Loader2 className="size-4 animate-spin mr-1" /> : <Mail className="size-4 mr-1" />}
               Update Email
             </Button>

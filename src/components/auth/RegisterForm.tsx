@@ -97,10 +97,10 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
     <div className="w-full max-w-sm mx-auto px-6">
       {/* Brand */}
       <div className="flex flex-col items-center mb-8">
-        <div className="flex items-center justify-center size-16 rounded-2xl bg-gradient-to-br from-[#2EC4B6] via-[#FFBA49] to-[#FF8C42] shadow-lg mb-4">
-          <Globe className="size-8 text-white" />
+        <div className="flex items-center justify-center mb-4">
+          <img src="/new-logo.png" alt="Travereel" className="h-16 w-16" />
         </div>
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-[#2EC4B6] via-[#FF8C42] to-[#FFBA49] bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold text-gradient-sky">
           Travereel
         </h1>
         <p className="text-sm text-gray-500 mt-1">
@@ -228,7 +228,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full h-11 rounded-lg bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all border-0 cursor-pointer"
+          className="w-full h-11 rounded-lg bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#2F5C9B] text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all border-0 cursor-pointer"
         >
           {isLoading ? (
             <>

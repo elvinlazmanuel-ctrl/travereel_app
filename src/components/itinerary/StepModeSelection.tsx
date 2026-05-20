@@ -36,21 +36,21 @@ export default function StepModeSelection() {
           onClick={() => setSelectedMode('ai')}
           className={`relative w-full text-left p-5 rounded-2xl border-2 transition-all group ${
             selectedMode === 'ai'
-              ? 'border-[#FF6B6B] bg-gradient-to-br from-[#FF6B6B]/10 via-[#FF8C42]/10 to-[#FFBA49]/10 shadow-md shadow-[#FF6B6B]/10'
-              : 'border-[#FF6B6B]/30 bg-gradient-to-br from-[#FF6B6B]/5 via-[#FF8C42]/5 to-[#FFBA49]/5 hover:border-[#FF6B6B]/60'
+              ? 'border-[#2F5C9B] bg-gradient-to-br from-[#2F5C9B]/10 via-[#5CA5CD]/10 to-[#E58BEA]/10 shadow-md shadow-[#2F5C9B]/10'
+              : 'border-[#2F5C9B]/30 bg-gradient-to-br from-[#2F5C9B]/5 via-[#5CA5CD]/5 to-[#E58BEA]/5 hover:border-[#2F5C9B]/60'
           }`}
         >
           {selectedMode === 'ai' && (
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="absolute top-3 right-3 size-6 rounded-full bg-[#FF6B6B] flex items-center justify-center"
+              className="absolute top-3 right-3 size-6 rounded-full bg-[#2F5C9B] flex items-center justify-center"
             >
               <Check className="size-4 text-white" strokeWidth={3} />
             </motion.div>
           )}
           <div className="flex items-start gap-4">
-            <div className="size-14 rounded-xl bg-gradient-to-br from-[#FF6B6B] to-[#FF8C42] flex items-center justify-center shrink-0 shadow-lg shadow-[#FF6B6B]/20 group-hover:shadow-[#FF6B6B]/30 transition-shadow">
+            <div className="size-14 rounded-xl bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] flex items-center justify-center shrink-0 shadow-lg shadow-[#2F5C9B]/20 group-hover:shadow-[#2F5C9B]/30 transition-shadow">
               <Sparkles className="size-7 text-white" />
             </div>
             <div className="flex-1">
@@ -61,13 +61,13 @@ export default function StepModeSelection() {
                 AI will create a detailed day-by-day itinerary with routes, budget estimates, and requirements
               </p>
               <div className="mt-3 flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FF6B6B]/10 text-[10px] font-medium text-[#FF6B6B]">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#2F5C9B]/10 text-[10px] font-medium text-[#2F5C9B]">
                   ✨ Smart Routes
                 </span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FF8C42]/10 text-[10px] font-medium text-[#FF8C42]">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#5CA5CD]/10 text-[10px] font-medium text-[#5CA5CD]">
                   💰 Budget Optimized
                 </span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FFBA49]/10 text-[10px] font-medium text-[#FFBA49]">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#E58BEA]/10 text-[10px] font-medium text-[#E58BEA]">
                   ⚡ Instant
                 </span>
               </div>
@@ -81,21 +81,21 @@ export default function StepModeSelection() {
           onClick={() => setSelectedMode('manual')}
           className={`relative w-full text-left p-5 rounded-2xl border-2 transition-all group ${
             selectedMode === 'manual'
-              ? 'border-[#2EC4B6] bg-gradient-to-br from-[#2EC4B6]/10 to-[#FFBA49]/10 shadow-md shadow-[#2EC4B6]/10'
-              : 'border-[#2EC4B6]/30 bg-gradient-to-br from-[#2EC4B6]/5 to-[#FFBA49]/5 hover:border-[#2EC4B6]/60'
+              ? 'border-[#5CA5CD] bg-gradient-to-br from-[#5CA5CD]/10 to-[#E58BEA]/10 shadow-md shadow-[#5CA5CD]/10'
+              : 'border-[#5CA5CD]/30 bg-gradient-to-br from-[#5CA5CD]/5 to-[#E58BEA]/5 hover:border-[#5CA5CD]/60'
           }`}
         >
           {selectedMode === 'manual' && (
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="absolute top-3 right-3 size-6 rounded-full bg-[#2EC4B6] flex items-center justify-center"
+              className="absolute top-3 right-3 size-6 rounded-full bg-[#5CA5CD] flex items-center justify-center"
             >
               <Check className="size-4 text-white" strokeWidth={3} />
             </motion.div>
           )}
           <div className="flex items-start gap-4">
-            <div className="size-14 rounded-xl bg-gradient-to-br from-[#2EC4B6] to-[#FFBA49] flex items-center justify-center shrink-0 shadow-lg shadow-[#2EC4B6]/20 group-hover:shadow-[#2EC4B6]/30 transition-shadow">
+            <div className="size-14 rounded-xl bg-gradient-to-br from-[#5CA5CD] to-[#E58BEA] flex items-center justify-center shrink-0 shadow-lg shadow-[#5CA5CD]/20 group-hover:shadow-[#5CA5CD]/30 transition-shadow">
               <Pencil className="size-7 text-white" />
             </div>
             <div className="flex-1">
@@ -106,13 +106,13 @@ export default function StepModeSelection() {
                 Add your own activities, routes, and budget items manually
               </p>
               <div className="mt-3 flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#2EC4B6]/10 text-[10px] font-medium text-[#2EC4B6]">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#5CA5CD]/10 text-[10px] font-medium text-[#5CA5CD]">
                   ✏️ Full Control
                 </span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FFBA49]/10 text-[10px] font-medium text-[#FFBA49]">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#E58BEA]/10 text-[10px] font-medium text-[#E58BEA]">
                   🎯 Custom
                 </span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FF8C42]/10 text-[10px] font-medium text-[#FF8C42]">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#5CA5CD]/10 text-[10px] font-medium text-[#5CA5CD]">
                   📋 Flexible
                 </span>
               </div>
@@ -130,7 +130,7 @@ export default function StepModeSelection() {
         >
           <Button
             onClick={handleContinue}
-            className="w-full h-12 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white font-semibold text-base shadow-lg shadow-[#FF6B6B]/20 hover:shadow-[#FF6B6B]/30"
+            className="w-full h-12 bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white font-semibold text-base shadow-lg shadow-[#2F5C9B]/20 hover:shadow-[#2F5C9B]/30"
           >
             Continue
           </Button>

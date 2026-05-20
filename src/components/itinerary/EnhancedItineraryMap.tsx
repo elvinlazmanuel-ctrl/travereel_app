@@ -125,9 +125,9 @@ type TileLayerType = keyof typeof tileLayers
 
 // Points of interest categories
 const poiCategories = [
-  { id: 'restaurants', icon: Utensils, label: 'Restaurants', color: '#FF6B6B' },
-  { id: 'attractions', icon: Camera, label: 'Attractions', color: '#FF8C42' },
-  { id: 'cafes', icon: Coffee, label: 'Cafes', color: '#2EC4B6' },
+  { id: 'restaurants', icon: Utensils, label: 'Restaurants', color: '#2F5C9B' },
+  { id: 'attractions', icon: Camera, label: 'Attractions', color: '#5CA5CD' },
+  { id: 'cafes', icon: Coffee, label: 'Cafes', color: '#5CA5CD' },
 ]
 
 interface ItineraryMapProps {
@@ -366,7 +366,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
       showAlternatives: false,
       fitSelectedRoutes: true,
       lineOptions: {
-        styles: [{ color: '#FF6B6B', weight: 4, opacity: 0.8 }],
+        styles: [{ color: '#2F5C9B', weight: 4, opacity: 0.8 }],
       },
       addWaypoints: false,
       draggableWaypoints: false,
@@ -404,7 +404,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
       <Card className="p-4">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <Loader2 className="size-8 animate-spin text-[#FF6B6B] mx-auto mb-2" />
+            <Loader2 className="size-8 animate-spin text-[#2F5C9B] mx-auto mb-2" />
             <p className="text-sm text-muted-foreground">Loading map...</p>
           </div>
         </div>
@@ -469,7 +469,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
             {/* @ts-ignore */}
             <Popup>
               <div className="text-center">
-                <MapPin className="size-4 mx-auto mb-1 text-[#FF6B6B]" />
+                <MapPin className="size-4 mx-auto mb-1 text-[#2F5C9B]" />
                 <p className="font-semibold">{location}</p>
                 <p className="text-xs text-gray-500">{country}</p>
               </div>
@@ -490,7 +490,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
                   {activity.location && (
                     <p className="text-xs text-gray-500">{activity.location}</p>
                   )}
-                  <p className="text-[10px] text-[#FF6B6B] mt-1">Day {currentDay}</p>
+                  <p className="text-[10px] text-[#2F5C9B] mt-1">Day {currentDay}</p>
                 </div>
               </Popup>
             </Marker>
@@ -521,7 +521,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
           onClick={() => setShowLayerSwitcher(!showLayerSwitcher)}
           className="absolute top-4 left-4 z-[1000] bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition-colors"
         >
-          <Layers className="size-5 text-[#FF6B6B]" />
+          <Layers className="size-5 text-[#2F5C9B]" />
         </button>
 
         {/* Layer Switcher Panel */}
@@ -539,7 +539,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
                   }}
                   className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                     activeTileLayer === layerKey
-                      ? 'bg-[#FF6B6B]/10 text-[#FF6B6B]'
+                      ? 'bg-[#2F5C9B]/10 text-[#2F5C9B]'
                       : 'hover:bg-gray-50 text-gray-700'
                   }`}
                 >
@@ -558,9 +558,9 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
           disabled={showGPS}
         >
           {showGPS ? (
-            <Loader2 className="size-5 text-[#FF6B6B] animate-spin" />
+            <Loader2 className="size-5 text-[#2F5C9B] animate-spin" />
           ) : (
-            <Navigation className="size-5 text-[#FF6B6B]" />
+            <Navigation className="size-5 text-[#2F5C9B]" />
           )}
         </button>
 
@@ -568,7 +568,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
         {routeInfo && activitiesWithCoords.length >= 2 && (
           <div className="absolute top-16 right-4 z-[1000] bg-white rounded-lg shadow-lg px-3 py-2">
             <div className="flex items-center gap-2 text-xs">
-              <Navigation className="size-3.5 text-[#FF6B6B]" />
+              <Navigation className="size-3.5 text-[#2F5C9B]" />
               <div>
                 <p className="font-semibold text-gray-900">{routeInfo.distance}</p>
                 <p className="text-gray-500">{routeInfo.duration}</p>
@@ -612,7 +612,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
       <div className="p-4 space-y-4">
         {/* Location Info */}
         <div className="flex items-center gap-2">
-          <MapPin className="size-4 text-[#FF6B6B]" />
+          <MapPin className="size-4 text-[#2F5C9B]" />
           <div className="flex-1">
             <p className="text-sm font-semibold text-foreground">
               {location}, {country}
@@ -633,7 +633,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
         {/* Transportation Suggestions */}
         <div>
           <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
-            <Car className="size-3.5 text-[#FF8C42]" />
+            <Car className="size-3.5 text-[#5CA5CD]" />
             Getting Around
           </h4>
           <div className="grid grid-cols-2 gap-2">
@@ -642,13 +642,13 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
                 key={index}
                 className="flex items-start gap-2 p-2 rounded-lg bg-gray-50 border border-gray-100"
               >
-                <div className="size-7 rounded bg-[#FF8C42]/10 flex items-center justify-center flex-shrink-0">
-                  <transport.icon className="size-3.5 text-[#FF8C42]" />
+                <div className="size-7 rounded bg-[#5CA5CD]/10 flex items-center justify-center flex-shrink-0">
+                  <transport.icon className="size-3.5 text-[#5CA5CD]" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-medium text-foreground truncate">{transport.name}</p>
                   <p className="text-[10px] text-muted-foreground line-clamp-2">{transport.description}</p>
-                  <p className="text-[10px] font-medium text-[#2EC4B6] mt-0.5">{transport.cost}</p>
+                  <p className="text-[10px] font-medium text-[#5CA5CD] mt-0.5">{transport.cost}</p>
                 </div>
               </div>
             ))}
@@ -659,7 +659,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
         {pois.length > 0 && showPOI && (
           <div>
             <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
-              <Camera className="size-3.5 text-[#2EC4B6]" />
+              <Camera className="size-3.5 text-[#5CA5CD]" />
               Nearby {poiCategories.find(c => c.id === showPOI)?.label || 'Places'}
             </h4>
             <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -669,8 +669,8 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
                   className="flex items-start gap-2 p-2 rounded-lg bg-gray-50 border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors"
                   onClick={() => setSelectedPOI(poi)}
                 >
-                  <div className="size-7 rounded bg-[#2EC4B6]/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="size-3.5 text-[#2EC4B6]" />
+                  <div className="size-7 rounded bg-[#5CA5CD]/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="size-3.5 text-[#5CA5CD]" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-medium text-foreground truncate">{poi.name}</p>
@@ -688,7 +688,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${location}, ${country}`)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 text-center text-[11px] text-[#FF8C42] font-medium hover:underline py-1.5"
+            className="flex-1 text-center text-[11px] text-[#5CA5CD] font-medium hover:underline py-1.5"
           >
             Open in Google Maps →
           </a>
@@ -696,7 +696,7 @@ export function ItineraryMap({ location, country, days_plan, currentDay = 1 }: I
             href={`https://www.openstreetmap.org/search?query=${encodeURIComponent(`${location}, ${country}`)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 text-center text-[11px] text-[#2EC4B6] font-medium hover:underline py-1.5"
+            className="flex-1 text-center text-[11px] text-[#5CA5CD] font-medium hover:underline py-1.5"
           >
             OpenStreetMap →
           </a>

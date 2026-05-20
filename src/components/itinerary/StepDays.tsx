@@ -84,7 +84,7 @@ export default function StepDays() {
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           className="text-center py-6"
         >
-          <div className="text-7xl font-bold bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] bg-clip-text text-transparent">
+          <div className="text-7xl font-bold bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#E58BEA] bg-clip-text text-transparent">
             {days}
           </div>
           <p className="text-lg text-muted-foreground mt-2">
@@ -96,8 +96,8 @@ export default function StepDays() {
       {/* Date Range Display */}
       {wizardData.departureDate && wizardData.returnDate && (
         <div className="space-y-3">
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#FF6B6B]/5 to-[#FF8C42]/5 border border-[#FF6B6B]/20">
-            <Plane className="size-5 text-[#FF6B6B]" />
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5 border border-[#2F5C9B]/20">
+            <Plane className="size-5 text-[#2F5C9B]" />
             <div className="flex-1">
               <p className="text-xs text-muted-foreground">Departure</p>
               <p className="text-sm font-semibold text-foreground">
@@ -105,8 +105,8 @@ export default function StepDays() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
-            <PlaneLanding className="size-5 text-[#2EC4B6]" />
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#5CA5CD]/5 to-[#E58BEA]/5 border border-[#5CA5CD]/20">
+            <PlaneLanding className="size-5 text-[#5CA5CD]" />
             <div className="flex-1">
               <p className="text-xs text-muted-foreground">Return</p>
               <p className="text-sm font-semibold text-foreground">
@@ -124,8 +124,8 @@ export default function StepDays() {
             Budget Breakdown
           </p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-4 rounded-xl bg-gradient-to-r from-[#FFBA49]/5 to-[#FF8C42]/5 border border-[#FFBA49]/20">
-              <Wallet className="size-5 text-[#FFBA49] mb-2" />
+            <div className="p-4 rounded-xl bg-gradient-to-r from-[#E58BEA]/5 to-[#5CA5CD]/5 border border-[#E58BEA]/20">
+              <Wallet className="size-5 text-[#E58BEA] mb-2" />
               <p className="text-xs text-muted-foreground">Per Day</p>
               <p className="text-xl font-bold text-foreground">
                 {currencySymbol(wizardData.currency)}{perDayBudget.toFixed(0)}
@@ -134,8 +134,8 @@ export default function StepDays() {
                 {wizardData.currency}/day
               </p>
             </div>
-            <div className="p-4 rounded-xl bg-gradient-to-r from-[#2EC4B6]/5 to-[#FFBA49]/5 border border-[#2EC4B6]/20">
-              <Clock className="size-5 text-[#2EC4B6] mb-2" />
+            <div className="p-4 rounded-xl bg-gradient-to-r from-[#5CA5CD]/5 to-[#E58BEA]/5 border border-[#5CA5CD]/20">
+              <Clock className="size-5 text-[#5CA5CD] mb-2" />
               <p className="text-xs text-muted-foreground">Per Hour</p>
               <p className="text-xl font-bold text-foreground">
                 {currencySymbol(wizardData.currency)}{perHourBudget.toFixed(0)}
@@ -157,18 +157,18 @@ export default function StepDays() {
           <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <CalendarDays className="size-5 text-[#FF6B6B] mx-auto mb-1" />
-                <p className="text-2xl font-bold text-[#FF6B6B]">{days}</p>
+                <CalendarDays className="size-5 text-[#2F5C9B] mx-auto mb-1" />
+                <p className="text-2xl font-bold text-[#2F5C9B]">{days}</p>
                 <p className="text-[10px] text-muted-foreground uppercase">Days</p>
               </div>
               <div>
-                <MapPin className="size-5 text-[#FF8C42] mx-auto mb-1" />
-                <p className="text-2xl font-bold text-[#FF8C42]">{days * 2}</p>
+                <MapPin className="size-5 text-[#5CA5CD] mx-auto mb-1" />
+                <p className="text-2xl font-bold text-[#5CA5CD]">{days * 2}</p>
                 <p className="text-[10px] text-muted-foreground uppercase">Activities</p>
               </div>
               <div>
-                <TrendingUp className="size-5 text-[#2EC4B6] mx-auto mb-1" />
-                <p className="text-2xl font-bold text-[#2EC4B6]">{days * 3}</p>
+                <TrendingUp className="size-5 text-[#5CA5CD] mx-auto mb-1" />
+                <p className="text-2xl font-bold text-[#5CA5CD]">{days * 3}</p>
                 <p className="text-[10px] text-muted-foreground uppercase">Experiences</p>
               </div>
             </div>
@@ -192,9 +192,9 @@ export default function StepDays() {
                 className="size-9 rounded-lg flex items-center justify-center text-xs font-bold"
                 style={{
                   background: i === 0
-                    ? 'linear-gradient(135deg, #FF6B6B, #FF8C42)'
+                    ? 'linear-gradient(135deg, #2F5C9B, #5CA5CD)'
                     : i === days - 1
-                    ? 'linear-gradient(135deg, #2EC4B6, #FFBA49)'
+                    ? 'linear-gradient(135deg, #5CA5CD, #E58BEA)'
                     : '#f3f4f6',
                   color: i === 0 || i === days - 1 ? 'white' : '#6b7280',
                 }}
@@ -210,11 +210,11 @@ export default function StepDays() {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
-              <div className="size-3 rounded bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42]" />
+              <div className="size-3 rounded bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD]" />
               <span className="text-[10px] text-gray-400">Start</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="size-3 rounded bg-gradient-to-r from-[#2EC4B6] to-[#FFBA49]" />
+              <div className="size-3 rounded bg-gradient-to-r from-[#5CA5CD] to-[#E58BEA]" />
               <span className="text-[10px] text-gray-400">End</span>
             </div>
           </div>
