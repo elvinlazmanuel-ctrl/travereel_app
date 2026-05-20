@@ -23,7 +23,7 @@ export default function TopBar() {
           <div className="flex items-center justify-between h-14 px-4">
             {/* Logo with travel theme */}
             <h1 className="flex items-center gap-2 text-xl font-bold text-gradient-sky hover:scale-105 transition-transform cursor-default">
-              <img src="/new-logo.png" alt="Travereel" className="h-8 w-8" />
+              <img src="/new-logo.png" alt="Travereel" className="h-8 w-10" />
               Travereel
             </h1>
             
