@@ -300,107 +300,131 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-md mx-auto">
-      {/* Profile Header */}
-      <div className="px-4 pt-4 pb-2">
-        <div className="flex items-center gap-5">
-          {/* Avatar */}
-          <Avatar className="size-20 border-2 border-[#FF6B6B]/20">
-            <AvatarImage src={avatarUrl} alt={name} />
-            <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B]/20 to-[#FF8C42]/20 text-lg font-bold text-[#FF6B6B]">
-              {name.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-
-          {/* Stats */}
-          <div className="flex-1 flex justify-around">
-            <div className="text-center">
-              <p className="text-lg font-bold text-foreground">{postsCount}</p>
-              <p className="text-xs text-muted-foreground">Posts</p>
-            </div>
-            <button
-              className="text-center outline-none"
-              onClick={handleFollowersClick}
-            >
-              <p className="text-lg font-bold text-foreground">{followersCount}</p>
-              <p className="text-xs text-muted-foreground">Followers</p>
-            </button>
-            <button
-              className="text-center outline-none"
-              onClick={handleFollowingClick}
-            >
-              <p className="text-lg font-bold text-foreground">{followingCount}</p>
-              <p className="text-xs text-muted-foreground">Following</p>
-            </button>
+      {/* Profile Header - Travel Portfolio Style */}
+      <div className="relative">
+        {/* Cover Photo Background */}
+        <div className="h-32 bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] relative overflow-hidden">
+          <div className="absolute inset-0 bg-black/10" />
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-4 left-8 text-white/30 text-6xl">✈️</div>
+            <div className="absolute top-8 right-12 text-white/30 text-4xl">🌍</div>
+            <div className="absolute bottom-4 left-20 text-white/30 text-5xl">🗺️</div>
           </div>
         </div>
 
-        {/* Name & Bio */}
-        <div className="mt-3">
-          <h2 className="text-sm font-semibold text-foreground">{name}</h2>
-          <p className="text-sm text-muted-foreground mt-0.5">{bio}</p>
-        </div>
+        <div className="px-4 pb-2 -mt-12 relative z-10">
+          <div className="flex items-end gap-4">
+            {/* Avatar with Travel Ring */}
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#2EC4B6] p-1">
+                <Avatar className="size-24 border-4 border-white dark:border-slate-900">
+                  <AvatarImage src={avatarUrl} alt={name} />
+                  <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B] to-[#2EC4B6] text-2xl font-bold text-white">
+                    {name.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <Avatar className="size-24 border-4 border-white dark:border-slate-900 opacity-0">
+                <AvatarFallback />
+              </Avatar>
+            </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-2 mt-3">
-          {isOwnProfile ? (
-            <>
-              <Button
-                variant="outline"
-                className="flex-1 h-8 text-xs rounded-lg border-border hover:border-[#FF8C42] hover:text-[#FF8C42]"
-                onClick={handleEditProfile}
+            {/* Stats - Travel Portfolio Cards */}
+            <div className="flex-1 flex justify-around pb-2">
+              <div className="glass px-3 py-2 rounded-xl text-center min-w-[70px]">
+                <p className="text-lg font-bold text-gradient-sunset">{postsCount}</p>
+                <p className="text-[10px] text-muted-foreground font-medium">Posts</p>
+              </div>
+              <button
+                className="glass px-3 py-2 rounded-xl text-center min-w-[70px] hover-lift transition-all outline-none"
+                onClick={handleFollowersClick}
               >
-                <Pencil className="size-3 mr-1" />
-                Edit Profile
-              </Button>
-              <Button
-                variant="outline"
-                className="flex-1 h-8 text-xs rounded-lg border-border hover:border-[#2EC4B6] hover:text-[#2EC4B6] relative"
-                onClick={() => setCurrentView('friends')}
+                <p className="text-lg font-bold text-gradient-ocean">{followersCount}</p>
+                <p className="text-[10px] text-muted-foreground font-medium">Followers</p>
+              </button>
+              <button
+                className="glass px-3 py-2 rounded-xl text-center min-w-[70px] hover-lift transition-all outline-none"
+                onClick={handleFollowingClick}
               >
-                <Users className="size-3 mr-1" />
-                Friends
-                {pendingFriendRequestCount > 0 && (
-                  <span className="ml-1 min-w-[16px] h-4 rounded-full bg-[#FF6B6B] text-white text-[9px] font-bold flex items-center justify-center px-0.5">
-                    {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
-                  </span>
-                )}
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="size-8 rounded-lg border-border hover:border-[#FF8C42] hover:text-[#FF8C42]"
-                onClick={() => setCurrentView('settings')}
-              >
-                <Settings className="size-4" />
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                onClick={handleFollowToggle}
-                disabled={isFollowLoading}
-                className={`flex-1 h-8 text-xs rounded-lg ${
-                  isFollowing
-                    ? 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-[#FF6B6B]'
-                    : 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:opacity-90'
-                }`}
-              >
-                {isFollowLoading ? '...' : isFollowing ? 'Following' : 'Follow'}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={handleMessage}
-                className="flex-1 h-8 text-xs rounded-lg border-border hover:border-[#FF8C42] hover:text-[#FF8C42]"
-              >
-                <MessageCircle className="size-3 mr-1" />
-                Message
-              </Button>
-            </>
-          )}
+                <p className="text-lg font-bold text-gradient-forest">{followingCount}</p>
+                <p className="text-[10px] text-muted-foreground font-medium">Following</p>
+              </button>
+            </div>
+          </div>
+
+          {/* Name & Bio - Magazine Style */}
+          <div className="mt-4 glass rounded-xl p-4">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h2 className="text-xl font-bold text-gradient-sunset">{name}</h2>
+                <p className="text-sm text-muted-foreground mt-0.5">@{username}</p>
+                <p className="text-sm text-foreground mt-2 leading-relaxed">{bio}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons - Enhanced */}
+          <div className="flex gap-2 mt-3">
+            {isOwnProfile ? (
+              <>
+                <Button
+                  variant="outline"
+                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all border-white/20"
+                  onClick={handleEditProfile}
+                >
+                  <Pencil className="size-4 mr-1.5" />
+                  Edit Profile
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#2EC4B6]/10 hover:to-[#FFBA49]/10 transition-all border-white/20 relative"
+                  onClick={() => setCurrentView('friends')}
+                >
+                  <Users className="size-4 mr-1.5" />
+                  Friends
+                  {pendingFriendRequestCount > 0 && (
+                    <span className="ml-1 min-w-[18px] h-5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white text-[10px] font-bold flex items-center justify-center px-1 animate-pulse">
+                      {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
+                    </span>
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-10 rounded-xl glass hover:bg-gradient-to-r hover:from-[#FFBA49]/10 hover:to-[#FF6B6B]/10 transition-all border-white/20"
+                  onClick={() => setCurrentView('settings')}
+                >
+                  <Settings className="size-4" />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={handleFollowToggle}
+                  disabled={isFollowLoading}
+                  className={`flex-1 h-10 text-sm rounded-xl transition-all ${
+                    isFollowing
+                      ? 'glass text-muted-foreground hover:bg-gradient-to-r hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 border-white/20'
+                      : 'bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white hover:shadow-lg hover:shadow-[#FF6B6B]/30'
+                  }`}
+                >
+                  {isFollowLoading ? '...' : isFollowing ? 'Following' : 'Follow'}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleMessage}
+                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#2EC4B6]/10 hover:to-[#FFBA49]/10 transition-all border-white/20"
+                >
+                  <MessageCircle className="size-4 mr-1.5" />
+                  Message
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Friends Section */}
+      {/* Friends Section - Enhanced */}
       <AnimatePresence>
         {!isLoadingFriends && friendsCount > 0 && (
           <motion.div
@@ -408,22 +432,26 @@ export default function ProfilePage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="px-4 py-3"
+            className="px-4 py-4"
           >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1.5">
-                <Users className="size-4 text-[#2EC4B6]" />
-                <h3 className="text-sm font-semibold text-foreground">{friendsCount} Friends</h3>
+            <div className="glass rounded-xl p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-gradient-to-r from-[#2EC4B6]/20 to-[#FFBA49]/20">
+                    <Users className="size-4 text-[#2EC4B6]" />
+                  </div>
+                  <h3 className="text-sm font-bold text-foreground">{friendsCount} Friends</h3>
+                </div>
+                {friendsCount > 8 && (
+                  <button
+                    onClick={() => setCurrentView('friends')}
+                    className="flex items-center gap-0.5 text-[#2EC4B6] text-xs font-semibold hover:opacity-80 transition-opacity"
+                  >
+                    See All
+                    <ChevronRight className="size-3" />
+                  </button>
+                )}
               </div>
-              {friendsCount > 8 && (
-                <button
-                  onClick={() => setCurrentView('friends')}
-                  className="flex items-center gap-0.5 text-[#2EC4B6] text-xs font-medium hover:opacity-80 transition-opacity"
-                >
-                  See All
-                  <ChevronRight className="size-3" />
-                </button>
-              )}
             </div>
             <div className="flex gap-4 overflow-x-auto scrollbar-none pb-1">
               {displayFriends.map((friend, index) => (
@@ -489,40 +517,42 @@ export default function ProfilePage() {
         <TravelInsightsSection userId={profileUserId} />
       )}
 
-      {/* Tab Bar */}
+      {/* Tab Bar - Glass Morphism */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="w-full h-11 bg-transparent border-b border-border rounded-none p-0 justify-around">
-          <TabsTrigger
-            value="posts"
-            className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
-          >
-            <Grid3X3 className="size-4" />
-            <span className="text-xs">Posts</span>
-          </TabsTrigger>
-          <TabsTrigger
-            value="itineraries"
-            className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
-          >
-            <Map className="size-4" />
-            <span className="text-xs">Itineraries</span>
-          </TabsTrigger>
-          {isOwnProfile && (
+        <div className="px-4 pt-2">
+          <TabsList className="w-full h-12 glass rounded-xl p-1 justify-around bg-transparent">
             <TabsTrigger
-              value="albums"
-              className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
+              value="posts"
+              className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FF6B6B]/20 data-[state=active]:to-[#2EC4B6]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
             >
-              <span className="text-lg">📸</span>
-              <span className="text-xs">Albums</span>
+              <Grid3X3 className="size-4" />
+              <span className="text-xs font-medium">Posts</span>
             </TabsTrigger>
-          )}
-          <TabsTrigger
-            value="tagged"
-            className="flex-1 h-11 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#FF6B6B] data-[state=active]:bg-transparent px-0 gap-1.5"
-          >
-            <Tag className="size-4" />
-            <span className="text-xs">Tagged</span>
-          </TabsTrigger>
-        </TabsList>
+            <TabsTrigger
+              value="itineraries"
+              className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#4FACFE]/20 data-[state=active]:to-[#00F2FE]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+            >
+              <Map className="size-4" />
+              <span className="text-xs font-medium">Trips</span>
+            </TabsTrigger>
+            {isOwnProfile && (
+              <TabsTrigger
+                value="albums"
+                className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FFBA49]/20 data-[state=active]:to-[#FF6B6B]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+              >
+                <span className="text-base">📸</span>
+                <span className="text-xs font-medium">Albums</span>
+              </TabsTrigger>
+            )}
+            <TabsTrigger
+              value="tagged"
+              className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#43E97B]/20 data-[state=active]:to-[#38F9D7]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+            >
+              <Tag className="size-4" />
+              <span className="text-xs font-medium">Tagged</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Posts Tab */}
         <TabsContent value="posts" className="mt-0">
