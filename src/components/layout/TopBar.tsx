@@ -18,49 +18,56 @@ export default function TopBar() {
   // Feed view: logo + icons
   if (currentView === 'feed') {
     return (
-      <header className="sticky top-0 z-40 w-full h-14 bg-background/80 backdrop-blur-xl border-b border-border/50 flex items-center justify-between px-4">
-        <h1 className="text-xl font-bold bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] bg-clip-text text-transparent">
-          Travereel
-        </h1>
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative rounded-full hover:bg-muted/50 transition-all"
-            onClick={() => setCurrentView('friends')}
-            aria-label="Friends"
-          >
-            <UserPlus className="size-5 text-muted-foreground" />
-            {pendingFriendRequestCount > 0 && (
-              <span className="absolute top-1 right-1 min-w-[18px] h-4.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white text-[10px] font-bold flex items-center justify-center px-1 shadow-md">
-                {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
-              </span>
-            )}
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative rounded-full hover:bg-muted/50 transition-all"
-            onClick={() => setCurrentView('notifications')}
-            aria-label="Notifications"
-          >
-            <Bell className="size-5 text-muted-foreground" />
-            {hasUnreadNotifications && (
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] shadow-md" />
-            )}
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative rounded-full hover:bg-muted/50 transition-all"
-            onClick={() => setCurrentView('messages')}
-            aria-label="Messages"
-          >
-            <Mail className="size-5 text-muted-foreground" />
-            {hasUnreadMessages && (
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] shadow-md" />
-            )}
-          </Button>
+      <header className="sticky top-0 z-40 w-full px-4 pt-2">
+        <div className="glass rounded-2xl shadow-glass border border-white/20 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
+          <div className="flex items-center justify-between h-14 px-4">
+            {/* Logo with travel theme */}
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#FF6B6B] via-[#FF8C42] to-[#FFBA49] bg-clip-text text-transparent tracking-tight hover:scale-105 transition-transform cursor-default">
+              ✈️ Travereel
+            </h1>
+            
+            {/* Action buttons */}
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all"
+                onClick={() => setCurrentView('friends')}
+                aria-label="Friends"
+              >
+                <UserPlus className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+                {pendingFriendRequestCount > 0 && (
+                  <span className="absolute top-0.5 right-0.5 min-w-[18px] h-4.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] text-white text-[10px] font-bold flex items-center justify-center px-1 shadow-md animate-pulse">
+                    {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
+                  </span>
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all"
+                onClick={() => setCurrentView('notifications')}
+                aria-label="Notifications"
+              >
+                <Bell className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+                {hasUnreadNotifications && (
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] shadow-md animate-pulse" />
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all"
+                onClick={() => setCurrentView('messages')}
+                aria-label="Messages"
+              >
+                <Mail className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+                {hasUnreadMessages && (
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] shadow-md animate-pulse" />
+                )}
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
     )
@@ -69,11 +76,15 @@ export default function TopBar() {
   // Discovery view: title (search is handled within DiscoveryPage)
   if (currentView === 'discovery') {
     return (
-      <header className="sticky top-0 z-40 w-full h-14 bg-background border-b border-border flex items-center justify-between px-4">
-        <h1 className="text-lg font-semibold text-foreground">Discover</h1>
-        <Button variant="ghost" size="icon" aria-label="Search">
-          <Search className="size-5 text-muted-foreground" />
-        </Button>
+      <header className="sticky top-0 z-40 w-full px-4 pt-2">
+        <div className="glass rounded-2xl shadow-glass border border-white/20 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
+          <div className="flex items-center justify-between h-14 px-4">
+            <h1 className="text-lg font-semibold text-gradient-sunset">🧭 Discover</h1>
+            <Button variant="ghost" size="icon" className="rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all" aria-label="Search">
+              <Search className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+            </Button>
+          </div>
+        </div>
       </header>
     )
   }
@@ -81,8 +92,12 @@ export default function TopBar() {
   // Community view: title
   if (currentView === 'community') {
     return (
-      <header className="sticky top-0 z-40 w-full h-14 bg-background border-b border-border flex items-center px-4">
-        <h1 className="text-lg font-semibold text-foreground">Communities</h1>
+      <header className="sticky top-0 z-40 w-full px-4 pt-2">
+        <div className="glass rounded-2xl shadow-glass border border-white/20 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
+          <div className="flex items-center h-14 px-4">
+            <h1 className="text-lg font-semibold text-gradient-ocean">👥 Communities</h1>
+          </div>
+        </div>
       </header>
     )
   }
@@ -90,46 +105,50 @@ export default function TopBar() {
   // Profile view: username + dropdown
   if (currentView === 'profile') {
     return (
-      <header className="sticky top-0 z-40 w-full h-14 bg-background border-b border-border flex items-center justify-between px-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-1 outline-none">
-              <span className="text-lg font-bold text-foreground">
-                {currentUser?.username || 'Profile'}
-              </span>
-              <svg
-                className="size-4 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-48">
-            <DropdownMenuItem onClick={() => setCurrentView('settings')}>
-              <Settings className="size-4 mr-2" />
-              Settings
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={logout} className="text-[#FF6B6B]">
-              <LogOut className="size-4 mr-2" />
-              Log Out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Button variant="ghost" size="icon" aria-label="Menu">
-          <div className="flex flex-col gap-0.5">
-            <div className="w-5 h-0.5 bg-muted-foreground rounded" />
-            <div className="w-5 h-0.5 bg-muted-foreground rounded" />
-            <div className="w-5 h-0.5 bg-muted-foreground rounded" />
+      <header className="sticky top-0 z-40 w-full px-4 pt-2">
+        <div className="glass rounded-2xl shadow-glass border border-white/20 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
+          <div className="flex items-center justify-between h-14 px-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1 outline-none group">
+                  <span className="text-lg font-bold text-gradient-sunset group-hover:scale-105 transition-transform">
+                    {currentUser?.username || 'Profile'}
+                  </span>
+                  <svg
+                    className="size-4 text-muted-foreground group-hover:text-[#2EC4B6] transition-colors"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48 glass">
+                <DropdownMenuItem onClick={() => setCurrentView('settings')}>
+                  <Settings className="size-4 mr-2" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={logout} className="text-[#FF6B6B]">
+                  <LogOut className="size-4 mr-2" />
+                  Log Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button variant="ghost" size="icon" className="rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all" aria-label="Menu">
+              <div className="flex flex-col gap-0.5">
+                <div className="w-5 h-0.5 bg-muted-foreground rounded transition-colors group-hover:text-[#2EC4B6]" />
+                <div className="w-5 h-0.5 bg-muted-foreground rounded transition-colors" />
+                <div className="w-5 h-0.5 bg-muted-foreground rounded transition-colors" />
+              </div>
+            </Button>
           </div>
-        </Button>
+        </div>
       </header>
     )
   }
@@ -184,22 +203,27 @@ export default function TopBar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full h-14 bg-background border-b border-border flex items-center px-4 gap-3">
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => {
-          if (previousView) {
-            setCurrentView(previousView)
-          } else {
-            setCurrentView('feed')
-          }
-        }}
-        aria-label="Go back"
-      >
-        <ArrowLeft className="size-5 text-muted-foreground" />
-      </Button>
-      <h2 className="text-lg font-semibold text-foreground">{getTitle()}</h2>
+    <header className="sticky top-0 z-40 w-full px-4 pt-2">
+      <div className="glass rounded-2xl shadow-glass border border-white/20 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
+        <div className="flex items-center h-14 px-4 gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-xl hover:bg-gradient-to-br hover:from-[#FF6B6B]/10 hover:to-[#2EC4B6]/10 transition-all"
+            onClick={() => {
+              if (previousView) {
+                setCurrentView(previousView)
+              } else {
+                setCurrentView('feed')
+              }
+            }}
+            aria-label="Go back"
+          >
+            <ArrowLeft className="size-5 text-muted-foreground hover:text-[#2EC4B6] transition-colors" />
+          </Button>
+          <h2 className="text-lg font-semibold text-gradient-sunset">{getTitle()}</h2>
+        </div>
+      </div>
     </header>
   )
 }
