@@ -14,42 +14,43 @@ const PAGE_LIMIT = 10
 function FeedSkeleton() {
   return (
     <div className="space-y-0">
-      {/* Story bar skeleton */}
-      <div className="flex gap-3 px-4 py-3 border-b border-border overflow-hidden">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="flex flex-col items-center gap-1 shrink-0">
-            <Skeleton className="size-16 rounded-full" />
-            <Skeleton className="h-2.5 w-12 rounded" />
+      {/* Story bar skeleton - Glass style */}
+      <div className="px-4 pt-3 pb-2">
+        <div className="glass rounded-2xl p-4">
+          <div className="flex gap-3 overflow-hidden">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex flex-col items-center gap-2 shrink-0">
+                <Skeleton className="size-16 rounded-full bg-gradient-to-br from-[#FF6B6B]/10 to-[#2EC4B6]/10" />
+                <Skeleton className="h-2.5 w-12 rounded" />
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
-      {/* Post skeletons */}
+      {/* Post skeletons - Enhanced */}
       {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="border-b border-border">
-          {/* Author row */}
-          <div className="flex items-center gap-3 px-4 py-3">
-            <Skeleton className="size-9 rounded-full" />
-            <div className="space-y-1.5">
-              <Skeleton className="h-3.5 w-24 rounded" />
-              <Skeleton className="h-2.5 w-16 rounded" />
+        <div key={i} className="px-4 py-3">
+          <div className="glass rounded-2xl overflow-hidden">
+            {/* Author row */}
+            <div className="flex items-center gap-3 px-5 py-4">
+              <Skeleton className="size-12 rounded-full bg-gradient-to-br from-[#FF6B6B]/20 to-[#2EC4B6]/20" />
+              <div className="space-y-2 flex-1">
+                <Skeleton className="h-4 w-32 rounded" />
+                <Skeleton className="h-3 w-24 rounded" />
+              </div>
             </div>
-          </div>
-          {/* Image */}
-          <Skeleton className="w-full aspect-square" />
-          {/* Actions */}
-          <div className="flex items-center justify-between px-4 py-2.5">
-            <div className="flex gap-4">
-              <Skeleton className="size-6 rounded" />
-              <Skeleton className="size-6 rounded" />
+            {/* Image */}
+            <Skeleton className="w-full aspect-[4/3] bg-gradient-to-br from-[#FF6B6B]/5 to-[#2EC4B6]/5" />
+            {/* Actions */}
+            <div className="flex items-center justify-between px-5 py-3">
+              <div className="flex gap-3">
+                <Skeleton className="size-6 rounded" />
+                <Skeleton className="size-6 rounded" />
+                <Skeleton className="size-6 rounded" />
+              </div>
               <Skeleton className="size-6 rounded" />
             </div>
-            <Skeleton className="size-6 rounded" />
-          </div>
-          {/* Caption */}
-          <div className="px-4 pb-3 space-y-1.5">
-            <Skeleton className="h-3 w-32 rounded" />
-            <Skeleton className="h-3 w-full rounded" />
           </div>
         </div>
       ))}
@@ -59,31 +60,58 @@ function FeedSkeleton() {
 
 function EmptyFeed() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-6">
-      <div className="size-20 rounded-full bg-gradient-to-br from-[#FF6B6B]/10 via-[#FF8C42]/10 to-[#FFBA49]/10 flex items-center justify-center mb-4">
-        <Compass className="size-10 text-[#FF8C42]" strokeWidth={1.5} />
-      </div>
-      <h2 className="text-xl font-bold text-foreground mb-2">Your Feed is Empty</h2>
-      <p className="text-sm text-muted-foreground max-w-[280px]">
+    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
+      <motion.div 
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative mb-6"
+      >
+        <div className="size-24 rounded-full bg-gradient-to-br from-[#FF6B6B]/20 via-[#FF8C42]/20 to-[#FFBA49]/20 flex items-center justify-center">
+          <Compass className="size-12 text-[#FF6B6B]" strokeWidth={1.5} />
+        </div>
+        <div className="absolute -top-2 -right-2 text-4xl animate-bounce">✈️</div>
+        <div className="absolute -bottom-2 -left-2 text-3xl animate-pulse">🌍</div>
+      </motion.div>
+      <h2 className="text-2xl font-bold text-gradient-sunset mb-3">Ready to Explore?</h2>
+      <p className="text-sm text-muted-foreground max-w-[300px] leading-relaxed">
         Follow travelers and discover amazing destinations to fill your feed with inspiration.
       </p>
+      <div className="mt-6 flex gap-2 text-2xl">
+        <span className="animate-bounce" style={{ animationDelay: '0ms' }}>🏔️</span>
+        <span className="animate-bounce" style={{ animationDelay: '100ms' }}>🏖️</span>
+        <span className="animate-bounce" style={{ animationDelay: '200ms' }}>🗼</span>
+        <span className="animate-bounce" style={{ animationDelay: '300ms' }}>🌋</span>
+      </div>
     </div>
   )
 }
 
 function LoadingMoreSpinner() {
   return (
-    <div className="flex items-center justify-center py-6">
-      <Loader2 className="size-6 text-[#FF8C42] animate-spin" />
-      <span className="ml-2 text-sm text-muted-foreground">Loading more posts...</span>
+    <div className="flex items-center justify-center py-8">
+      <div className="glass px-6 py-3 rounded-full shadow-glass">
+        <div className="flex items-center gap-3">
+          <Loader2 className="size-5 text-[#FF6B6B] animate-spin" />
+          <span className="text-sm text-foreground font-medium">Loading more adventures...</span>
+        </div>
+      </div>
     </div>
   )
 }
 
 function EndOfFeedMessage() {
   return (
-    <div className="flex items-center justify-center py-6">
-      <span className="text-sm text-muted-foreground">You&apos;ve reached the end of the feed</span>
+    <div className="flex flex-col items-center justify-center py-10">
+      <div className="text-4xl mb-3">🎉</div>
+      <div className="glass px-6 py-3 rounded-xl">
+        <span className="text-sm text-foreground font-medium">You&apos;ve caught up with all travel stories!</span>
+      </div>
+      <div className="mt-3 text-2xl flex gap-1">
+        <span>🗺️</span>
+        <span>✨</span>
+        <span>🌟</span>
+      </div>
     </div>
   )
 }
@@ -258,7 +286,7 @@ export default function NewsFeed() {
   }
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto pb-4">
       {/* Refresh button - Hidden */}
       <div className="flex justify-center py-2 hidden">
         <motion.button
@@ -271,16 +299,23 @@ export default function NewsFeed() {
         </motion.button>
       </div>
 
-      {/* Story Bar */}
+      {/* Story Bar - Now in glass container */}
       <StoryBar />
 
-      {/* Posts */}
+      {/* Posts - Immersive Travel Stories */}
       {allPosts.length === 0 ? (
         <EmptyFeed />
       ) : (
-        <div className="divide-y-0">
-          {allPosts.map((post) => (
-            <PostCard key={post.id} post={post} />
+        <div className="divide-y-0 mt-2">
+          {allPosts.map((post, index) => (
+            <motion.div
+              key={post.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+            >
+              <PostCard post={post} />
+            </motion.div>
           ))}
 
           {/* Sentinel element for infinite scroll */}
