@@ -360,16 +360,16 @@ export default function PostCard({ post }: PostCardProps) {
       : post.caption
 
   return (
-    <article className="group bg-card border border-border/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-[1.01] mb-6">
-      {/* Author Row */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-border/30">
+    <article className="group glass rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover-lift transition-all duration-300 mb-6 border border-white/20 dark:border-slate-700/50">
+      {/* Author Row - Magazine Style */}
+      <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-white/50 to-transparent dark:from-slate-800/50 border-b border-border/30">
         <div className="flex items-center gap-3">
-          <Avatar className="size-11 cursor-pointer ring-2 ring-transparent hover:ring-[#FF6B6B]/30 transition-all" onClick={handleAuthorClick}>
+          <Avatar className="size-12 cursor-pointer ring-2 ring-[#FF6B6B]/20 hover:ring-[#FF6B6B]/50 transition-all hover:scale-105" onClick={handleAuthorClick}>
             <AvatarImage
               src={authorAvatar}
               alt={authorUsername}
             />
-            <AvatarFallback className="bg-gradient-to-br from-[#FFBA49]/30 to-[#2EC4B6]/30 text-muted-foreground text-sm font-semibold">
+            <AvatarFallback className="bg-gradient-to-br from-[#FF6B6B] to-[#2EC4B6] text-white text-sm font-semibold">
               {authorUsername.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
@@ -378,7 +378,7 @@ export default function PostCard({ post }: PostCardProps) {
               onClick={handleAuthorClick}
               className="text-sm font-semibold text-foreground text-left hover:text-[#FF6B6B] transition-colors flex items-center gap-2"
             >
-              {authorUsername}
+              @{authorUsername}
               {post.isSponsored && (
                 <Badge variant="secondary" className="text-[9px] bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 border-amber-200 gap-1 px-2 py-0.5 shadow-sm">
                   <Megaphone className="size-2.5" />
@@ -389,7 +389,7 @@ export default function PostCard({ post }: PostCardProps) {
             {post.location && (
               <button
                 onClick={() => setShowMapDialog(true)}
-                className="flex items-center gap-1 text-xs text-muted-foreground hover:text-[#FF8C42] transition-colors mt-0.5"
+                className="flex items-center gap-1 text-xs text-[#FF6B6B] hover:text-[#FF8C42] transition-colors mt-0.5 font-medium"
               >
                 <MapPin className="size-3.5" />
                 {post.location}
@@ -458,14 +458,24 @@ export default function PostCard({ post }: PostCardProps) {
         </DropdownMenu>
       </div>
 
-      {/* Image Carousel - only shown when post has images */}
+      {/* Image Carousel - Magazine Style with Enhanced Overlays */}
       {post.images.length > 0 && (
         <div
           className="relative w-full aspect-[4/3] bg-muted select-none overflow-hidden group-hover:shadow-inner transition-shadow"
           onClick={handleImageTap}
         >
-          {/* Gradient overlay at bottom for better text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent z-[5] pointer-events-none" />
+          {/* Enhanced gradient overlay for magazine feel */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-[5] pointer-events-none" />
+          
+          {/* Location badge overlay - Magazine style */}
+          {post.location && (
+            <div className="absolute top-4 left-4 z-10 glass px-3 py-1.5 rounded-full shadow-lg">
+              <div className="flex items-center gap-1.5 text-white text-xs font-semibold">
+                <MapPin className="size-3.5" />
+                {post.location}
+              </div>
+            </div>
+          )}
           
           <Carousel
             opts={{ loop: false }}
@@ -528,10 +538,10 @@ export default function PostCard({ post }: PostCardProps) {
         </div>
       )}
 
-      {/* Text-only post content area */}
+      {/* Text-only post content area - Magazine Style */}
       {isTextOnly && post.caption && (
         <div
-          className="relative px-4 py-5 select-none bg-gradient-to-br from-[#FFF5F0] via-[#FFF0E5] to-[#E8FAF8] dark:from-[#2a1f1a] dark:via-[#2a2218] dark:to-[#1a2a28] cursor-pointer"
+          className="relative px-6 py-6 select-none bg-gradient-to-br from-[#FF6B6B]/5 via-[#FF8C42]/5 to-[#2EC4B6]/5 dark:from-[#2a1f1a] dark:via-[#2a2218] dark:to-[#1a2a28] cursor-pointer border-l-4 border-[#FF6B6B]/30"
           onClick={handleDoubleTap}
         >
           {/* Double-tap heart animation for text-only */}
@@ -591,8 +601,8 @@ export default function PostCard({ post }: PostCardProps) {
         </div>
       )}
 
-      {/* Action Row */}
-      <div className="flex items-center justify-between px-5 py-3 border-t border-border/30 bg-gradient-to-r from-muted/20 to-muted/10">
+      {/* Action Row - Glass Morphism Style */}
+      <div className="flex items-center justify-between px-5 py-3 border-t border-border/30 bg-gradient-to-r from-[#FF6B6B]/5 to-[#2EC4B6]/5 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <ReactionPicker
             currentReaction={userReaction}
