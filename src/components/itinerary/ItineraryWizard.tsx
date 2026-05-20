@@ -26,6 +26,7 @@ const stepLabels = [
   'Type',
   'Activities',
   'Mode',
+  'Result',
 ]
 
 export default function ItineraryWizard() {
@@ -38,12 +39,12 @@ export default function ItineraryWizard() {
     setCurrentView,
   } = useAppStore()
 
-  const totalSteps = 9 // 0-8
+  const totalSteps = 10 // 0-9
 
   // Determine which content to show
   const getStepContent = () => {
     // After mode selection, show result forms
-    if (wizardStep >= 9) {
+    if (wizardStep === 9) {
       return isAIGenerate ? <AIGenerateResult /> : <ManualInputForm />
     }
     switch (wizardStep) {
@@ -74,6 +75,7 @@ export default function ItineraryWizard() {
         return wizardData.companions.length > 0
       case 7: return wizardData.activities.length > 0
       case 8: return true // Mode selection handles its own navigation
+      case 9: return false // Result step, no next
       default: return true
     }
   }
@@ -83,13 +85,13 @@ export default function ItineraryWizard() {
   }
 
   const handleNext = () => {
-    if (wizardStep < totalSteps - 1) {
+    if (wizardStep < totalSteps - 1 && wizardStep < 8) {
       setWizardStep(wizardStep + 1)
     }
   }
 
   const handleBack = () => {
-    if (wizardStep > 0 && wizardStep < 8) {
+    if (wizardStep > 0 && wizardStep < 9) {
       setWizardStep(wizardStep - 1)
     }
   }
@@ -104,7 +106,7 @@ export default function ItineraryWizard() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
-      {wizardStep < 8 && (
+      {wizardStep < 9 && (
         <div className="sticky top-0 z-30 bg-white border-b border-gray-100">
           <div className="max-w-md mx-auto px-4">
             {/* Navigation row */}
@@ -186,7 +188,7 @@ export default function ItineraryWizard() {
       </div>
 
       {/* Bottom Navigation */}
-      {wizardStep < 8 && (
+      {wizardStep < 9 && (
         <div className="sticky bottom-0 bg-white border-t border-gray-100 p-4">
           <div className="max-w-md mx-auto flex gap-3">
             {canGoBack() && (
