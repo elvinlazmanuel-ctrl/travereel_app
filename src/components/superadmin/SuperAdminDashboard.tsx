@@ -65,7 +65,7 @@ export default function SuperAdminDashboard({
         {/* Sidebar header */}
         <div className="p-5 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#FF6B6B' }}>
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#2F5C9B' }}>
               <Globe className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -101,7 +101,7 @@ export default function SuperAdminDashboard({
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }
                 `}
-                style={isActive ? { backgroundColor: '#FF6B6B' } : undefined}
+                style={isActive ? { backgroundColor: '#2F5C9B' } : undefined}
               >
                 <Icon className="w-4.5 h-4.5" />
                 {item.label}
@@ -145,7 +145,7 @@ export default function SuperAdminDashboard({
           </div>
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline text-sm text-muted-foreground">{adminUser?.email}</span>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: '#FF6B6B' }}>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: '#2F5C9B' }}>
               {(adminUser?.name || 'SA')[0].toUpperCase()}
             </div>
           </div>

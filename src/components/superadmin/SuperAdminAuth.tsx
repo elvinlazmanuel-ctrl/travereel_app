@@ -69,7 +69,7 @@ export default function SuperAdminAuth({ onAuth }: SuperAdminAuthProps) {
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
               className="mx-auto w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
-              style={{ backgroundColor: '#FF6B6B' }}
+              style={{ backgroundColor: '#2F5C9B' }}
             >
               <Shield className="w-8 h-8 text-white" />
             </motion.div>
@@ -151,7 +151,7 @@ export default function SuperAdminAuth({ onAuth }: SuperAdminAuthProps) {
                 type="submit"
                 disabled={loading}
                 className="w-full h-11 text-white font-medium"
-                style={{ backgroundColor: '#FF6B6B' }}
+                style={{ backgroundColor: '#2F5C9B' }}
               >
                 {loading ? (
                   <>

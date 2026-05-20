@@ -183,7 +183,7 @@ export default function FeatureToggles() {
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button size="sm" className="text-white" style={{ backgroundColor: '#FF6B6B' }}>
+            <Button size="sm" className="text-white" style={{ backgroundColor: '#2F5C9B' }}>
               <Plus className="w-4 h-4 mr-1" />
               Add Feature
             </Button>
@@ -250,7 +250,7 @@ export default function FeatureToggles() {
               <DialogClose asChild>
                 <Button variant="outline" disabled={creating}>Cancel</Button>
               </DialogClose>
-              <Button onClick={handleCreate} disabled={creating} style={{ backgroundColor: '#FF6B6B' }} className="text-white">
+              <Button onClick={handleCreate} disabled={creating} style={{ backgroundColor: '#2F5C9B' }} className="text-white">
                 {creating ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
                 Create
               </Button>

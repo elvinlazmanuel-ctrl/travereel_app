@@ -26,10 +26,10 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png" },
+      { url: "/new-logo.png", type: "image/png" },
     ],
     apple: [
-      { url: "/logo.png", type: "image/png" },
+      { url: "/new-logo.png", type: "image/png" },
     ],
   },
   appleWebApp: {
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'black-translucent',
-    'msapplication-TileColor': '#FF6B6B',
+    'msapplication-TileColor': '#0B0B2A',
     'msapplication-tap-highlight': 'no',
   },
   openGraph: {
