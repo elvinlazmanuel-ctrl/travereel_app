@@ -18,6 +18,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [errorDetails, setErrorDetails] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,6 +36,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
 
       if (!res.ok) {
         setError(data.error || 'Login failed. Please try again.')
+        setErrorDetails(data.details || null)
         return
       }
 
@@ -56,6 +58,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
       }
     } catch {
       setError('Something went wrong. Please try again.')
+      setErrorDetails(null)
     } finally {
       setIsLoading(false)
     }
@@ -66,7 +69,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
       {/* Brand */}
       <div className="flex flex-col items-center mb-8">
         <div className="flex items-center justify-center mb-4">
-          <img src="/new-logo.png" alt="Travereel" className="h-16 w-16" />
+          <img src="/new-logo.png" alt="Travereel" className="h-15 w-16" />
         </div>
         <h1 className="text-3xl font-bold text-gradient-sky">
           Travereel
@@ -79,8 +82,11 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 rounded-lg bg-[#FF6B6B]/10 border border-[#FF6B6B]/20">
-            <p className="text-sm text-[#FF6B6B]">{error}</p>
+          <div className="p-3 rounded-lg bg-[#2F5C9B]/10 border border-[#2F5C9B]/20">
+            <p className="text-sm text-[#2F5C9B] font-medium">{error}</p>
+            {errorDetails && (
+              <p className="text-xs text-[#2F5C9B]/80 mt-1">{errorDetails}</p>
+            )}
           </div>
         )}
 
@@ -133,7 +139,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full h-11 rounded-lg bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#2F5C9B] text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all border-0 cursor-pointer"
+          className="w-full h-11 rounded-lg bg-gradient-to-r from-[#2F5C9B] via-[#5CA5CD] to-[#2F5C9B] text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all border-0 disabled:opacity-50 cursor-pointer"
         >
           {isLoading ? (
             <>
@@ -158,7 +164,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
         Don&apos;t have an account?{' '}
         <button
           onClick={onSwitchToRegister}
-          className="text-[#FF8C42] font-semibold hover:text-[#FF6B6B] transition-colors"
+          className="text-[#5CA5CD] font-semibold hover:text-[#2F5C9B] transition-colors"
         >
           Sign Up
         </button>

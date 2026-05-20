@@ -72,21 +72,31 @@ export async function POST(request: Request) {
       const verificationExpires = new Date()
       verificationExpires.setHours(verificationExpires.getHours() + TOKEN_EXPIRY_HOURS)
 
-      await db.user.update({
-        where: { id: user.id },
-        data: {
-          emailVerificationToken: verificationToken,
-          emailVerificationExpires: verificationExpires,
-        },
-      })
+      try {
+        await db.user.update({
+          where: { id: user.id },
+          data: {
+            emailVerificationToken: verificationToken,
+            emailVerificationExpires: verificationExpires,
+          },
+        })
+      } catch (updateError) {
+        console.error('Failed to update user with verification token:', updateError)
+        // Continue even if token update fails - user can still login
+      }
 
       // Send verification email (will log in development)
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-      await sendVerificationEmail(
-        email,
-        name,
-        `${baseUrl}/verify-email?token=${verificationToken}`
-      )
+      try {
+        await sendVerificationEmail(
+          email,
+          name,
+          `${baseUrl}/verify-email?token=${verificationToken}`
+        )
+      } catch (emailError) {
+        console.error('Failed to send verification email:', emailError)
+        // Continue even if email fails - user can still login
+      }
 
       return NextResponse.json({
         user: formatUser(user),
@@ -156,8 +166,11 @@ export async function POST(request: Request) {
     )
   } catch (error) {
     console.error('Auth error:', error)
+    // Provide more specific error message for debugging
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    console.error('Error details:', errorMessage)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: process.env.NODE_ENV === 'development' ? errorMessage : undefined },
       { status: 500 }
     )
   }
