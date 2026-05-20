@@ -221,6 +221,21 @@
     box-shadow: var(--shadow-xl);
   }
   
+  /* Glass hover effect */
+  .glass-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: var(--shadow-glass);
+    transform: translateY(-2px);
+  }
+  
+  .dark .glass-hover:hover {
+    background: rgba(15, 23, 42, 0.85);
+  }
+  
   /* Image overlay gradient */
   .image-overlay {
     background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
