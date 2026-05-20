@@ -6,6 +6,8 @@ import { Hotel, ExternalLink, Star, MapPin, DollarSign, Heart } from 'lucide-rea
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import { useFeatureToggle } from '@/hooks/useFeatureToggle'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface HotelRecommendation {
   id: string
@@ -71,8 +73,31 @@ const getMockHotels = (location: string, country: string, currency: string): Hot
 ]
 
 export function HotelBookingWidget({ location, country, currency, checkIn, checkOut }: HotelBookingWidgetProps) {
+  const { enabled, loading } = useFeatureToggle('where_to_stay')
   const [hotels] = useState<HotelRecommendation[]>(getMockHotels(location, country, currency))
   const [savedHotels, setSavedHotels] = useState<Set<string>>(new Set())
+
+  // Feature is disabled - don't render anything
+  if (!enabled && !loading) {
+    return null
+  }
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Skeleton className="size-8 rounded-lg" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-3 w-32" />
+          </div>
+        </div>
+        <Skeleton className="h-48 w-full rounded-lg" />
+        <Skeleton className="h-48 w-full rounded-lg" />
+      </div>
+    )
+  }
 
   const toggleSave = (hotelId: string) => {
     setSavedHotels((prev) => {

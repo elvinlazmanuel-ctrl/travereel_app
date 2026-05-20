@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { useFeatureToggle } from '@/hooks/useFeatureToggle'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface TravelInsuranceProps {
   country: string
@@ -29,7 +31,28 @@ interface InsurancePlan {
 }
 
 export function TravelInsuranceRecommendations({ country, departureDate, returnDate, travelerAge = 30 }: TravelInsuranceProps) {
+  const { enabled, loading } = useFeatureToggle('travel_insurance')
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
+
+  // Feature is disabled - don't render anything
+  if (!enabled && !loading) {
+    return null
+  }
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center space-y-2">
+          <Skeleton className="h-6 w-48 mx-auto" />
+          <Skeleton className="h-5 w-32 mx-auto" />
+          <Skeleton className="h-4 w-64 mx-auto" />
+        </div>
+        <Skeleton className="h-24 w-full rounded-lg" />
+        <Skeleton className="h-64 w-full rounded-lg" />
+      </div>
+    )
+  }
 
   const plans: InsurancePlan[] = [
     {
