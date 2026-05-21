@@ -93,6 +93,15 @@ export default function AIGenerateResult() {
         throw new Error(data.error || 'Failed to generate itinerary')
       }
 
+      // Validate that the AI returned the correct number of days
+      const requestedDays = wizardData.days
+      const returnedDays = data.itinerary?.days?.length || 0
+      
+      if (returnedDays !== requestedDays) {
+        console.error(`AI returned ${returnedDays} days instead of requested ${requestedDays} days`)
+        throw new Error(`AI generated ${returnedDays} day${returnedDays !== 1 ? 's' : ''} instead of the requested ${requestedDays} days. Please try again.`)
+      }
+
       setResult(data.itinerary)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
@@ -203,7 +212,7 @@ export default function AIGenerateResult() {
           AI is planning your trip...
         </h3>
         <p className="text-sm text-muted-foreground mb-4 text-center max-w-[250px]">
-          Creating a personalized itinerary for {wizardData.location}, {wizardData.country}
+          Creating a {wizardData.days}-day personalized itinerary for {wizardData.location}, {wizardData.country}
         </p>
         <div className="flex items-center gap-2 mb-4">
           <Clock className="size-4 text-[#5CA5CD]" />

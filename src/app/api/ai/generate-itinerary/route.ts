@@ -68,6 +68,8 @@ export async function POST(request: Request) {
             role: 'system',
             content: `You are an expert travel planner. Generate detailed day-by-day travel itineraries based on the user's preferences.
 
+CRITICAL: You MUST generate EXACTLY the number of days requested by the user. If they ask for 5 days, you MUST return exactly 5 days in the "days" array. If they ask for 7 days, you MUST return exactly 7 days. This is non-negotiable.
+
 CRITICAL PRIVACY RULES:
 - NEVER include specific hotel names in the itinerary
 - Use generic terms like "Check in to Hotel", "Hotel Check-in", or "Accommodation" instead
@@ -106,6 +108,9 @@ The JSON must have this exact structure:
 }
 
 Important rules:
+- **YOU MUST CREATE EXACTLY THE NUMBER OF DAYS REQUESTED** - This is the most important rule
+- dayNumber must be sequential: 1, 2, 3, 4, 5, etc. up to the requested number of days
+- Each day should have a unique dayNumber
 - All costs should be in USD
 - startTime and endTime should be in HH:MM format
 - Include 3-5 activities per day (adjust based on arrival/departure times)
