@@ -23,6 +23,7 @@ import {
   X,
   Upload,
   MapPin,
+  Trash2,
 } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
@@ -49,6 +50,8 @@ import { useTheme } from 'next-themes'
 import { toast } from 'sonner'
 import { detectUserLocation, getStoredLocation, storeDetectedLocation, getCurrencyForCountry } from '@/lib/user-location'
 import { PushNotificationSettings } from './PushNotificationSettings'
+import BlockedUsersManagement from './BlockedUsersManagement'
+import AccountDeletion from './AccountDeletion'
 
 interface SettingRowProps {
   icon: React.ReactNode
@@ -134,6 +137,8 @@ export default function SettingsPage() {
   const [changeEmailOpen, setChangeEmailOpen] = useState(false)
   const [termsOpen, setTermsOpen] = useState(false)
   const [privacyOpen, setPrivacyOpen] = useState(false)
+  const [blockedUsersOpen, setBlockedUsersOpen] = useState(false)
+  const [accountDeletionOpen, setAccountDeletionOpen] = useState(false)
 
   // Edit profile form
   const [editName, setEditName] = useState('')
@@ -638,6 +643,12 @@ export default function SettingsPage() {
         checked={activityStatus}
         onCheckedChange={handleActivityStatusChange}
       />
+      <SettingRow
+        icon={<Shield className="size-4" />}
+        label="Blocked Users"
+        value="Manage users you've blocked"
+        onClick={() => setBlockedUsersOpen(true)}
+      />
 
       <Separator />
 
@@ -709,6 +720,17 @@ export default function SettingsPage() {
         icon={<Shield className="size-4" />}
         label="Privacy Policy"
         onClick={() => setPrivacyOpen(true)}
+      />
+
+      <Separator />
+
+      {/* Danger Zone */}
+      <SectionHeader title="Account" />
+      <SettingRow
+        icon={<Trash2 className="size-4" />}
+        label="Delete Account"
+        value="Permanently delete your account"
+        onClick={() => setAccountDeletionOpen(true)}
       />
 
       <Separator />
@@ -1013,6 +1035,26 @@ export default function SettingsPage() {
             <h4 className="text-foreground font-semibold">6. Contact Us</h4>
             <p>If you have questions about this Privacy Policy, please contact us through the app.</p>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Blocked Users Dialog */}
+      <Dialog open={blockedUsersOpen} onOpenChange={setBlockedUsersOpen}>
+        <DialogContent className="sm:max-w-md max-h-[70vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Blocked Users</DialogTitle>
+          </DialogHeader>
+          <BlockedUsersManagement />
+        </DialogContent>
+      </Dialog>
+
+      {/* Account Deletion Dialog */}
+      <Dialog open={accountDeletionOpen} onOpenChange={setAccountDeletionOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Delete Account</DialogTitle>
+          </DialogHeader>
+          <AccountDeletion onSuccess={() => setAccountDeletionOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>
