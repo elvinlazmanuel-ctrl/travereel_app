@@ -328,7 +328,7 @@ export default function ProfilePage() {
           <div className="flex-1 min-w-0">
             {/* Username & Actions */}
             <div className="flex items-center gap-4 mb-4 flex-wrap">
-              <h1 className="text-xl font-light text-foreground">{name}</h1>
+              <h1 className="text-xl font-semibold text-foreground">{name}</h1>
               {isOwnProfile ? (
                 <div className="flex gap-2">
                   <Button
