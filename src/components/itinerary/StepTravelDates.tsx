@@ -1,13 +1,19 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Calendar, Plane, PlaneLanding, AlertCircle } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { motion } from 'framer-motion'
 
 export default function StepTravelDates() {
   const { wizardData, setWizardData } = useAppStore()
+  const [activeField, setActiveField] = useState<'departure' | 'return' | null>(null)
+
+  const handleDateChange = (field: 'departureDate' | 'returnDate', value: string) => {
+    setWizardData({ [field]: value })
+  }
 
   // Calculate trip duration
   const tripDuration = useMemo(() => {
@@ -112,8 +118,14 @@ export default function StepTravelDates() {
       {/* Departure Date */}
       <div className="space-y-2">
         <label className="flex items-center gap-2 text-sm font-semibold text-foreground">
-          <div className="size-8 rounded-lg bg-[#2F5C9B]/10 flex items-center justify-center">
-            <Plane className="size-4 text-[#2F5C9B]" />
+          <div className={`size-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
+            activeField === 'departure' 
+              ? 'bg-[#2F5C9B]/20 scale-110' 
+              : 'bg-[#2F5C9B]/10'
+          }`}>
+            <Plane className={`size-4 transition-colors duration-200 ${
+              activeField === 'departure' ? 'text-[#2F5C9B]' : 'text-[#2F5C9B]'
+            }`} />
           </div>
           <div>
             <span>Departure Date</span>
@@ -121,32 +133,59 @@ export default function StepTravelDates() {
           </div>
         </label>
         <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-[#2F5C9B] transition-colors group-focus-within:text-[#5CA5CD]">
+          <div className={`absolute left-4 top-1/2 -translate-y-1/2 size-5 transition-all duration-200 ${
+            activeField === 'departure' 
+              ? 'text-[#2F5C9B] scale-110' 
+              : 'text-[#2F5C9B]'
+          }`}>
             <Calendar className="size-5" />
           </div>
           <Input
             type="date"
             min={minDate}
             value={wizardData.departureDate}
-            onChange={(e) => setWizardData({ departureDate: e.target.value })}
-            className="pl-12 h-14 rounded-xl border-2 border-gray-200 focus:border-[#2F5C9B] focus:ring-4 focus:ring-[#2F5C9B]/10 transition-all text-base font-medium"
+            onChange={(e) => handleDateChange('departureDate', e.target.value)}
+            onFocus={() => setActiveField('departure')}
+            onBlur={() => setActiveField(null)}
+            className={`pl-12 h-14 rounded-xl border-2 transition-all duration-200 text-base font-medium ${
+              activeField === 'departure'
+                ? 'border-[#2F5C9B] ring-4 ring-[#2F5C9B]/20 bg-[#2F5C9B]/5 shadow-lg shadow-[#2F5C9B]/10'
+                : 'border-gray-200 hover:border-gray-300'
+            }`}
           />
+          {wizardData.departureDate && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              <div className="size-6 rounded-full bg-[#2F5C9B] flex items-center justify-center animate-in zoom-in duration-200">
+                <span className="text-white text-xs font-bold">✓</span>
+              </div>
+            </div>
+          )}
         </div>
         {wizardData.departureDate && (
-          <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[#2F5C9B]/5 border border-[#2F5C9B]/10">
-            <div className="size-1.5 rounded-full bg-[#2F5C9B]" />
+          <motion.div 
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 p-2.5 rounded-lg bg-[#2F5C9B]/5 border border-[#2F5C9B]/10"
+          >
+            <div className="size-1.5 rounded-full bg-[#2F5C9B] animate-pulse" />
             <p className="text-xs text-[#2F5C9B] font-medium">
               {formatDate(wizardData.departureDate)}
             </p>
-          </div>
+          </motion.div>
         )}
       </div>
 
       {/* Return Date */}
       <div className="space-y-2">
         <label className="flex items-center gap-2 text-sm font-semibold text-foreground">
-          <div className="size-8 rounded-lg bg-[#5CA5CD]/10 flex items-center justify-center">
-            <PlaneLanding className="size-4 text-[#5CA5CD]" />
+          <div className={`size-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
+            activeField === 'return' 
+              ? 'bg-[#5CA5CD]/20 scale-110' 
+              : 'bg-[#5CA5CD]/10'
+          }`}>
+            <PlaneLanding className={`size-4 transition-colors duration-200 ${
+              activeField === 'return' ? 'text-[#5CA5CD]' : 'text-[#5CA5CD]'
+            }`} />
           </div>
           <div>
             <span>Return Date</span>
@@ -154,24 +193,45 @@ export default function StepTravelDates() {
           </div>
         </label>
         <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-[#5CA5CD] transition-colors group-focus-within:text-[#E58BEA]">
+          <div className={`absolute left-4 top-1/2 -translate-y-1/2 size-5 transition-all duration-200 ${
+            activeField === 'return' 
+              ? 'text-[#5CA5CD] scale-110' 
+              : 'text-[#5CA5CD]'
+          }`}>
             <Calendar className="size-5" />
           </div>
           <Input
             type="date"
             min={wizardData.departureDate || minDate}
             value={wizardData.returnDate}
-            onChange={(e) => setWizardData({ returnDate: e.target.value })}
-            className="pl-12 h-14 rounded-xl border-2 border-gray-200 focus:border-[#5CA5CD] focus:ring-4 focus:ring-[#5CA5CD]/10 transition-all text-base font-medium"
+            onChange={(e) => handleDateChange('returnDate', e.target.value)}
+            onFocus={() => setActiveField('return')}
+            onBlur={() => setActiveField(null)}
+            className={`pl-12 h-14 rounded-xl border-2 transition-all duration-200 text-base font-medium ${
+              activeField === 'return'
+                ? 'border-[#5CA5CD] ring-4 ring-[#5CA5CD]/20 bg-[#5CA5CD]/5 shadow-lg shadow-[#5CA5CD]/10'
+                : 'border-gray-200 hover:border-gray-300'
+            }`}
           />
+          {wizardData.returnDate && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              <div className="size-6 rounded-full bg-[#5CA5CD] flex items-center justify-center animate-in zoom-in duration-200">
+                <span className="text-white text-xs font-bold">✓</span>
+              </div>
+            </div>
+          )}
         </div>
         {wizardData.returnDate && (
-          <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[#5CA5CD]/5 border border-[#5CA5CD]/10">
-            <div className="size-1.5 rounded-full bg-[#5CA5CD]" />
+          <motion.div 
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 p-2.5 rounded-lg bg-[#5CA5CD]/5 border border-[#5CA5CD]/10"
+          >
+            <div className="size-1.5 rounded-full bg-[#5CA5CD] animate-pulse" />
             <p className="text-xs text-[#5CA5CD] font-medium">
               {formatDate(wizardData.returnDate)}
             </p>
-          </div>
+          </motion.div>
         )}
       </div>
 

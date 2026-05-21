@@ -78,38 +78,63 @@ CRITICAL PRIVACY RULES:
 
 CRITICAL: You MUST return your response as a valid JSON object. Use ONLY straight quotes (" "), NEVER curly quotes (" " " ").
 
-The JSON must have this exact structure:
+The JSON must have this exact structure. NOTE: The "days" array MUST contain EXACTLY the number of days requested:
 
 {
   "days": [
     {
       "dayNumber": 1,
-      "title": "Day title",
-      "description": "Brief overview of the day",
+      "title": "Arrival and Exploration",
+      "description": "Arrive and get oriented",
       "activities": [
         {
-          "title": "Activity title",
-          "description": "Activity description",
-          "location": "Specific location name",
-          "startTime": "09:00",
-          "endTime": "11:00",
-          "cost": 25
+          "title": "Check in to Hotel",
+          "description": "Settle into your accommodation",
+          "location": "Hotel area",
+          "startTime": "14:00",
+          "endTime": "15:00",
+          "cost": 0
+        },
+        {
+          "title": "Evening Walk",
+          "description": "Explore the local area",
+          "location": "City center",
+          "startTime": "17:00",
+          "endTime": "19:00",
+          "cost": 0
         }
       ],
-      "route": "Transportation notes between locations"
+      "route": "From airport to hotel via taxi"
+    },
+    {
+      "dayNumber": 2,
+      "title": "Main Attractions",
+      "description": "Visit top tourist spots",
+      "activities": [
+        {
+          "title": "Museum Visit",
+          "description": "Explore local history",
+          "location": "National Museum",
+          "startTime": "09:00",
+          "endTime": "12:00",
+          "cost": 15
+        }
+      ],
+      "route": "Walking distance from hotel"
     }
   ],
   "requirements": [
-    "Visa requirement if applicable",
-    "Vaccination requirement if applicable",
-    "Any other travel requirements"
+    "Valid passport with 6 months validity",
+    "Return ticket"
   ],
   "totalEstimatedCost": 1500
 }
 
+IMPORTANT: The example above shows 2 days, but you MUST generate the EXACT number of days the user requested. If they want 5 days, create dayNumber 1, 2, 3, 4, 5. Each day must be in a separate object in the array.
+
 Important rules:
-- **YOU MUST CREATE EXACTLY THE NUMBER OF DAYS REQUESTED** - This is the most important rule
-- dayNumber must be sequential: 1, 2, 3, 4, 5, etc. up to the requested number of days
+- **YOU MUST CREATE EXACTLY THE NUMBER OF DAYS REQUESTED** - Count them: 1, 2, 3... up to the requested number
+- dayNumber must be sequential starting from 1
 - Each day should have a unique dayNumber
 - All costs should be in USD
 - startTime and endTime should be in HH:MM format
@@ -175,6 +200,23 @@ Important rules:
       console.error('Failed to parse AI response as JSON:', jsonStr.substring(0, 500))
       return NextResponse.json(
         { error: 'Failed to parse AI-generated itinerary', raw: content },
+        { status: 500 }
+      )
+    }
+
+    // Validate that the AI returned the correct number of days
+    const requestedDays = days
+    const returnedDays = parsedItinerary?.days?.length || 0
+    
+    if (returnedDays !== requestedDays) {
+      console.error(`AI returned ${returnedDays} days instead of requested ${requestedDays} days`)
+      return NextResponse.json(
+        { 
+          error: `AI generated ${returnedDays} day${returnedDays !== 1 ? 's' : ''} instead of the requested ${requestedDays} days`,
+          details: `Expected ${requestedDays} days but got ${returnedDays} days`,
+          returnedDays,
+          requestedDays
+        },
         { status: 500 }
       )
     }
