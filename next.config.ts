@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://unpkg.com",
               "img-src 'self' data: https://res.cloudinary.com https://*.cloudinary.com https://picsum.photos https://*.picsum.photos https://images.unsplash.com blob:",
               "font-src 'self' data: https://unpkg.com",
-              "connect-src 'self' https://api.openrouter.ai https://api.resend.com https://nominatim.openstreetmap.org https://api.open-meteo.com wss: ws:",
+              "connect-src 'self' https://api.openrouter.ai https://api.resend.com https://nominatim.openstreetmap.org https://api.open-meteo.com https://api.exchangerate-api.com wss: ws:",
               "media-src 'self' https://res.cloudinary.com https://*.cloudinary.com blob:",
               "frame-ancestors 'none'",
               "base-uri 'self'",

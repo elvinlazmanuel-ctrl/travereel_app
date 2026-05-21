@@ -21,10 +21,20 @@ export async function GET() {
       features,
     })
   } catch (error) {
-    console.error('Public features GET error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    // Log error but return empty features instead of 500
+    console.warn('FeatureToggle table not found or database error (this is OK if table not created yet):', error)
+    
+    // Return default enabled features as fallback
+    const defaultFeatures = [
+      { key: 'where_to_stay', enabled: true, category: 'travel', apiConfig: null, metadata: null },
+      { key: 'travel_insurance', enabled: true, category: 'travel', apiConfig: null, metadata: null },
+      { key: 'weather_forecast', enabled: true, category: 'travel', apiConfig: null, metadata: null },
+      { key: 'currency_converter', enabled: true, category: 'travel', apiConfig: null, metadata: null },
+    ]
+
+    return NextResponse.json({
+      features: defaultFeatures,
+      fallback: true,
+    })
   }
 }
