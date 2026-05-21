@@ -37,10 +37,10 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
-              "style-src 'self' 'unsafe-inline'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://unpkg.com",
+              "style-src 'self' 'unsafe-inline' https://unpkg.com",
               "img-src 'self' data: https://res.cloudinary.com https://*.cloudinary.com blob:",
-              "font-src 'self' data:",
+              "font-src 'self' data: https://unpkg.com",
               "connect-src 'self' https://api.openrouter.ai https://api.resend.com wss: ws:",
               "media-src 'self' https://res.cloudinary.com https://*.cloudinary.com blob:",
               "frame-ancestors 'none'",
