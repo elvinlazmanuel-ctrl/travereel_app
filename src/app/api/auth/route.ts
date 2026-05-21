@@ -6,6 +6,7 @@ import { hashPassword, comparePassword, validatePasswordStrength } from '@/lib/a
 import { generateToken } from '@/lib/jwt'
 import { generateToken as generateRandomToken, TOKEN_EXPIRY_HOURS } from '@/lib/email-utils'
 import { sendVerificationEmail } from '@/lib/email-service'
+import { countryToCurrency } from '@/lib/countries-database'
 
 export async function POST(request: Request) {
   try {
@@ -53,6 +54,9 @@ export async function POST(request: Request) {
       // Hash password before storing
       const hashedPassword = await hashPassword(password)
 
+      // Set default currency based on country of origin
+      const defaultCurrency = countryOfOrigin ? (countryToCurrency[countryOfOrigin] || 'USD') : 'USD'
+
       // Create user
       const user = await db.user.create({
         data: {
@@ -64,6 +68,7 @@ export async function POST(request: Request) {
           bio: null,
           isPrivate: false,
           countryOfOrigin: countryOfOrigin || null,
+          currency: defaultCurrency,
         },
       })
 

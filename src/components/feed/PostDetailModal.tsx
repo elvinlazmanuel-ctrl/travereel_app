@@ -303,12 +303,51 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
                   </div>
                 </div>
               )}
+
+              {/* Caption & Details - Bottom of Left Side */}
+              {post.caption && post.images.length > 0 && (
+                <div className="p-4 bg-background border-t border-border">
+                  <div className="flex items-start gap-3 mb-3">
+                    <Avatar className="size-10 flex-shrink-0">
+                      <AvatarImage src={author.avatar || undefined} alt={author.username} />
+                      <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-white text-sm font-semibold">
+                        {author.username.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <p className="text-sm text-foreground">
+                        <span className="font-semibold mr-2">@{author.username}</span>
+                        {post.caption}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {post.location && (
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <MapPin className="size-3" />
+                          {post.location}
+                        </div>
+                      )}
+                      {post.isSponsored && (
+                        <Badge variant="secondary" className="text-[9px] bg-amber-50 text-amber-700 border-amber-200 gap-1 px-2 py-0.5">
+                          <Megaphone className="size-2.5" />
+                          Sponsored
+                        </Badge>
+                      )}
+                    </div>
+                    <time className="text-xs text-muted-foreground uppercase">
+                      {formatTimeAgo(post.createdAt)}
+                    </time>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Right Side - Details & Comments */}
+            {/* Right Side - Actions & Comments */}
             <div className="w-[400px] flex flex-col border-l border-border bg-background">
-              {/* Author Header */}
-              <div className="flex items-center gap-3 p-4 border-b border-border">
+              {/* Author Header - Mobile/Compact */}
+              <div className="flex items-center gap-3 p-4 border-b border-border md:hidden">
                 <Avatar className="size-10">
                   <AvatarImage src={author.avatar || undefined} alt={author.username} />
                   <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-white text-sm font-semibold">
@@ -324,39 +363,7 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
                     </div>
                   )}
                 </div>
-                {post.isSponsored && (
-                  <Badge variant="secondary" className="text-[9px] bg-amber-50 text-amber-700 border-amber-200 gap-1 px-2 py-0.5">
-                    <Megaphone className="size-2.5" />
-                    Sponsored
-                  </Badge>
-                )}
               </div>
-
-              {/* Caption */}
-              {post.caption && post.images.length > 0 && (
-                <div className="p-4 border-b border-border">
-                  <p className="text-sm text-foreground">
-                    <span className="font-semibold mr-2">@{author.username}</span>
-                    {post.caption}
-                  </p>
-                </div>
-              )}
-
-              {/* Itinerary Template Request Button */}
-              {isItineraryPost && author.id !== currentUser?.id && (
-                <div className="p-4 border-b border-border bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5">
-                  <Button
-                    onClick={() => setShowTemplateRequestDialog(true)}
-                    className="w-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] hover:from-[#2F5C9B]/90 hover:to-[#5CA5CD]/90 text-white"
-                  >
-                    <Copy className="size-4 mr-2" />
-                    Use This Template
-                  </Button>
-                  <p className="text-xs text-muted-foreground mt-2 text-center">
-                    Send a request to the owner to use this itinerary template
-                  </p>
-                </div>
-              )}
 
               {/* Actions */}
               <div className="flex items-center justify-between p-4 border-b border-border">
@@ -392,6 +399,22 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
                   </button>
                 </div>
               </div>
+
+              {/* Itinerary Template Request Button */}
+              {isItineraryPost && author.id !== currentUser?.id && (
+                <div className="p-4 border-b border-border bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5">
+                  <Button
+                    onClick={() => setShowTemplateRequestDialog(true)}
+                    className="w-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] hover:from-[#2F5C9B]/90 hover:to-[#5CA5CD]/90 text-white"
+                  >
+                    <Copy className="size-4 mr-2" />
+                    Use This Template
+                  </Button>
+                  <p className="text-xs text-muted-foreground mt-2 text-center">
+                    Send a request to the owner to use this itinerary template
+                  </p>
+                </div>
+              )}
 
               {/* Like Count */}
               <div className="px-4 py-2 border-b border-border">

@@ -23,6 +23,7 @@ import FollowSheet from './FollowSheet'
 import { TravelInsightsSection } from './TravelInsightsSection'
 import { PhotoAlbums } from './PhotoAlbums'
 import { Badge } from '@/components/ui/badge'
+import { PostDetailModal } from '@/components/feed/PostDetailModal'
 
 export default function ProfilePage() {
   const { currentUser, viewingUser, currentView, setCurrentView, followingIds, toggleFollow, setSelectedChatRoom, setMessages, pendingFriendRequestCount, blockedIds } = useAppStore()
@@ -43,6 +44,8 @@ export default function ProfilePage() {
   const [friends, setFriends] = useState<Array<{ id: string; username: string; name: string; avatar: string | null }>>([])
   const [friendsCount, setFriendsCount] = useState(0)
   const [isLoadingFriends, setIsLoadingFriends] = useState(true)
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null)
+  const [showPostModal, setShowPostModal] = useState(false)
 
   // Determine which profile we're viewing
   const isOwnProfile = currentView === 'profile' || (viewingUser?.id === currentUser?.id && currentView === 'user-profile')
@@ -277,10 +280,15 @@ export default function ProfilePage() {
   }
 
   const handlePostGridClick = (post: Post) => {
-    // Store the selected post in sessionStorage for the feed view to use
-    sessionStorage.setItem('selectedPostId', post.id)
-    setCurrentView('feed')
-    // The NewsFeed component will handle opening the modal when it detects the selectedPostId
+    // Open modal for own profile, navigate to feed for other profiles
+    if (isOwnProfile) {
+      setSelectedPost(post)
+      setShowPostModal(true)
+    } else {
+      // For other profiles, navigate to feed with selected post
+      sessionStorage.setItem('selectedPostId', post.id)
+      setCurrentView('feed')
+    }
   }
 
   const handleFriendClick = (friend: { id: string; username: string; name: string; avatar: string | null }) => {
@@ -320,7 +328,7 @@ export default function ProfilePage() {
           <div className="flex-1 min-w-0">
             {/* Username & Actions */}
             <div className="flex items-center gap-4 mb-4 flex-wrap">
-              <h1 className="text-xl font-light text-foreground">@{username}</h1>
+              <h1 className="text-xl font-light text-foreground">{name}</h1>
               {isOwnProfile ? (
                 <div className="flex gap-2">
                   <Button
@@ -614,6 +622,15 @@ export default function ProfilePage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Post Detail Modal for own profile */}
+      {selectedPost && (
+        <PostDetailModal
+          open={showPostModal}
+          onOpenChange={setShowPostModal}
+          post={selectedPost}
+        />
+      )}
     </div>
   )
 }
