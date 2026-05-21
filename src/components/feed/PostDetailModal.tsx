@@ -237,14 +237,14 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-6xl h-[90vh] p-0 gap-0 overflow-hidden">
+        <DialogContent className="max-w-4xl h-[90vh] p-0 gap-0 overflow-hidden flex flex-col">
           <DialogHeader className="sr-only">
             <DialogTitle>Post Details</DialogTitle>
           </DialogHeader>
 
-          <div className="flex h-full">
-            {/* Left Side - Image/Content */}
-            <div className="flex-1 bg-black flex flex-col relative">
+          <div className="flex flex-col h-full">
+            {/* TOP - Post Content */}
+            <div className="flex-shrink-0 bg-background border-b border-border">
               {/* Close Button */}
               <button
                 onClick={() => onOpenChange(false)}
@@ -255,25 +255,27 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
 
               {/* Image Carousel */}
               {post.images && post.images.length > 0 ? (
-                <div className="flex-1 flex items-center justify-center relative">
-                  <img
-                    src={post.images[currentImageIndex]}
-                    alt={`Post image ${currentImageIndex + 1}`}
-                    className="max-h-full max-w-full object-contain"
-                  />
+                <div className="relative bg-black">
+                  <div className="flex items-center justify-center max-h-[50vh]">
+                    <img
+                      src={post.images[currentImageIndex]}
+                      alt={`Post image ${currentImageIndex + 1}`}
+                      className="w-full h-auto max-h-[50vh] object-contain"
+                    />
+                  </div>
 
                   {/* Navigation Arrows */}
                   {post.images.length > 1 && (
                     <>
                       <button
                         onClick={prevImage}
-                        className="absolute left-4 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
                       >
                         <ChevronLeft className="size-5" />
                       </button>
                       <button
                         onClick={nextImage}
-                        className="absolute right-4 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
                       >
                         <ChevronRight className="size-5" />
                       </button>
@@ -294,7 +296,7 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
                 </div>
               ) : (
                 /* Text-only Post */
-                <div className="flex-1 flex items-center justify-center p-8 bg-gradient-to-br from-[#2F5C9B]/10 via-[#5CA5CD]/10 to-[#5CA5CD]/10 dark:from-[#1a1f2a] dark:via-[#1a2228] dark:to-[#1a2828]">
+                <div className="flex items-center justify-center p-8 bg-gradient-to-br from-[#2F5C9B]/10 via-[#5CA5CD]/10 to-[#5CA5CD]/10 dark:from-[#1a1f2a] dark:via-[#1a2228] dark:to-[#1a2828]">
                   <div className="max-w-lg text-center">
                     <FileText className="size-16 text-[#2F5C9B]/40 mx-auto mb-4" />
                     <p className="text-lg text-foreground whitespace-pre-wrap leading-relaxed">
@@ -304,69 +306,45 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
                 </div>
               )}
 
-              {/* Caption & Details - Bottom of Left Side */}
-              {post.caption && post.images.length > 0 && (
-                <div className="p-4 bg-background border-t border-border">
-                  <div className="flex items-start gap-3 mb-3">
-                    <Avatar className="size-10 flex-shrink-0">
-                      <AvatarImage src={author.avatar || undefined} alt={author.username} />
-                      <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-white text-sm font-semibold">
-                        {author.username.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <p className="text-sm text-foreground">
-                        <span className="font-semibold mr-2">@{author.username}</span>
-                        {post.caption}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      {post.location && (
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <MapPin className="size-3" />
-                          {post.location}
-                        </div>
-                      )}
-                      {post.isSponsored && (
-                        <Badge variant="secondary" className="text-[9px] bg-amber-50 text-amber-700 border-amber-200 gap-1 px-2 py-0.5">
-                          <Megaphone className="size-2.5" />
-                          Sponsored
-                        </Badge>
-                      )}
-                    </div>
-                    <time className="text-xs text-muted-foreground uppercase">
-                      {formatTimeAgo(post.createdAt)}
-                    </time>
+              {/* Author Info & Caption */}
+              <div className="p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <Avatar className="size-10 flex-shrink-0">
+                    <AvatarImage src={author.avatar || undefined} alt={author.username} />
+                    <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-white text-sm font-semibold">
+                      {author.username.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <p className="text-sm text-foreground">
+                      <span className="font-semibold mr-2">@{author.username}</span>
+                      {post.caption}
+                    </p>
                   </div>
                 </div>
-              )}
-            </div>
-
-            {/* Right Side - Actions & Comments */}
-            <div className="w-[400px] flex flex-col border-l border-border bg-background">
-              {/* Author Header - Mobile/Compact */}
-              <div className="flex items-center gap-3 p-4 border-b border-border md:hidden">
-                <Avatar className="size-10">
-                  <AvatarImage src={author.avatar || undefined} alt={author.username} />
-                  <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-white text-sm font-semibold">
-                    {author.username.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground">@{author.username}</p>
-                  {post.location && (
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <MapPin className="size-3" />
-                      {post.location}
-                    </div>
-                  )}
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-3">
+                    {post.location && (
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <MapPin className="size-3" />
+                        {post.location}
+                      </div>
+                    )}
+                    {post.isSponsored && (
+                      <Badge variant="secondary" className="text-[9px] bg-amber-50 text-amber-700 border-amber-200 gap-1 px-2 py-0.5">
+                        <Megaphone className="size-2.5" />
+                        Sponsored
+                      </Badge>
+                    )}
+                  </div>
+                  <time className="text-xs text-muted-foreground uppercase">
+                    {formatTimeAgo(post.createdAt)}
+                  </time>
                 </div>
               </div>
 
-              {/* Actions */}
-              <div className="flex items-center justify-between p-4 border-b border-border">
+              {/* Actions Bar */}
+              <div className="flex items-center justify-between px-4 py-3 border-t border-border">
                 <div className="flex items-center gap-3">
                   <ReactionPicker
                     currentReaction={userReaction}
@@ -402,7 +380,7 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
 
               {/* Itinerary Template Request Button */}
               {isItineraryPost && author.id !== currentUser?.id && (
-                <div className="p-4 border-b border-border bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5">
+                <div className="px-4 pb-4 bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5">
                   <Button
                     onClick={() => setShowTemplateRequestDialog(true)}
                     className="w-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] hover:from-[#2F5C9B]/90 hover:to-[#5CA5CD]/90 text-white"
@@ -417,13 +395,16 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
               )}
 
               {/* Like Count */}
-              <div className="px-4 py-2 border-b border-border">
+              <div className="px-4 py-2 border-t border-border">
                 <span className="text-sm font-semibold text-foreground">
                   {(post.likes ?? 0).toLocaleString()} {(post.likes ?? 0) === 1 ? 'like' : 'likes'}
                 </span>
               </div>
+            </div>
 
-              {/* Comments */}
+            {/* BOTTOM - Comments Section */}
+            <div className="flex-1 flex flex-col overflow-hidden">
+              {/* Comments List */}
               <div className="flex-1 overflow-y-auto">
                 {isLoadingComments ? (
                   <div className="flex items-center justify-center py-8">
@@ -487,13 +468,6 @@ export function PostDetailModal({ open, onOpenChange, post }: PostDetailModalPro
                     {isSubmittingComment ? <Loader2 className="size-4 animate-spin" /> : 'Post'}
                   </Button>
                 </div>
-              </div>
-
-              {/* Timestamp */}
-              <div className="px-4 py-2 border-t border-border">
-                <time className="text-xs text-muted-foreground uppercase">
-                  {formatTimeAgo(post.createdAt)}
-                </time>
               </div>
             </div>
           </div>
