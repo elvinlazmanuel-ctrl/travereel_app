@@ -3,60 +3,13 @@
 import { useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { RefreshCw, Compass, Loader2 } from 'lucide-react'
-import { Skeleton } from '@/components/ui/skeleton'
 import { useAppStore, type Post } from '@/lib/store'
 import { usePosts } from '@/lib/queries'
+import { FeedSkeleton, StoriesSkeleton } from '@/components/ui/skeleton'
 import StoryBar from './StoryBar'
-import PostCard from './PostCard'
+import { PostCard } from './PostCard'
 
 const PAGE_LIMIT = 10
-
-function FeedSkeleton() {
-  return (
-    <div className="space-y-0">
-      {/* Story bar skeleton - Glass style */}
-      <div className="px-4 pt-3 pb-2">
-        <div className="glass rounded-2xl p-4">
-          <div className="flex gap-3 overflow-hidden">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 shrink-0">
-                <Skeleton className="size-16 rounded-full bg-gradient-to-br from-[#2F5C9B]/10 to-[#5CA5CD]/10" />
-                <Skeleton className="h-2.5 w-12 rounded" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Post skeletons - Enhanced */}
-      {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="px-4 py-3">
-          <div className="glass rounded-2xl overflow-hidden">
-            {/* Author row */}
-            <div className="flex items-center gap-3 px-5 py-4">
-              <Skeleton className="size-12 rounded-full bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20" />
-              <div className="space-y-2 flex-1">
-                <Skeleton className="h-4 w-32 rounded" />
-                <Skeleton className="h-3 w-24 rounded" />
-              </div>
-            </div>
-            {/* Image */}
-            <Skeleton className="w-full aspect-[4/3] bg-gradient-to-br from-[#2F5C9B]/5 to-[#5CA5CD]/5" />
-            {/* Actions */}
-            <div className="flex items-center justify-between px-5 py-3">
-              <div className="flex gap-3">
-                <Skeleton className="size-6 rounded" />
-                <Skeleton className="size-6 rounded" />
-                <Skeleton className="size-6 rounded" />
-              </div>
-              <Skeleton className="size-6 rounded" />
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 function EmptyFeed() {
   return (

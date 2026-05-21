@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Heart,
@@ -84,7 +84,7 @@ interface PostCardProps {
   post: Post
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export const PostCard = memo(function PostCard({ post }: PostCardProps) {
   const { toggleLikeWithAPI, toggleBookmark, currentUser, setViewingUser, setCurrentView, followingIds, deletePost, updatePost, setSelectedCommunity } = useAppStore()
   const router = useRouter()
   const [captionExpanded, setCaptionExpanded] = useState(false)
@@ -894,4 +894,4 @@ export default function PostCard({ post }: PostCardProps) {
       </Dialog>
     </article>
   )
-}
+})

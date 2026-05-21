@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Send, Loader2, Heart, Trash2, CornerDownRight, X, ChevronDown, ChevronUp, MoreHorizontal, Pencil, Check } from 'lucide-react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
@@ -50,7 +50,7 @@ interface CommentSheetProps {
   post: Post
 }
 
-export default function CommentSheet({ open, onOpenChange, post }: CommentSheetProps) {
+export const CommentSheet = memo(function CommentSheet({ open, onOpenChange, post }: CommentSheetProps) {
   const { currentUser, blockedIds } = useAppStore()
   const [comments, setComments] = useState<CommentType[]>([])
   const [newComment, setNewComment] = useState('')
@@ -808,4 +808,4 @@ export default function CommentSheet({ open, onOpenChange, post }: CommentSheetP
       </AlertDialog>
     </Sheet>
   )
-}
+})

@@ -8,6 +8,23 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: false,
   
+  // Image Optimization
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.cloudinary.com',
+        pathname: '/**',
+      },
+    ],
+    formats: ['image/webp', 'image/avif'],
+  },
+  
   // Security Headers
   async headers() {
     return [

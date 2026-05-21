@@ -7,6 +7,7 @@ import { QueryProvider } from "@/lib/query-provider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { OfflineIndicator } from "@/components/ui/OfflineIndicator";
 import PWAInstallPrompt from "@/components/ui/PWAInstallPrompt";
+import { SkipNavigation } from "@/components/ui/SkipNavigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,8 +63,8 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FF6B6B" },
-    { media: "(prefers-color-scheme: dark)", color: "#FF6B6B" },
+    { media: "(prefers-color-scheme: light)", color: "#0B0B2A" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0B2A" },
   ],
 };
 
@@ -91,10 +92,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <SkipNavigation />
           <QueryProvider>
             <OfflineIndicator />
             <PWAInstallPrompt />
-            {children}
+            <div id="main-content" tabIndex={-1} className="outline-none">
+              {children}
+            </div>
             <Toaster />
             <SonnerToaster position="top-center" richColors />
           </QueryProvider>
