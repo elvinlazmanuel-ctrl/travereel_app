@@ -344,14 +344,6 @@ export default function ProfilePage() {
                       </span>
                     )}
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-8 rounded-lg"
-                    onClick={() => setCurrentView('settings')}
-                  >
-                    <Settings className="size-4" />
-                  </Button>
                 </div>
               ) : (
                 <div className="flex gap-2">
