@@ -110,48 +110,68 @@ export default function StepTravelDates() {
       )}
 
       {/* Departure Date */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          <Plane className="size-4 inline mr-1.5 -mt-0.5" />
-          Departure Date
+      <div className="space-y-2">
+        <label className="flex items-center gap-2 text-sm font-semibold text-foreground">
+          <div className="size-8 rounded-lg bg-[#2F5C9B]/10 flex items-center justify-center">
+            <Plane className="size-4 text-[#2F5C9B]" />
+          </div>
+          <div>
+            <span>Departure Date</span>
+            <span className="block text-xs font-normal text-muted-foreground mt-0.5">When does your trip begin?</span>
+          </div>
         </label>
-        <div className="relative">
-          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+        <div className="relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-[#2F5C9B] transition-colors group-focus-within:text-[#5CA5CD]">
+            <Calendar className="size-5" />
+          </div>
           <Input
             type="date"
             min={minDate}
             value={wizardData.departureDate}
             onChange={(e) => setWizardData({ departureDate: e.target.value })}
-            className="pl-10 h-12"
+            className="pl-12 h-14 rounded-xl border-2 border-gray-200 focus:border-[#2F5C9B] focus:ring-4 focus:ring-[#2F5C9B]/10 transition-all text-base font-medium"
           />
         </div>
         {wizardData.departureDate && (
-          <p className="text-xs text-muted-foreground mt-1.5">
-            {formatDate(wizardData.departureDate)}
-          </p>
+          <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[#2F5C9B]/5 border border-[#2F5C9B]/10">
+            <div className="size-1.5 rounded-full bg-[#2F5C9B]" />
+            <p className="text-xs text-[#2F5C9B] font-medium">
+              {formatDate(wizardData.departureDate)}
+            </p>
+          </div>
         )}
       </div>
 
       {/* Return Date */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          <PlaneLanding className="size-4 inline mr-1.5 -mt-0.5" />
-          Return Date
+      <div className="space-y-2">
+        <label className="flex items-center gap-2 text-sm font-semibold text-foreground">
+          <div className="size-8 rounded-lg bg-[#5CA5CD]/10 flex items-center justify-center">
+            <PlaneLanding className="size-4 text-[#5CA5CD]" />
+          </div>
+          <div>
+            <span>Return Date</span>
+            <span className="block text-xs font-normal text-muted-foreground mt-0.5">When do you come back?</span>
+          </div>
         </label>
-        <div className="relative">
-          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+        <div className="relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-[#5CA5CD] transition-colors group-focus-within:text-[#E58BEA]">
+            <Calendar className="size-5" />
+          </div>
           <Input
             type="date"
             min={wizardData.departureDate || minDate}
             value={wizardData.returnDate}
             onChange={(e) => setWizardData({ returnDate: e.target.value })}
-            className="pl-10 h-12"
+            className="pl-12 h-14 rounded-xl border-2 border-gray-200 focus:border-[#5CA5CD] focus:ring-4 focus:ring-[#5CA5CD]/10 transition-all text-base font-medium"
           />
         </div>
         {wizardData.returnDate && (
-          <p className="text-xs text-muted-foreground mt-1.5">
-            {formatDate(wizardData.returnDate)}
-          </p>
+          <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[#5CA5CD]/5 border border-[#5CA5CD]/10">
+            <div className="size-1.5 rounded-full bg-[#5CA5CD]" />
+            <p className="text-xs text-[#5CA5CD] font-medium">
+              {formatDate(wizardData.returnDate)}
+            </p>
+          </div>
         )}
       </div>
 
