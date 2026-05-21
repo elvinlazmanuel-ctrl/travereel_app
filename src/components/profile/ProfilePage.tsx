@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Settings, Grid3X3, Map, Tag, ImagePlus, MessageCircle, Pencil, Users, FileText, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Settings, Grid3X3, Map, Tag, ImagePlus, MessageCircle, Pencil, Users, FileText } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -44,7 +43,6 @@ export default function ProfilePage() {
   const [friends, setFriends] = useState<Array<{ id: string; username: string; name: string; avatar: string | null }>>([])
   const [friendsCount, setFriendsCount] = useState(0)
   const [isLoadingFriends, setIsLoadingFriends] = useState(true)
-  const [friendsCollapsed, setFriendsCollapsed] = useState(false)
 
   // Determine which profile we're viewing
   const isOwnProfile = currentView === 'profile' || (viewingUser?.id === currentUser?.id && currentView === 'user-profile')
@@ -278,8 +276,11 @@ export default function ProfilePage() {
     }
   }
 
-  const handlePostGridClick = () => {
+  const handlePostGridClick = (post: Post) => {
+    // Store the selected post in sessionStorage for the feed view to use
+    sessionStorage.setItem('selectedPostId', post.id)
     setCurrentView('feed')
+    // The NewsFeed component will handle opening the modal when it detects the selectedPostId
   }
 
   const handleFriendClick = (friend: { id: string; username: string; name: string; avatar: string | null }) => {
@@ -301,254 +302,152 @@ export default function ProfilePage() {
   const displayFriends = friends.slice(0, 8)
 
   return (
-    <div className="max-w-md mx-auto">
-      {/* Profile Header - Travel Portfolio Style */}
-      <div className="relative">
-        {/* Avatar with Travel Ring - No Banner */}
-        <div className="px-4 pt-4 relative z-10">
-          <div className="flex items-end gap-4">
-            {/* Avatar with Travel Ring */}
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] p-1">
-                <Avatar className="size-24 border-4 border-white dark:border-slate-900">
-                  <AvatarImage src={avatarUrl} alt={name} />
-                  <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-2xl font-bold text-white">
-                    {name.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-              <Avatar className="size-24 border-4 border-white dark:border-slate-900 opacity-0">
-                <AvatarFallback />
-              </Avatar>
+    <div className="max-w-4xl mx-auto">
+      {/* Instagram-Style Profile Header */}
+      <div className="px-4 py-6 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-start gap-6 md:gap-10">
+          {/* Avatar */}
+          <div className="flex-shrink-0">
+            <Avatar className="size-20 md: size-36 border-2 border-gray-200 dark:border-gray-700">
+              <AvatarImage src={avatarUrl} alt={name} />
+              <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] text-3xl font-bold text-white">
+                {name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+
+          {/* Profile Info */}
+          <div className="flex-1 min-w-0">
+            {/* Username & Actions */}
+            <div className="flex items-center gap-4 mb-4 flex-wrap">
+              <h1 className="text-xl font-light text-foreground">@{username}</h1>
+              {isOwnProfile ? (
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 px-3 text-sm rounded-lg"
+                    onClick={handleEditProfile}
+                  >
+                    Edit profile
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 px-3 text-sm rounded-lg relative"
+                    onClick={() => setCurrentView('friends')}
+                  >
+                    View friends
+                    {pendingFriendRequestCount > 0 && (
+                      <span className="ml-1 min-w-[18px] h-5 rounded-full bg-[#2F5C9B] text-white text-[10px] font-bold flex items-center justify-center px-1">
+                        {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
+                      </span>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="size-8 rounded-lg"
+                    onClick={() => setCurrentView('settings')}
+                  >
+                    <Settings className="size-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleFollowToggle}
+                    disabled={isFollowLoading}
+                    size="sm"
+                    className={`h-8 px-4 text-sm rounded-lg font-semibold ${
+                      isFollowing
+                        ? 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-foreground'
+                        : 'bg-[#2F5C9B] hover:bg-[#2F5C9B]/90 text-white'
+                    }`}
+                  >
+                    {isFollowLoading ? '...' : isFollowing ? 'Following' : 'Follow'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 px-3 text-sm rounded-lg"
+                    onClick={handleMessage}
+                  >
+                    Message
+                  </Button>
+                </div>
+              )}
             </div>
 
-            {/* Stats - Travel Portfolio Cards */}
-            <div className="flex-1 flex justify-around pb-2">
-              <div className="glass px-3 py-2 rounded-xl text-center min-w-[70px]">
-                <p className="text-lg font-bold text-gradient-sunset">{postsCount}</p>
-                <p className="text-[10px] text-muted-foreground font-medium">Posts</p>
-              </div>
+            {/* Stats - Desktop */}
+            <div className="hidden md:flex gap-10 mb-4">
+              <span className="text-base text-foreground">
+                <strong>{postsCount}</strong> posts
+              </span>
               <button
-                className="glass px-3 py-2 rounded-xl text-center min-w-[70px] hover-lift transition-all outline-none"
+                className="text-base text-foreground hover:opacity-70 transition-opacity outline-none"
                 onClick={handleFollowersClick}
               >
-                <p className="text-lg font-bold text-gradient-ocean">{followersCount}</p>
-                <p className="text-[10px] text-muted-foreground font-medium">Followers</p>
+                <strong>{followersCount}</strong> followers
               </button>
               <button
-                className="glass px-3 py-2 rounded-xl text-center min-w-[70px] hover-lift transition-all outline-none"
+                className="text-base text-foreground hover:opacity-70 transition-opacity outline-none"
                 onClick={handleFollowingClick}
               >
-                <p className="text-lg font-bold text-gradient-forest">{followingCount}</p>
-                <p className="text-[10px] text-muted-foreground font-medium">Following</p>
+                <strong>{followingCount}</strong> following
               </button>
             </div>
-          </div>
 
-          {/* Name & Bio - Magazine Style */}
-          <div className="mt-4 glass rounded-xl p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <h2 className="text-xl font-bold text-gradient-sunset">{name}</h2>
-                <p className="text-sm text-muted-foreground mt-0.5">@{username}</p>
-                <p className="text-sm text-foreground mt-2 leading-relaxed">{bio}</p>
-              </div>
+            {/* Bio */}
+            <div className="space-y-1">
+              <p className="text-base font-semibold text-foreground">{name}</p>
+              <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">{bio}</p>
             </div>
           </div>
+        </div>
 
-          {/* Action Buttons - Enhanced */}
-          <div className="flex gap-2 mt-3">
-            {isOwnProfile ? (
-              <>
-                <Button
-                  variant="outline"
-                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 transition-all border-white/20"
-                  onClick={handleEditProfile}
-                >
-                  <Pencil className="size-4 mr-1.5" />
-                  Edit Profile
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#5CA5CD]/10 hover:to-[#E58BEA]/10 transition-all border-white/20 relative"
-                  onClick={() => setCurrentView('friends')}
-                >
-                  <Users className="size-4 mr-1.5" />
-                  Friends
-                  {pendingFriendRequestCount > 0 && (
-                    <span className="ml-1 min-w-[18px] h-5 rounded-full bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white text-[10px] font-bold flex items-center justify-center px-1 animate-pulse">
-                      {pendingFriendRequestCount > 9 ? '9+' : pendingFriendRequestCount}
-                    </span>
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-10 rounded-xl glass hover:bg-gradient-to-r hover:from-[#E58BEA]/10 hover:to-[#2F5C9B]/10 transition-all border-white/20"
-                  onClick={() => setCurrentView('settings')}
-                >
-                  <Settings className="size-4" />
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  onClick={handleFollowToggle}
-                  disabled={isFollowLoading}
-                  className={`flex-1 h-10 text-sm rounded-xl transition-all ${
-                    isFollowing
-                      ? 'glass text-muted-foreground hover:bg-gradient-to-r hover:from-[#2F5C9B]/10 hover:to-[#5CA5CD]/10 border-white/20'
-                      : 'bg-gradient-to-r from-[#2F5C9B] to-[#5CA5CD] text-white hover:shadow-lg hover:shadow-[#2F5C9B]/30'
-                  }`}
-                >
-                  {isFollowLoading ? '...' : isFollowing ? 'Following' : 'Follow'}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleMessage}
-                  className="flex-1 h-10 text-sm rounded-xl glass hover:bg-gradient-to-r hover:from-[#5CA5CD]/10 hover:to-[#E58BEA]/10 transition-all border-white/20"
-                >
-                  <MessageCircle className="size-4 mr-1.5" />
-                  Message
-                </Button>
-              </>
-            )}
+        {/* Stats - Mobile */}
+        <div className="md:hidden flex justify-around mt-4 py-3 border-t border-b border-gray-200 dark:border-gray-800">
+          <div className="text-center">
+            <p className="text-base font-semibold text-foreground">{postsCount}</p>
+            <p className="text-xs text-muted-foreground">posts</p>
           </div>
+          <button
+            className="text-center outline-none"
+            onClick={handleFollowersClick}
+          >
+            <p className="text-base font-semibold text-foreground">{followersCount}</p>
+            <p className="text-xs text-muted-foreground">followers</p>
+          </button>
+          <button
+            className="text-center outline-none"
+            onClick={handleFollowingClick}
+          >
+            <p className="text-base font-semibold text-foreground">{followingCount}</p>
+            <p className="text-xs text-muted-foreground">following</p>
+          </button>
         </div>
       </div>
-
-      {/* Friends Section - Collapsible */}
-      <AnimatePresence>
-        {!isLoadingFriends && friendsCount > 0 && (
-          <Collapsible
-            open={!friendsCollapsed}
-            onOpenChange={(open) => setFriendsCollapsed(!open)}
-            className="px-4 py-4"
-          >
-            <CollapsibleTrigger asChild>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="glass rounded-xl p-4 cursor-pointer hover:bg-[#2F5C9B]/5 transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-lg bg-gradient-to-r from-[#2F5C9B]/20 to-[#5CA5CD]/20">
-                      <Users className="size-4 text-[#2F5C9B]" />
-                    </div>
-                    <h3 className="text-sm font-bold text-foreground">{friendsCount} Friends</h3>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {friendsCount > 8 && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setCurrentView('friends')
-                        }}
-                        className="flex items-center gap-0.5 text-[#2F5C9B] text-xs font-semibold hover:opacity-80 transition-opacity mr-2"
-                      >
-                        See All
-                        <ChevronRight className="size-3" />
-                      </button>
-                    )}
-                    {friendsCollapsed ? (
-                      <ChevronDown className="size-4 text-muted-foreground" />
-                    ) : (
-                      <ChevronUp className="size-4 text-muted-foreground" />
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden"
-              >
-                <div className="flex gap-4 overflow-x-auto scrollbar-none py-3">
-                  {displayFriends.map((friend, index) => (
-                    <motion.button
-                      key={friend.id}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.2, delay: index * 0.05 }}
-                      onClick={() => handleFriendClick(friend)}
-                      className="flex flex-col items-center gap-1 flex-shrink-0 outline-none group"
-                    >
-                      <Avatar className="size-14 border-2 border-transparent group-hover:border-[#2F5C9B]/20 transition-colors">
-                        <AvatarImage
-                          src={friend.avatar || `https://picsum.photos/seed/${friend.id}/100/100`}
-                          alt={friend.name}
-                        />
-                        <AvatarFallback className="bg-gradient-to-br from-[#2F5C9B]/20 to-[#5CA5CD]/20 text-xs font-bold text-[#2F5C9B]">
-                          {friend.name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-[11px] text-muted-foreground max-w-[56px] truncate">{friend.username || friend.name}</span>
-                    </motion.button>
-                  ))}
-                  {friendsCount > 8 && (
-                    <motion.button
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.2, delay: displayFriends.length * 0.05 }}
-                      onClick={() => setCurrentView('friends')}
-                      className="flex flex-col items-center justify-center gap-1 flex-shrink-0 outline-none group"
-                    >
-                      <div className="size-14 rounded-full border-2 border-dashed border-[#2F5C9B]/30 flex items-center justify-center group-hover:border-[#2F5C9B]/60 transition-colors">
-                        <ChevronRight className="size-5 text-[#2F5C9B]/60 group-hover:text-[#2F5C9B] transition-colors" />
-                      </div>
-                      <span className="text-[11px] text-[#2F5C9B] font-medium">See All</span>
-                    </motion.button>
-                  )}
-                </div>
-              </motion.div>
-            </CollapsibleContent>
-          </Collapsible>
-        )}
-      </AnimatePresence>
-
-      {/* Friends Skeleton */}
-      {isLoadingFriends && (
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-1.5 mb-2">
-            <Skeleton className="size-4 rounded" />
-            <Skeleton className="h-4 w-20 rounded" />
-          </div>
-          <div className="flex gap-4 overflow-hidden">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex flex-col items-center gap-1 flex-shrink-0">
-                <Skeleton className="size-14 rounded-full" />
-                <Skeleton className="h-3 w-10 rounded" />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Phase 3: Travel Insights (Only on own profile) */}
       {isOwnProfile && profileUserId && (
         <TravelInsightsSection userId={profileUserId} />
       )}
 
-      {/* Tab Bar - Glass Morphism */}
+      {/* Tab Bar - Instagram Style */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="px-4 pt-2">
-          <TabsList className="w-full h-12 glass rounded-xl p-1 justify-around bg-transparent">
+        <div className="sticky top-14 z-10 bg-background border-b border-gray-200 dark:border-gray-800">
+          <TabsList className="w-full max-w-md mx-auto h-12 bg-transparent rounded-none p-0 justify-around gap-0">
             <TabsTrigger
               value="posts"
-              className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#2F5C9B]/20 data-[state=active]:to-[#5CA5CD]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+              className="flex-1 h-12 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-foreground data-[state=active]:bg-transparent px-0 gap-2 transition-all border-b-2 border-transparent"
             >
               <Grid3X3 className="size-4" />
               <span className="text-xs font-medium">Posts</span>
             </TabsTrigger>
             <TabsTrigger
               value="itineraries"
-              className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#4FACFE]/20 data-[state=active]:to-[#00F2FE]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+              className="flex-1 h-12 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-foreground data-[state=active]:bg-transparent px-0 gap-2 transition-all border-b-2 border-transparent"
             >
               <Map className="size-4" />
               <span className="text-xs font-medium">Trips</span>
@@ -556,7 +455,7 @@ export default function ProfilePage() {
             {isOwnProfile && (
               <TabsTrigger
                 value="albums"
-                className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#5CA5CD]/20 data-[state=active]:to-[#E58BEA]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+                className="flex-1 h-12 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-foreground data-[state=active]:bg-transparent px-0 gap-2 transition-all border-b-2 border-transparent"
               >
                 <span className="text-base">📸</span>
                 <span className="text-xs font-medium">Albums</span>
@@ -564,7 +463,7 @@ export default function ProfilePage() {
             )}
             <TabsTrigger
               value="tagged"
-              className="flex-1 h-10 rounded-lg data-[state=active]:shadow-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#43E97B]/20 data-[state=active]:to-[#38F9D7]/20 data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:backdrop-blur-sm px-0 gap-1.5 transition-all"
+              className="flex-1 h-12 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-foreground data-[state=active]:bg-transparent px-0 gap-2 transition-all border-b-2 border-transparent"
             >
               <Tag className="size-4" />
               <span className="text-xs font-medium">Tagged</span>
@@ -587,7 +486,7 @@ export default function ProfilePage() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.2, delay: index * 0.03 }}
                   className="relative aspect-square overflow-hidden cursor-pointer group"
-                  onClick={handlePostGridClick}
+                  onClick={() => handlePostGridClick(post)}
                 >
                   {post.images && post.images.length > 0 ? (
                     <img

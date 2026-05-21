@@ -61,6 +61,7 @@ import { toast } from 'sonner'
 import { CommentSheet } from './CommentSheet'
 import ShareToCommunitySheet from './ShareToCommunitySheet'
 import { ReactionPicker, type ReactionType } from './ReactionPicker'
+import { PostDetailModal } from './PostDetailModal'
 import { useRouter } from 'next/navigation'
 
 function formatTimeAgo(dateStr: string): string {
@@ -96,6 +97,7 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [userReaction, setUserReaction] = useState<ReactionType | null>(null)
   const [showMapDialog, setShowMapDialog] = useState(false)
+  const [showDetailModal, setShowDetailModal] = useState(false)
   const [reportReason, setReportReason] = useState('')
   const [isReporting, setIsReporting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -145,6 +147,15 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
   const isLiked = useAppStore((s) => s.likedPostIds.includes(post.id))
   const isOwnPost = currentUser?.id === authorId
   const isFollowing = followingIds.includes(authorId)
+
+  // Sync userReaction with isLiked state
+  useEffect(() => {
+    if (isLiked && !userReaction) {
+      setUserReaction('like')
+    } else if (!isLiked && userReaction === 'like') {
+      setUserReaction(null)
+    }
+  }, [isLiked])
 
   const handleLike = useCallback(() => {
     if (!currentUser) return
@@ -239,6 +250,23 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
       setCurrentView('user-profile')
     }
   }, [currentUser, authorId, authorUsername, authorName, author, setViewingUser, setCurrentView])
+
+  const handlePostClick = useCallback((e: React.MouseEvent) => {
+    // Don't open modal if clicking on interactive elements
+    const target = e.target as HTMLElement
+    if (
+      target.closest('button') ||
+      target.closest('a') ||
+      target.closest('input') ||
+      target.closest('textarea') ||
+      target.closest('[role="button"]') ||
+      target.closest('.CarouselPrevious') ||
+      target.closest('.CarouselNext')
+    ) {
+      return
+    }
+    setShowDetailModal(true)
+  }, [])
 
   const handleUnfollow = useCallback(async () => {
     if (!currentUser || isOwnPost) return
@@ -360,7 +388,11 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
       : post.caption
 
   return (
-    <article className="group glass rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover-lift transition-all duration-300 mb-6 border border-white/20 dark:border-slate-700/50">
+    <>
+    <article 
+      className="group glass rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover-lift transition-all duration-300 mb-6 border border-white/20 dark:border-slate-700/50 cursor-pointer"
+      onClick={handlePostClick}
+    >
       {/* Author Row - Magazine Style */}
       <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-white/50 to-transparent dark:from-slate-800/50 border-b border-border/30">
         <div className="flex items-center gap-3">
@@ -461,7 +493,7 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
       {/* Image Carousel - Magazine Style with Enhanced Overlays */}
       {post.images.length > 0 && (
         <div
-          className="relative w-full aspect-[4/3] bg-muted select-none overflow-hidden group-hover:shadow-inner transition-shadow"
+          className="relative w-full bg-muted select-none overflow-hidden group-hover:shadow-inner transition-shadow"
           onClick={handleImageTap}
         >
           {/* Enhanced gradient overlay for magazine feel */}
@@ -479,17 +511,17 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
           
           <Carousel
             opts={{ loop: false }}
-            className="w-full h-full"
+            className="w-full"
             setApi={setCarouselApi}
           >
-            <CarouselContent className="h-full">
+            <CarouselContent className="">
               {post.images.map((img, i) => (
-                <CarouselItem key={i} className="h-full">
-                  <div className="relative w-full h-full">
+                <CarouselItem key={i} className="">
+                  <div className="relative w-full">
                     <img
                       src={img}
                       alt={`Post image ${i + 1}`}
-                      className="w-full h-full object-cover block"
+                      className="w-full h-auto object-contain block"
                       draggable={false}
                     />
                   </div>
@@ -893,5 +925,13 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
         </DialogContent>
       </Dialog>
     </article>
+
+    {/* Post Detail Modal */}
+    <PostDetailModal
+      open={showDetailModal}
+      onOpenChange={setShowDetailModal}
+      post={post}
+    />
+    </>
   )
 })
