@@ -1,6 +1,12 @@
 import jwt, { SignOptions } from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+// Throw error in production if JWT_SECRET is not set
+const JWT_SECRET = process.env.JWT_SECRET
+if (!JWT_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('JWT_SECRET environment variable is required in production')
+}
+
+const SECRET_KEY = JWT_SECRET || 'your-secret-key-change-in-production'
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '24h'
 
 export interface JWTPayload {
@@ -15,7 +21,7 @@ export interface JWTPayload {
  * Generate a signed JWT token for authenticated users
  */
 export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign(payload, SECRET_KEY, {
     expiresIn: '24h',
   } as SignOptions)
 }
@@ -26,7 +32,7 @@ export function generateToken(payload: JWTPayload): string {
  */
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload
+    const decoded = jwt.verify(token, SECRET_KEY) as JWTPayload
     return decoded
   } catch (error) {
     console.error('Token verification failed:', error)

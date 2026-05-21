@@ -1,20 +1,31 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
 import { uploadToCloudinary, isCloudinaryConfigured } from '@/lib/cloudinary'
+import { authenticateUser } from '@/lib/auth-middleware'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Authenticate user before allowing upload
+    const auth = await authenticateUser(request)
+    if (!auth) {
+      return NextResponse.json({ error: 'Unauthorized. Please login to upload files.' }, { status: 401 })
+    }
+
     const formData = await request.formData()
     const file = formData.get('file') as File | null
     const userId = formData.get('userId') as string | null
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    // Verify user can only upload for their own account
+    if (userId && userId !== auth.userId) {
+      return NextResponse.json({ error: 'Forbidden. You can only upload files for your own account.' }, { status: 403 })
     }
 
-    if (!userId) {
-      return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
+    // Use authenticated user ID
+    const authenticatedUserId = userId || auth.userId
+
+    if (!file) {
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
 
     // Validate file type
@@ -31,7 +42,7 @@ export async function POST(request: Request) {
 
     // Generate unique filename
     const ext = file.name.split('.').pop() || 'jpg'
-    const filename = `${userId}-${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`
+    const filename = `${authenticatedUserId}-${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`
 
     // Use Cloudinary if configured, otherwise use local storage
     if (isCloudinaryConfigured()) {

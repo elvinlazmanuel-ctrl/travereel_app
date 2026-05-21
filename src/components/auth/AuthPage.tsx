@@ -4,8 +4,9 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
+import ForgotPasswordForm from './ForgotPasswordForm'
 
-type AuthMode = 'login' | 'register'
+type AuthMode = 'login' | 'register' | 'forgot-password'
 
 export default function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('login')
@@ -62,9 +63,12 @@ export default function AuthPage() {
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.3 }}
             >
-              <LoginForm onSwitchToRegister={() => setMode('register')} />
+              <LoginForm 
+                onSwitchToRegister={() => setMode('register')} 
+                onSwitchToForgotPassword={() => setMode('forgot-password')}
+              />
             </motion.div>
-          ) : (
+          ) : mode === 'register' ? (
             <motion.div
               key="register"
               initial={{ opacity: 0, x: 20 }}
@@ -73,6 +77,16 @@ export default function AuthPage() {
               transition={{ duration: 0.3 }}
             >
               <RegisterForm onSwitchToLogin={() => setMode('login')} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="forgot-password"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ForgotPasswordForm onBackToLogin={() => setMode('login')} />
             </motion.div>
           )}
         </AnimatePresence>

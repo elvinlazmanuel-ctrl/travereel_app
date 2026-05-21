@@ -9,9 +9,10 @@ import { Plane, Eye, EyeOff, Loader2 } from 'lucide-react'
 
 interface LoginFormProps {
   onSwitchToRegister: () => void
+  onSwitchToForgotPassword: () => void
 }
 
-export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
+export default function LoginForm({ onSwitchToRegister, onSwitchToForgotPassword }: LoginFormProps) {
   const { login } = useAppStore()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -110,28 +111,39 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
           <Label htmlFor="login-password" className="text-[#0B0B2A] font-medium">
             Password
           </Label>
-          <div className="relative">
-            <Input
-              id="login-password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="h-12 rounded-xl border-gray-300 bg-white focus:bg-white transition-all focus:border-[#2F5C9B] focus:ring-2 focus:ring-[#2F5C9B]/20 text-[#0B0B2A] placeholder:text-gray-400 pr-10"
-              disabled={isLoading}
-            />
+          <div className="flex justify-between items-center mb-2">
+            <div className="relative flex-1">
+              <Input
+                id="login-password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="h-12 rounded-xl border-gray-300 bg-white focus:bg-white transition-all focus:border-[#2F5C9B] focus:ring-2 focus:ring-[#2F5C9B]/20 text-[#0B0B2A] placeholder:text-gray-400 pr-10"
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#2F5C9B] transition-colors"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <EyeOff className="size-5" />
+                ) : (
+                  <Eye className="size-5" />
+                )}
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-end">
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#2F5C9B] transition-colors"
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              onClick={onSwitchToForgotPassword}
+              className="text-sm text-[#2F5C9B] hover:text-[#5CA5CD] transition-colors font-medium"
             >
-              {showPassword ? (
-                <EyeOff className="size-5" />
-              ) : (
-                <Eye className="size-5" />
-              )}
+              Forgot password?
             </button>
           </div>
         </div>
