@@ -400,7 +400,6 @@ export default function ProfilePage() {
 
             {/* Bio */}
             <div className="space-y-1">
-              <p className="text-base font-semibold text-foreground">{name}</p>
               <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">{bio}</p>
             </div>
           </div>
