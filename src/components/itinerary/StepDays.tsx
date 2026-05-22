@@ -1,12 +1,12 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { CalendarDays, Clock, Wallet, MapPin, Plane, PlaneLanding, TrendingUp } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 import { motion } from 'framer-motion'
 
 export default function StepDays() {
-  const { wizardData } = useAppStore()
+  const { wizardData, setWizardData } = useAppStore()
   
   // Calculate trip duration from selected dates
   const tripDuration = useMemo(() => {
@@ -20,6 +20,13 @@ export default function StepDays() {
     return 0
   }, [wizardData.departureDate, wizardData.returnDate])
 
+  // Automatically sync calculated duration to wizardData.days
+  useEffect(() => {
+    if (tripDuration > 0 && tripDuration !== wizardData.days) {
+      setWizardData({ days: tripDuration })
+    }
+  }, [tripDuration, wizardData.days, setWizardData])
+  
   // Use calculated duration or fallback to wizardData.days
   const days = tripDuration > 0 ? tripDuration : wizardData.days
   

@@ -31,6 +31,9 @@ export async function POST(request: Request) {
     // Build user message with optional flight/hotel details
     let userMessage = `Generate a detailed ${days}-day travel itinerary for ${location}, ${country}.`
     
+    console.log(`Generating ${days}-day itinerary for ${location}, ${country}`)
+    console.log(`Budget: ${budget}, Travel Type: ${travelType}, Activities: ${activities}`)
+    
     if (departureDate) {
       userMessage += `\nDeparture Date: ${departureDate}`
     }
@@ -47,6 +50,7 @@ export async function POST(request: Request) {
     userMessage += `\nBudget: ${budget || 'flexible'} USD`
     userMessage += `\nTravel type: ${travelType || 'solo'}`
     userMessage += `\nPreferred activities: ${activities || 'general sightseeing'}`
+    userMessage += `\n\nIMPORTANT: Generate EXACTLY ${days} days. Do not generate only 1 day. Create a full ${days}-day itinerary with dayNumber 1 through ${days}.`
     userMessage += `\n\nPlease provide a comprehensive day-by-day itinerary.`
 
     // Create an AbortController for timeout
