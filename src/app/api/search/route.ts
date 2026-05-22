@@ -1,6 +1,7 @@
 import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
+import { multiFieldSearch, rankSearchResults, SearchResult, tokenizeQuery } from '@/lib/search-utils'
 
 export async function GET(request: Request) {
   try {
@@ -13,6 +14,7 @@ export async function GET(request: Request) {
     const currentUserId = searchParams.get('currentUserId') || ''
     const cursorParam = searchParams.get('cursor')
     const limitParam = searchParams.get('limit')
+    const ranking = searchParams.get('ranking') || 'simple' // 'simple' or 'ranked'
     const limit = Math.max(1, Math.min(50, parseInt(limitParam || '20', 10)))
     const cursor = cursorParam || undefined
 
@@ -119,7 +121,21 @@ export async function GET(request: Request) {
       createdAt: post.createdAt,
       likes: post._count.likes,
       comments: post._count.comments,
+      relevanceScore: ranking === 'ranked' ? multiFieldSearch(q, {
+        caption: post.caption,
+        location: post.location,
+        tags: post.tags,
+      }, {
+        caption: 1.5,
+        location: 1.3,
+        tags: 1.0,
+      }) : 1.0,
     }))
+
+    // Sort by relevance if ranking is enabled
+    if (ranking === 'ranked') {
+      transformedPosts.sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
+    }
 
     // Enrich users with friendRequestStatus and isFollowing
     let enrichedUsers = usersToReturn
@@ -175,6 +191,15 @@ export async function GET(request: Request) {
         ...user,
         isFollowing: followingIds.has(user.id),
         friendRequestStatus: friendRequestMap.get(user.id) || null,
+        relevanceScore: ranking === 'ranked' ? multiFieldSearch(q, {
+          username: user.username,
+          name: user.name,
+          bio: user.bio,
+        }, {
+          username: 1.5, // Username matches are more important
+          name: 1.2,
+          bio: 0.8,
+        }) : 1.0,
       }))
     }
 
