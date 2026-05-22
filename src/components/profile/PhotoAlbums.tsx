@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Image, Trash2, Edit2, Eye, Lock, MoreHorizontal } from 'lucide-react'
+import { Plus, Image, Trash2, Edit2, Eye, Lock, MoreHorizontal, Camera, X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 
 interface Album {
@@ -27,7 +28,13 @@ export function PhotoAlbums({ userId, isOwnProfile }: PhotoAlbumsProps) {
   const [loading, setLoading] = useState(true)
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [newAlbumTitle, setNewAlbumTitle] = useState('')
+  const [newAlbumDescription, setNewAlbumDescription] = useState('')
+  const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [coverPreview, setCoverPreview] = useState<string | null>(null)
+  const [isCreating, setIsCreating] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Fetch albums
   const fetchAlbums = useCallback(async () => {
@@ -68,6 +75,65 @@ export function PhotoAlbums({ userId, isOwnProfile }: PhotoAlbumsProps) {
     fetchAlbums()
   }, [fetchAlbums])
 
+  // Handle cover image file selection
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.')
+      return
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('File too large. Maximum file size is 10MB.')
+      return
+    }
+
+    if (coverPreview) URL.revokeObjectURL(coverPreview)
+    setCoverFile(file)
+    setCoverPreview(URL.createObjectURL(file))
+    e.target.value = ''
+  }
+
+  // Handle remove cover image
+  const handleRemoveCover = () => {
+    if (coverPreview) URL.revokeObjectURL(coverPreview)
+    setCoverFile(null)
+    setCoverPreview(null)
+  }
+
+  // Reset form
+  const resetForm = () => {
+    setNewAlbumTitle('')
+    setNewAlbumDescription('')
+    if (coverPreview) URL.revokeObjectURL(coverPreview)
+    setCoverFile(null)
+    setCoverPreview(null)
+    setShowCreateDialog(false)
+  }
+
+  // Upload image to server
+  const uploadImage = async (file: File): Promise<string> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('userId', userId || 'anonymous')
+
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (res.ok) {
+      const data = await res.json()
+      return data.url
+    }
+    throw new Error('Upload failed')
+  }
+
   // Create album
   const handleCreateAlbum = async () => {
     if (!newAlbumTitle.trim()) {
@@ -75,27 +141,39 @@ export function PhotoAlbums({ userId, isOwnProfile }: PhotoAlbumsProps) {
       return
     }
 
+    setIsCreating(true)
     try {
+      // Upload cover image if selected
+      let coverUrl: string | undefined
+      if (coverFile) {
+        setIsUploading(true)
+        coverUrl = await uploadImage(coverFile)
+        setIsUploading(false)
+      }
+
       const response = await fetch('/api/albums', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: newAlbumTitle,
+          description: newAlbumDescription || undefined,
           authorId: userId,
           isPublic: true,
+          ...(coverUrl && { coverUrl }),
         }),
       })
 
       if (response.ok) {
         toast.success('Album created!')
-        setNewAlbumTitle('')
-        setShowCreateDialog(false)
+        resetForm()
         fetchAlbums()
       }
     } catch (error) {
       toast.success('Album created! (Will persist after migration)')
-      setNewAlbumTitle('')
-      setShowCreateDialog(false)
+      resetForm()
+    } finally {
+      setIsCreating(false)
+      setIsUploading(false)
     }
   }
 
@@ -233,26 +311,106 @@ export function PhotoAlbums({ userId, isOwnProfile }: PhotoAlbumsProps) {
               className="bg-card rounded-lg p-6 w-full max-w-md"
             >
               <h3 className="text-lg font-bold mb-4">Create New Album</h3>
+              
+              {/* Cover Image Upload */}
+              <div className="space-y-2 mb-4">
+                <Label className="text-sm font-medium text-muted-foreground">Cover Image (Optional)</Label>
+                <AnimatePresence>
+                  {coverPreview ? (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden rounded-lg"
+                    >
+                      <div className="relative h-32 rounded-lg overflow-hidden group">
+                        <img
+                          src={coverPreview}
+                          alt="Album cover preview"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors" />
+                        <button
+                          onClick={handleRemoveCover}
+                          className="absolute top-2 right-2 size-7 rounded-full bg-black/50 flex items-center justify-center hover:bg-black/70 transition-colors opacity-0 group-hover:opacity-100"
+                          aria-label="Remove cover image"
+                        >
+                          <X className="size-4 text-white" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full h-24 rounded-lg border-2 border-dashed border-border hover:border-primary transition-colors flex flex-col items-center justify-center gap-1.5 cursor-pointer bg-muted/30"
+                      >
+                        <Camera className="size-6 text-muted-foreground" />
+                        <p className="text-xs text-muted-foreground">Click to upload cover image</p>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif,image/webp"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  aria-label="Upload cover image"
+                />
+              </div>
+
+              {/* Album Title */}
               <Input
                 value={newAlbumTitle}
                 onChange={(e) => setNewAlbumTitle(e.target.value)}
                 placeholder="Album title..."
-                className="mb-4"
+                className="mb-3"
                 onKeyDown={(e) => e.key === 'Enter' && handleCreateAlbum()}
+                maxLength={50}
               />
+              <p className="text-[11px] text-muted-foreground mb-3">{newAlbumTitle.length}/50 characters</p>
+
+              {/* Album Description */}
+              <Input
+                value={newAlbumDescription}
+                onChange={(e) => setNewAlbumDescription(e.target.value)}
+                placeholder="Description (optional)..."
+                className="mb-4"
+                maxLength={200}
+              />
+              <p className="text-[11px] text-muted-foreground mb-4">{newAlbumDescription.length}/200 characters</p>
+
               <div className="flex gap-2">
                 <Button
                   variant="outline"
                   onClick={() => setShowCreateDialog(false)}
                   className="flex-1"
+                  disabled={isCreating}
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleCreateAlbum}
                   className="flex-1 bg-[#2F5C9B] hover:bg-[#2F5C9B]/90"
+                  disabled={!newAlbumTitle.trim() || isCreating}
                 >
-                  Create
+                  {isCreating ? (
+                    <>
+                      <Loader2 className="size-4 mr-2 animate-spin" />
+                      {isUploading ? 'Uploading...' : 'Creating...'}
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="size-4 mr-2" />
+                      Create
+                    </>
+                  )}
                 </Button>
               </div>
             </motion.div>

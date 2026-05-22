@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, description, authorId, isPublic } = body
+    const { title, description, authorId, isPublic, coverUrl } = body
 
     if (!title || !authorId) {
       return NextResponse.json(
@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
           description,
           authorId,
           isPublic: isPublic ?? true,
+          ...(coverUrl && { coverUrl }),
         },
       })
 
@@ -91,6 +92,7 @@ export async function POST(request: NextRequest) {
           description,
           authorId,
           isPublic: isPublic ?? true,
+          coverUrl: coverUrl || null,
           photoCount: 0,
           createdAt: new Date().toISOString(),
         },
