@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { validateDayFeasibility } from '@/lib/geographic-utils'
 
 export async function POST(request: Request) {
   try {
@@ -225,7 +226,36 @@ Important rules:
       )
     }
 
-    return NextResponse.json({ itinerary: parsedItinerary })
+    // Validate geographic feasibility (if coordinates are available)
+    const validationResults: Array<{
+      day: number
+      issues: string[]
+      totalTravelTime: number
+      totalDistance: number
+    }> = []
+    for (const day of parsedItinerary.days) {
+      if (day.activities && day.activities.length > 0) {
+        const feasibility = validateDayFeasibility(day.activities)
+        if (!feasibility.feasible) {
+          validationResults.push({
+            day: day.dayNumber,
+            issues: feasibility.issues,
+            totalTravelTime: feasibility.totalTravelTime,
+            totalDistance: feasibility.totalDistance,
+          })
+        }
+      }
+    }
+
+    // Add validation warnings to response (but don't block)
+    if (validationResults.length > 0) {
+      console.warn('Itinerary geographic validation warnings:', validationResults)
+    }
+
+    return NextResponse.json({ 
+      itinerary: parsedItinerary,
+      validation: validationResults.length > 0 ? validationResults : undefined,
+    })
   } catch (error) {
     // Handle timeout errors specifically
     if (error instanceof Error && error.name === 'AbortError') {

@@ -3,6 +3,7 @@ import { verifyAdmin } from '@/lib/auth-utils'
 import { NextResponse } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { validateBody, validateQuery, createPostSchema, updatePostSchema, userIdSchema } from '@/lib/validation'
+import { rankPosts } from '@/lib/feed-ranking'
 
 export async function GET(request: Request) {
   try {
@@ -15,6 +16,7 @@ export async function GET(request: Request) {
     const search = searchParams.get('search') || ''
     const userId = searchParams.get('userId') || ''
     const blockedIdsParam = searchParams.get('blockedIds') || ''
+    const ranking = searchParams.get('ranking') || 'chronological' // 'chronological' or 'smart'
 
     // Validate authorId if provided
     if (authorId) {
@@ -138,15 +140,64 @@ export async function GET(request: Request) {
       reportCount: reportCounts[post.id] || 0,
     }))
 
+    // Apply smart ranking if requested and userId is provided
+    let rankedPosts = postsWithParsedFields
+    if (ranking === 'smart' && userId && !authorId && !search) {
+      try {
+        // Get user's following list
+        const following = await db.follow.findMany({
+          where: { followerId: userId },
+          select: { followingId: true },
+        })
+        const followingIds = new Set(following.map(f => f.followingId))
+
+        // Get interaction history (likes + comments per author)
+        const interactions = await db.like.findMany({
+          where: { userId },
+          include: { post: { select: { authorId: true } } },
+        })
+        const interactionHistory: Record<string, number> = {}
+        interactions.forEach(like => {
+          const authorId = like.post.authorId
+          interactionHistory[authorId] = (interactionHistory[authorId] || 0) + 1
+        })
+
+        // Rank posts
+        const postMetrics = postsWithParsedFields.map(post => ({
+          id: post.id,
+          likesCount: post._count.likes,
+          commentsCount: post._count.comments,
+          createdAt: post.createdAt,
+          authorId: post.authorId,
+          hasImage: post.images && post.images.length > 0,
+          captionLength: post.caption?.length || 0,
+        }))
+
+        const ranked = rankPosts(postMetrics, userId, followingIds, interactionHistory)
+        
+        // Reorder posts based on ranking
+        const postMap = new Map(postsWithParsedFields.map(p => [p.id, p]))
+        rankedPosts = ranked
+          .map(r => postMap.get(r.postId))
+          .filter(Boolean)
+          .map(p => ({ ...p!, score: ranked.find(r => r.postId === p!.id)?.score || 0 }))
+
+        console.log(`Applied smart ranking for user ${userId}: ${rankedPosts.length} posts ranked`)
+      } catch (error) {
+        console.warn('Smart ranking failed, falling back to chronological:', error)
+        // Fallback to chronological if ranking fails
+      }
+    }
+
     if (isPaginated) {
       return NextResponse.json({
-        posts: postsWithParsedFields,
+        posts: rankedPosts,
         nextCursor,
         hasMore,
       })
     }
 
-    return NextResponse.json({ posts: postsWithParsedFields })
+    return NextResponse.json({ posts: rankedPosts })
   } catch (error) {
     console.error('Get posts error:', error)
     return NextResponse.json(
