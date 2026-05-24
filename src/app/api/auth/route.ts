@@ -57,21 +57,40 @@ export async function POST(request: Request) {
       // Set default currency based on country of origin
       const defaultCurrency = countryOfOrigin ? (countryToCurrency[countryOfOrigin] || 'USD') : 'USD'
 
-      // Create user
-      const user = await db.user.create({
-        data: {
-          email,
-          username,
-          name,
-          password: hashedPassword,
-          avatar: null,
-          bio: null,
-          isPrivate: false,
-          // countryOfOrigin may not exist in production DB yet - use conditional spread
-          ...(countryOfOrigin && { countryOfOrigin }),
-          currency: defaultCurrency,
-        },
-      })
+      // Create user - TEMPORARY FIX: Don't include countryOfOrigin until DB migration is run
+      // Once you run the migration script on Supabase, you can re-enable this field
+      const userData: any = {
+        email,
+        username,
+        name,
+        password: hashedPassword,
+        avatar: null,
+        bio: null,
+        isPrivate: false,
+        currency: defaultCurrency,
+      }
+
+      // Only add countryOfOrigin if the column exists in DB
+      // This is a temporary workaround - remove this try-catch after running migration
+      let user
+      try {
+        user = await db.user.create({
+          data: {
+            ...userData,
+            ...(countryOfOrigin && { countryOfOrigin }),
+          },
+        })
+      } catch (dbError: any) {
+        // If countryOfOrigin column doesn't exist, retry without it
+        if (dbError.message?.includes('countryOfOrigin')) {
+          console.warn('countryOfOrigin column not found in DB, creating user without it')
+          user = await db.user.create({
+            data: userData,
+          })
+        } else {
+          throw dbError
+        }
+      }
 
       // Generate email verification token
       const verificationToken = generateRandomToken()
