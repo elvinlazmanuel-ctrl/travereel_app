@@ -67,7 +67,8 @@ export async function POST(request: Request) {
           avatar: null,
           bio: null,
           isPrivate: false,
-          countryOfOrigin: countryOfOrigin || null,
+          // countryOfOrigin may not exist in production DB yet - use conditional spread
+          ...(countryOfOrigin && { countryOfOrigin }),
           currency: defaultCurrency,
         },
       })

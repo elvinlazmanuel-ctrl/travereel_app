@@ -1,29 +1,17 @@
--- Add countryOfOrigin column to users table
--- This column stores the user's country of origin for visa-free detection and personalized recommendations
+-- Migration: Add countryOfOrigin field to users table
+-- Created: 2026-05-24
+-- Issue: Registration fails with "Unknown argument `countryOfOrigin`"
+-- Solution: Add missing column to production database
 
-DO $$ 
-BEGIN
-    -- Add countryOfOrigin column if it doesn't exist
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'users' AND column_name = 'countryOfOrigin'
-    ) THEN
-        ALTER TABLE "users" ADD COLUMN "countryOfOrigin" TEXT;
-        
-        -- Add index for faster queries
-        CREATE INDEX "users_countryOfOrigin_idx" ON "users"("countryOfOrigin");
-        
-        RAISE NOTICE 'Successfully added countryOfOrigin column to users table';
-    ELSE
-        RAISE NOTICE 'countryOfOrigin column already exists';
-    END IF;
-END $$;
+-- Add countryOfOrigin column if it doesn't exist
+ALTER TABLE "users" 
+ADD COLUMN IF NOT EXISTS "countryOfOrigin" VARCHAR(255);
 
--- Verification query
-SELECT 
-    column_name, 
-    data_type, 
-    is_nullable
-FROM information_schema.columns 
-WHERE table_name = 'users' 
-AND column_name = 'countryOfOrigin';
+-- Optional: Set default country for existing users based on common patterns
+-- Uncomment if you want to set defaults
+-- UPDATE "users" SET "countryOfOrigin" = 'United States' WHERE "countryOfOrigin" IS NULL AND email LIKE '%.com';
+
+-- Verify the column was added
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'users' AND column_name = 'countryOfOrigin';
