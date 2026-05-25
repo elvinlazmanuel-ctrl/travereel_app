@@ -122,8 +122,12 @@ export function PhotoAlbums({ userId, isOwnProfile }: PhotoAlbumsProps) {
     formData.append('file', file)
     formData.append('userId', userId || 'anonymous')
 
+    // Get auth token from localStorage
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
+
     const res = await fetch('/api/upload', {
       method: 'POST',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : undefined,
       body: formData,
     })
 

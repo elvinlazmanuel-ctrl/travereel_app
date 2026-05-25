@@ -275,8 +275,12 @@ export default function CommunityDetailPage() {
         formData.append('file', quickPostImage)
         formData.append('userId', currentUser.id)
 
+        // Get auth token from localStorage
+        const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
+
         const uploadRes = await fetch('/api/upload', {
           method: 'POST',
+          headers: token ? { 'Authorization': `Bearer ${token}` } : undefined,
           body: formData,
         })
 

@@ -1,115 +1,66 @@
+import { NextResponse, NextRequest } from 'next/server'
 import { db } from '@/lib/db'
-import { NextResponse } from 'next/server'
-import { withRateLimit } from '@/lib/api-utils'
+import { authenticateUser } from '@/lib/auth-middleware'
 
-export async function GET(request: Request) {
+/**
+ * GET /api/users/search?query=xxx
+ * Search users by username or name for tagging purposes
+ */
+export async function GET(request: NextRequest) {
   try {
-    // Rate limit GET requests
-    const rateLimitResponse = withRateLimit(request, 'default')
-    if (rateLimitResponse) return rateLimitResponse
+    // Authenticate user
+    const auth = await authenticateUser(request)
+    if (!auth) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
 
     const { searchParams } = new URL(request.url)
-    const q = searchParams.get('q')?.trim()
-    const currentUserId = searchParams.get('currentUserId')?.trim() || null
+    const query = searchParams.get('query')
 
-    // Handle empty query - return empty array
-    if (!q) {
+    if (!query || query.trim().length < 2) {
       return NextResponse.json({ users: [] })
     }
 
-    // Build the where clause - search across username and name fields
-    // SQLite is case-insensitive by default for ASCII, so no mode parameter needed
-    const whereClause: Record<string, unknown> = {
-      OR: [
-        { username: { contains: q } },
-        { name: { contains: q } },
-      ],
-    }
-
-    // Exclude current user from results
-    if (currentUserId) {
-      whereClause.id = { not: currentUserId }
-    }
-
-    // Search for users
+    // Search for users by username or name
     const users = await db.user.findMany({
-      where: whereClause,
+      where: {
+        OR: [
+          {
+            username: {
+              contains: query.trim(),
+              mode: 'insensitive',
+            },
+          },
+          {
+            name: {
+              contains: query.trim(),
+              mode: 'insensitive',
+            },
+          },
+        ],
+        // Exclude the current user
+        id: {
+          not: auth.userId,
+        },
+      },
       select: {
         id: true,
         username: true,
         name: true,
         avatar: true,
         bio: true,
-        isPrivate: true,
       },
-      take: 20,
+      take: 10, // Limit results
     })
 
-    // If no currentUserId, return users without friendship status
-    if (!currentUserId) {
-      return NextResponse.json({ users })
-    }
-
-    // Enrich results with friendship status for each user
-    const enrichedUsers = await Promise.all(
-      users.map(async (user) => {
-        // Check for friend request between current user and this user
-        const friendRequest = await db.friendRequest.findFirst({
-          where: {
-            OR: [
-              { senderId: currentUserId, receiverId: user.id },
-              { senderId: user.id, receiverId: currentUserId },
-            ],
-          },
-          select: {
-            senderId: true,
-            status: true,
-          },
-        })
-
-        // Determine friend request status
-        let friendRequestStatus: string | null = null
-        if (friendRequest) {
-          switch (friendRequest.status) {
-            case 'pending':
-              friendRequestStatus =
-                friendRequest.senderId === currentUserId
-                  ? 'pending_sent'
-                  : 'pending_received'
-              break
-            case 'accepted':
-              friendRequestStatus = 'accepted'
-              break
-            case 'rejected':
-              friendRequestStatus = 'rejected'
-              break
-          }
-        }
-
-        // Check if current user follows this user
-        const followRecord = await db.follow.findFirst({
-          where: {
-            followerId: currentUserId,
-            followingId: user.id,
-          },
-          select: {
-            id: true,
-          },
-        })
-
-        return {
-          ...user,
-          friendRequestStatus,
-          isFollowing: !!followRecord,
-        }
-      })
-    )
-
-    return NextResponse.json({ users: enrichedUsers })
+    return NextResponse.json({ users })
   } catch (error) {
-    console.error('Search users error:', error)
+    console.error('User search error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to search users' },
       { status: 500 }
     )
   }

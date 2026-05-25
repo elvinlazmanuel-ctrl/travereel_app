@@ -102,8 +102,12 @@ export default function CreateCommunityDialog({ open, onOpenChange }: CreateComm
     formData.append('file', file)
     formData.append('userId', currentUser!.id || 'anonymous')
 
+    // Get auth token from localStorage
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
+
     const res = await fetch('/api/upload', {
       method: 'POST',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : undefined,
       body: formData,
     })
 

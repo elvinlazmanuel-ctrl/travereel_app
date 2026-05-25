@@ -1,12 +1,20 @@
 'use client'
 
-import { useState } from 'react'
-import { User, Heart, Users, Baby, Plus, X, Mail, UserPlus } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { User, Heart, Users, Baby, Plus, X, Mail, UserPlus, Search } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Companion } from '@/lib/store'
+
+interface SearchResult {
+  id: string
+  username: string
+  name: string
+  avatar: string | null
+  bio: string | null
+}
 
 const travelTypes = [
   {
@@ -52,20 +60,114 @@ const travelTypes = [
 ]
 
 export default function StepTravelType() {
-  const { wizardData, setWizardData } = useAppStore()
+  const { wizardData, setWizardData, currentUser } = useAppStore()
   const [companionName, setCompanionName] = useState('')
   const [companionEmail, setCompanionEmail] = useState('')
+  
+  // AJAX search state
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const [showSearchResults, setShowSearchResults] = useState(false)
+  const searchRef = useRef<HTMLDivElement>(null)
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const selectedType = wizardData.travelType
   const companions = wizardData.companions
   const needsCompanions = selectedType !== 'solo'
 
+  // Debounced search - triggers after 300ms of no typing
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
+    }
+
+    if (searchQuery.trim().length < 2) {
+      setSearchResults([])
+      setShowSearchResults(false)
+      return
+    }
+
+    setIsSearching(true)
+    setShowSearchResults(true)
+
+    searchTimeoutRef.current = setTimeout(async () => {
+      try {
+        // Get auth token
+        const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
+        
+        const response = await fetch(`/api/users/search?query=${encodeURIComponent(searchQuery)}`, {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : undefined,
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setSearchResults(data.users || [])
+        }
+      } catch (error) {
+        console.error('Search error:', error)
+      } finally {
+        setIsSearching(false)
+      }
+    }, 300) // 300ms debounce
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
+      }
+    }
+  }, [searchQuery])
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSearchResults(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   const handleSelectType = (typeId: string) => {
     setWizardData({ travelType: typeId })
   }
 
+  const handleSelectUser = (user: SearchResult) => {
+    // Check if user is already added
+    const alreadyAdded = companions.some(c => c.userId === user.id)
+    if (alreadyAdded) {
+      return
+    }
+
+    const newCompanion: Companion = {
+      id: `comp-${user.id}`,
+      name: user.name || user.username,
+      email: null,
+      userId: user.id,
+    }
+    setWizardData({ companions: [...companions, newCompanion] })
+    setSearchQuery('')
+    setSearchResults([])
+    setShowSearchResults(false)
+  }
+
   const handleAddCompanion = () => {
     if (!companionName.trim()) return
+    
+    // Check if name matches a searched user
+    const matchedUser = searchResults.find(
+      u => (u.username.toLowerCase() === companionName.trim().toLowerCase()) ||
+           (u.name?.toLowerCase() === companionName.trim().toLowerCase())
+    )
+
+    if (matchedUser) {
+      handleSelectUser(matchedUser)
+      return
+    }
+
+    // Add as manual companion (not linked to user account)
     const newCompanion: Companion = {
       id: `comp-${Date.now()}`,
       name: companionName.trim(),
@@ -154,35 +256,99 @@ export default function StepTravelType() {
 
               {/* Companion Form */}
               <div className="space-y-2">
-                <Input
-                  placeholder="Companion name"
-                  value={companionName}
-                  onChange={(e) => setCompanionName(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && companionName.trim()) handleAddCompanion()
-                  }}
-                />
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
-                    <Input
-                      placeholder="Email (optional)"
-                      value={companionEmail}
-                      onChange={(e) => setCompanionEmail(e.target.value)}
-                      className="pl-10"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && companionName.trim()) handleAddCompanion()
-                      }}
-                    />
+                {/* AJAX Search Input */}
+                <div className="relative" ref={searchRef}>
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+                  <Input
+                    placeholder="Search by username or name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                  
+                  {/* Search Results Dropdown */}
+                  <AnimatePresence>
+                    {showSearchResults && searchResults.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto z-50"
+                      >
+                        {searchResults.map((user) => {
+                          const alreadyAdded = companions.some(c => c.userId === user.id)
+                          return (
+                            <button
+                              key={user.id}
+                              onClick={() => !alreadyAdded && handleSelectUser(user)}
+                              disabled={alreadyAdded}
+                              className={`w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors ${
+                                alreadyAdded ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                              }`}
+                            >
+                              <div className="size-10 rounded-full bg-gradient-to-br from-[#2F5C9B] to-[#5CA5CD] flex items-center justify-center shrink-0">
+                                <span className="text-sm font-bold text-white">
+                                  {(user.name || user.username).charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="flex-1 min-w-0 text-left">
+                                <p className="text-sm font-semibold text-foreground truncate">
+                                  @{user.username}
+                                </p>
+                                <p className="text-xs text-muted-foreground truncate">
+                                  {user.name}
+                                </p>
+                              </div>
+                              {alreadyAdded && (
+                                <span className="text-xs text-muted-foreground">Added</span>
+                              )}
+                            </button>
+                          )
+                        })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Loading indicator */}
+                  {isSearching && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <div className="size-4 border-2 border-gray-300 border-t-[#5CA5CD] rounded-full animate-spin" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Manual Add Form */}
+                <div className="space-y-2">
+                  <Input
+                    placeholder="Or add manually - Name"
+                    value={companionName}
+                    onChange={(e) => setCompanionName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && companionName.trim()) handleAddCompanion()
+                    }}
+                  />
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+                      <Input
+                        placeholder="Email (optional)"
+                        value={companionEmail}
+                        onChange={(e) => setCompanionEmail(e.target.value)}
+                        className="pl-10"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && companionName.trim()) handleAddCompanion()
+                        }}
+                      />
+                    </div>
+                    <Button
+                      onClick={handleAddCompanion}
+                      disabled={!companionName.trim()}
+                      size="icon"
+                      className="bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white shrink-0"
+                    >
+                      <Plus className="size-4" />
+                    </Button>
                   </div>
-                  <Button
-                    onClick={handleAddCompanion}
-                    disabled={!companionName.trim()}
-                    size="icon"
-                    className="bg-[#5CA5CD] hover:bg-[#5CA5CD]/90 text-white shrink-0"
-                  >
-                    <Plus className="size-4" />
-                  </Button>
                 </div>
               </div>
 

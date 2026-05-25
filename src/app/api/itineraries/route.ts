@@ -1,9 +1,11 @@
 import { db } from '@/lib/db'
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { validateBody, validateQuery, createItinerarySchema, updateItinerarySchema, userIdSchema } from '@/lib/validation'
+import { authenticateUser } from '@/lib/auth-middleware'
+import { sendPushNotification } from '@/lib/push-sender'
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     // Rate limit GET requests
     const rateLimitResponse = withRateLimit(request, 'default')
@@ -20,9 +22,24 @@ export async function GET(request: Request) {
       }
     }
 
+    // SECURITY: Authenticate user to check access permissions
+    const auth = await authenticateUser(request)
+    const currentUserId = auth?.userId
+
     const where: Record<string, unknown> = {}
     if (authorId) where.authorId = authorId
-    if (isPublic === 'true') where.isPublic = true
+    
+    // SECURITY: Only return public itineraries unless user is the owner
+    if (isPublic === 'true') {
+      where.isPublic = true
+    } else if (authorId && currentUserId && authorId === currentUserId) {
+      // Owner can see their own itineraries (both public and private)
+      // No isPublic filter needed
+    } else if (authorId) {
+      // Viewing someone else's itineraries - only show public ones
+      where.isPublic = true
+    }
+    // If no authorId specified, return all public itineraries
 
     const itineraries = await db.itinerary.findMany({
       where,
@@ -87,11 +104,20 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     // Rate limit write operations
     const rateLimitResponse = withRateLimit(request, 'strict')
     if (rateLimitResponse) return rateLimitResponse
+
+    // SECURITY: Authenticate user before creating itinerary
+    const auth = await authenticateUser(request)
+    if (!auth) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please login to create itineraries.' },
+        { status: 401 }
+      )
+    }
 
     const body = await request.json()
     const validation = validateBody(createItinerarySchema, body)
@@ -118,6 +144,14 @@ export async function POST(request: Request) {
       budgetItems,
       companions,
     } = validation.data
+
+    // SECURITY: Verify user can only create itineraries for their own account
+    if (authorId !== auth.userId) {
+      return NextResponse.json(
+        { error: 'Forbidden. You can only create itineraries for your own account.' },
+        { status: 403 }
+      )
+    }
 
     const itinerary = await db.itinerary.create({
       data: {
@@ -215,6 +249,44 @@ export async function POST(request: Request) {
       })),
     }
 
+    // NOTIFICATION: Send notifications to tagged companions
+    if (companions && companions.length > 0) {
+      const companionUserIds: string[] = []
+      for (const c of companions) {
+        if (c.userId) {
+          companionUserIds.push(c.userId)
+        }
+      }
+
+      // Create notifications for all tagged users
+      for (const userId of companionUserIds) {
+        try {
+          await db.notification.create({
+            data: {
+              userId,
+              type: 'itinerary_tag',
+              message: `You've been tagged in a new itinerary: ${title}`,
+              fromUserId: auth.userId,
+            },
+          })
+
+          // Try to send push notification (non-blocking)
+          try {
+            await sendPushNotification({
+              userId,
+              title: '🗺️ You\'ve been tagged!',
+              body: `${auth.email || 'Someone'} tagged you in an itinerary: ${title}`,
+              type: 'itinerary_tag',
+            })
+          } catch (pushError) {
+            console.warn('Failed to send push notification:', pushError)
+          }
+        } catch (notifError) {
+          console.error('Failed to create notification for companion:', notifError)
+        }
+      }
+    }
+
     return NextResponse.json({ itinerary: parsedItinerary }, { status: 201 })
   } catch (error) {
     console.error('Create itinerary error:', error)
@@ -225,11 +297,20 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
   try {
     // Rate limit write operations
     const rateLimitResponse = withRateLimit(request, 'strict')
     if (rateLimitResponse) return rateLimitResponse
+
+    // SECURITY: Authenticate user before updating itinerary
+    const auth = await authenticateUser(request)
+    if (!auth) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please login to update itineraries.' },
+        { status: 401 }
+      )
+    }
 
     const body = await request.json()
     const validation = validateBody(updateItinerarySchema, body)
@@ -250,6 +331,14 @@ export async function PUT(request: Request) {
       return NextResponse.json(
         { error: 'Itinerary not found' },
         { status: 404 }
+      )
+    }
+
+    // SECURITY: Only the owner can update their itinerary
+    if (existingItinerary.authorId !== auth.userId) {
+      return NextResponse.json(
+        { error: 'Forbidden. You can only update your own itineraries.' },
+        { status: 403 }
       )
     }
 

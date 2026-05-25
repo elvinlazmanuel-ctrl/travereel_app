@@ -1,7 +1,8 @@
 import { db } from '@/lib/db'
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { withRateLimit } from '@/lib/api-utils'
 import { validateBody, updateItinerarySchema } from '@/lib/validation'
+import { authenticateUser } from '@/lib/auth-middleware'
 
 export async function GET(
   request: Request,
@@ -226,13 +227,22 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Rate limit write operations
     const rateLimitResponse = withRateLimit(request, 'strict')
     if (rateLimitResponse) return rateLimitResponse
+
+    // SECURITY: Authenticate user before deleting itinerary
+    const auth = await authenticateUser(request)
+    if (!auth) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please login to delete itineraries.' },
+        { status: 401 }
+      )
+    }
 
     const { id } = await params
 
@@ -244,6 +254,14 @@ export async function DELETE(
       return NextResponse.json(
         { error: 'Itinerary not found' },
         { status: 404 }
+      )
+    }
+
+    // SECURITY: Only the owner can delete their itinerary
+    if (existingItinerary.authorId !== auth.userId) {
+      return NextResponse.json(
+        { error: 'Forbidden. You can only delete your own itineraries.' },
+        { status: 403 }
       )
     }
 
