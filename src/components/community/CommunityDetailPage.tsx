@@ -67,12 +67,18 @@ interface SharedPostData {
     name: string
     avatar: string | null
   }
+  community: {
+    id: string
+    name: string
+    image: string | null
+  } | null
   post: {
     id: string
     caption: string | null
     images: string[]
     tags: string[]
     location: string | null
+    isPublic: boolean
     _count: {
       likes: number
       comments: number
@@ -119,6 +125,7 @@ export default function CommunityDetailPage() {
   const [quickPostImage, setQuickPostImage] = useState<File | null>(null)
   const [quickPostImagePreview, setQuickPostImagePreview] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [postVisibility, setPostVisibility] = useState<'public' | 'private'>('public')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const fetchCommunityData = useCallback(async () => {
@@ -298,7 +305,7 @@ export default function CommunityDetailPage() {
         body: JSON.stringify({
           caption: quickPostText,
           images: images,  // Empty array for text-only, or uploaded image URL
-          isPublic: true,
+          isPublic: postVisibility === 'public',
           authorId: currentUser.id,
         }),
       })
@@ -578,6 +585,35 @@ export default function CommunityDetailPage() {
                         </div>
                       )}
                       
+                      {/* Visibility Toggle */}
+                      <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border">
+                        <button
+                          onClick={() => setPostVisibility(postVisibility === 'public' ? 'private' : 'public')}
+                          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                            postVisibility === 'public'
+                              ? 'bg-green-500/10 text-green-600 hover:bg-green-500/20'
+                              : 'bg-orange-500/10 text-orange-600 hover:bg-orange-500/20'
+                          }`}
+                        >
+                          {postVisibility === 'public' ? (
+                            <>
+                              <Globe className="size-3" />
+                              Public
+                            </>
+                          ) : (
+                            <>
+                              <Shield className="size-3" />
+                              Private
+                            </>
+                          )}
+                        </button>
+                        <span className="text-[10px] text-muted-foreground">
+                          {postVisibility === 'public' 
+                            ? 'Visible to everyone' 
+                            : 'Only community members'}
+                        </span>
+                      </div>
+
                       {/* Action Buttons */}
                       <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border">
                         <input
@@ -659,9 +695,35 @@ export default function CommunityDetailPage() {
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-foreground truncate">{sharedPost.user?.name || 'Unknown'}</p>
-                        <p className="text-[11px] text-muted-foreground">
-                          {new Date(sharedPost.createdAt).toLocaleDateString()}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-[11px] text-muted-foreground">
+                            {new Date(sharedPost.createdAt).toLocaleDateString()}
+                          </p>
+                          {/* Show community name for public posts */}
+                          {sharedPost.post?.isPublic && sharedPost.community && (
+                            <button
+                              onClick={() => {
+                                // Navigate to community detail
+                                setSelectedCommunity({
+                                  id: sharedPost.community!.id,
+                                  name: sharedPost.community!.name,
+                                  image: sharedPost.community!.image,
+                                  description: '',
+                                  category: null,
+                                  members: 0,
+                                })
+                                // Stay on communityDetail view (already there)
+                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                              }}
+                              className="flex items-center gap-1 text-[10px] text-[#2EC4B6] hover:text-[#2EC4B6]/80 transition-colors"
+                            >
+                              <Globe className="size-2.5" />
+                              <span className="truncate max-w-[120px]">
+                                {sharedPost.community.name}
+                              </span>
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
 

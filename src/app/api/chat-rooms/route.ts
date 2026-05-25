@@ -78,8 +78,8 @@ export async function GET(request: Request) {
             },
           },
           messages: {
-            where: cursor ? { id: { lt: cursor } } : {},
-            orderBy: { createdAt: 'desc' },
+            where: cursor ? { id: { gt: cursor } } : {},
+            orderBy: { createdAt: 'asc' },
             take: limit + 1,
             include: {
               sender: {
@@ -148,7 +148,7 @@ export async function GET(request: Request) {
       chatRoom.messages = chatRoom.messages.slice(0, limit)
     }
     if (chatRoom && chatRoom.messages && chatRoom.messages.length > 0) {
-      // Messages are ordered DESC, so the last one is the oldest
+      // Messages are ordered ASC (oldest first), so the last one is the newest
       nextCursor = chatRoom.messages[chatRoom.messages.length - 1].id
     }
 
