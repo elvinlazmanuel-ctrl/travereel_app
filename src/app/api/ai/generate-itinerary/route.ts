@@ -35,6 +35,11 @@ export async function POST(request: Request) {
     console.log(`Generating ${days}-day itinerary for ${location}, ${country}`)
     console.log(`Budget: ${budget}, Travel Type: ${travelType}, Activities: ${activities}`)
     
+    // Calculate appropriate timeout based on number of days
+    // Longer itineraries need more time (30s per day, minimum 60s, maximum 300s)
+    const timeoutMs = Math.min(Math.max(days * 30000, 60000), 300000)
+    console.log(`Timeout set to: ${timeoutMs / 1000}s for ${days} days`)
+    
     if (departureDate) {
       userMessage += `\nDeparture Date: ${departureDate}`
     }
@@ -56,7 +61,7 @@ export async function POST(request: Request) {
 
     // Create an AbortController for timeout
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -74,6 +79,8 @@ export async function POST(request: Request) {
             content: `You are an expert travel planner. Generate detailed day-by-day travel itineraries based on the user's preferences.
 
 CRITICAL: You MUST generate EXACTLY the number of days requested by the user. If they ask for 5 days, you MUST return exactly 5 days in the "days" array. If they ask for 7 days, you MUST return exactly 7 days. This is non-negotiable.
+
+CRITICAL: For multi-city itineraries (multiple cities listed), distribute the days evenly across all cities. For example, if 14 days and 7 cities, spend approximately 2 days per city.
 
 CRITICAL PRIVACY RULES:
 - NEVER include specific hotel names in the itinerary
@@ -110,22 +117,6 @@ The JSON must have this exact structure. NOTE: The "days" array MUST contain EXA
         }
       ],
       "route": "From airport to hotel via taxi"
-    },
-    {
-      "dayNumber": 2,
-      "title": "Main Attractions",
-      "description": "Visit top tourist spots",
-      "activities": [
-        {
-          "title": "Museum Visit",
-          "description": "Explore local history",
-          "location": "National Museum",
-          "startTime": "09:00",
-          "endTime": "12:00",
-          "cost": 15
-        }
-      ],
-      "route": "Walking distance from hotel"
     }
   ],
   "requirements": [
@@ -135,15 +126,16 @@ The JSON must have this exact structure. NOTE: The "days" array MUST contain EXA
   "totalEstimatedCost": 1500
 }
 
-IMPORTANT: The example above shows 2 days, but you MUST generate the EXACT number of days the user requested. If they want 5 days, create dayNumber 1, 2, 3, 4, 5. Each day must be in a separate object in the array.
+IMPORTANT: The example above shows 1 day, but you MUST generate the EXACT number of days the user requested. If they want 14 days, create dayNumber 1 through 14. Each day must be in a separate object in the array.
 
 Important rules:
 - **YOU MUST CREATE EXACTLY THE NUMBER OF DAYS REQUESTED** - Count them: 1, 2, 3... up to the requested number
+- For multi-city trips, distribute days across all cities mentioned
 - dayNumber must be sequential starting from 1
 - Each day should have a unique dayNumber
 - All costs should be in USD
 - startTime and endTime should be in HH:MM format
-- Include 3-5 activities per day (adjust based on arrival/departure times)
+- Include 2-4 activities per day (keep it concise to avoid response truncation)
 - Consider travel time between locations
 - Include realistic estimated costs
 - Provide practical travel advice in the route field
@@ -151,7 +143,8 @@ Important rules:
 - For accommodation: Use "Check in to Hotel" or similar generic text, NEVER specific hotel names
 - For hotel recommendations: Only suggest areas, not specific hotels. Add "Browse hotels on Booking.com" note
 - For flights: If departure/arrival times provided, plan activities around them
-- Return ONLY the JSON object, no other text, no markdown formatting`,
+- Return ONLY the JSON object, no other text, no markdown formatting
+- Keep descriptions concise to ensure the complete response fits within token limits`,
           },
           {
             role: 'user',
@@ -183,6 +176,8 @@ Important rules:
     const data = await response.json()
     const content = data.choices?.[0]?.message?.content || ''
 
+    console.log(`AI response length: ${content.length} characters`)
+
     // Try to extract JSON from the response (handle potential markdown wrapping)
     let jsonStr = content.trim()
 
@@ -198,15 +193,64 @@ Important rules:
     // Replace curly single quotes with straight quotes
     jsonStr = jsonStr.replace(/[\u2018\u2019]/g, "'")
 
+    // Check if response appears to be truncated (ends abruptly without closing braces)
+    const openBraces = (jsonStr.match(/{/g) || []).length
+    const closeBraces = (jsonStr.match(/}/g) || []).length
+    const openBrackets = (jsonStr.match(/\[/g) || []).length
+    const closeBrackets = (jsonStr.match(/\]/g) || []).length
+    
     let parsedItinerary
-    try {
-      parsedItinerary = JSON.parse(jsonStr)
-    } catch {
-      console.error('Failed to parse AI response as JSON:', jsonStr.substring(0, 500))
-      return NextResponse.json(
-        { error: 'Failed to parse AI-generated itinerary', raw: content },
-        { status: 500 }
-      )
+    
+    if (openBraces !== closeBraces || openBrackets !== closeBrackets) {
+      console.warn('Response appears truncated - mismatched braces/brackets')
+      console.warn(`Braces: { ${openBraces} } ${closeBraces}, Brackets: [ ${openBrackets} ] ${closeBrackets}`)
+      
+      // Try to repair truncated JSON by removing incomplete last objects
+      // Find the last complete day object and trim after it
+      const lastCompleteDayMatch = jsonStr.match(/"dayNumber"\s*:\s*\d+[\s\S]*?"activities"\s*:\s*\[[\s\S]*?\][\s\S]*?\}/g)
+      if (lastCompleteDayMatch && lastCompleteDayMatch.length > 0) {
+        console.log(`Attempting to repair: found ${lastCompleteDayMatch.length} complete day objects`)
+        // Reconstruct JSON with complete days only
+        const lastDay = lastCompleteDayMatch[lastCompleteDayMatch.length - 1]
+        const lastDayEnd = jsonStr.lastIndexOf(lastDay) + lastDay.length
+        const truncatedJson = jsonStr.substring(0, lastDayEnd) + '], "requirements": [], "totalEstimatedCost": 0}'
+        
+        try {
+          parsedItinerary = JSON.parse(truncatedJson)
+          console.log(`Successfully repaired JSON with ${parsedItinerary.days?.length} days`)
+        } catch (repairError) {
+          console.error('Repair attempt failed:', repairError)
+          return NextResponse.json(
+            { 
+              error: 'AI response was truncated and could not be repaired',
+              details: 'The AI service returned an incomplete response. Please try again with fewer days or fewer cities.',
+              truncated: true,
+              daysGenerated: lastCompleteDayMatch.length
+            },
+            { status: 500 }
+          )
+        }
+      } else {
+        return NextResponse.json(
+          { 
+            error: 'AI response was truncated',
+            details: 'The AI service returned an incomplete response. Please try again with fewer days or fewer cities.',
+            truncated: true
+          },
+          { status: 500 }
+        )
+      }
+    } else {
+      // Response appears complete, try to parse normally
+      try {
+        parsedItinerary = JSON.parse(jsonStr)
+      } catch {
+        console.error('Failed to parse AI response as JSON:', jsonStr.substring(0, 500))
+        return NextResponse.json(
+          { error: 'Failed to parse AI-generated itinerary', raw: content },
+          { status: 500 }
+        )
+      }
     }
 
     // Validate that the AI returned the correct number of days
