@@ -139,7 +139,10 @@ export const deleteCommunitySchema = z.object({
 export const createItinerarySchema = z.object({
   title: z.string().min(1, 'Title is required').max(200),
   country: z.string().min(1, 'Country is required'),
-  location: z.string().min(1, 'Location is required'),
+  location: z.union([
+    z.string().min(1, 'Location is required'),
+    z.array(z.string().min(1, 'Location cannot be empty')).min(1, 'At least one location is required')
+  ]),
   budget: z.number().min(0).optional(),
   currency: z.string().default('USD'),
   days: z.number().int().min(1).max(365).optional(),

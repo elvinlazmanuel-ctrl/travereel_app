@@ -145,6 +145,9 @@ export async function POST(request: NextRequest) {
       companions,
     } = validation.data
 
+    // Convert location array to comma-separated string for database storage
+    const locationString: string = Array.isArray(location) ? location.join(',') : location
+
     // SECURITY: Verify user can only create itineraries for their own account
     if (authorId !== auth.userId) {
       return NextResponse.json(
@@ -157,7 +160,7 @@ export async function POST(request: NextRequest) {
       data: {
         title,
         country,
-        location,
+        location: locationString,
         budget: budget || 0,
         currency: currency || 'USD',
         days: days || 1,
