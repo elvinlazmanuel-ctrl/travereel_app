@@ -161,9 +161,15 @@ export default function ManualInputForm() {
     setSaving(true)
 
     try {
+      // Get auth token from localStorage
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
+
       const response = await fetch('/api/itineraries', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           title: wizardData.title || `${wizardData.location} Trip`,
           country: wizardData.country,
