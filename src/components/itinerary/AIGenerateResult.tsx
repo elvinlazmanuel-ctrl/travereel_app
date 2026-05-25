@@ -169,18 +169,31 @@ export default function AIGenerateResult() {
 
       const data = await response.json()
 
+      console.log('Save response status:', response.status)
+      console.log('Save response ok:', response.ok)
+      console.log('Save response data:', data)
+
       if (response.ok) {
+        console.log('Adding itinerary to store...')
+        console.log('Itinerary data:', data.itinerary)
+        
         addItinerary({
           ...data.itinerary,
           daysPlan: data.itinerary.days_plan || [],
           budgetItems: data.itinerary.budget_items || [],
           companions: data.itinerary.companions || [],
         })
+        
+        console.log('Itinerary added to store, resetting wizard...')
         resetWizard()
         setCurrentView('profile')
+        console.log('View set to profile')
+      } else {
+        console.error('Save failed with error:', data.error)
       }
-    } catch {
-      // Silently handle error
+    } catch (error) {
+      console.error('Failed to save itinerary:', error)
+      console.error('Error details:', error instanceof Error ? error.message : 'Unknown error')
     } finally {
       setSaving(false)
     }

@@ -156,6 +156,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    console.log('Creating itinerary in database...')
+    console.log('Title:', title)
+    console.log('Location:', locationString)
+    console.log('Author ID:', authorId)
+    console.log('Days plan count:', daysPlan?.length || 0)
+
     const itinerary = await db.itinerary.create({
       data: {
         title,
@@ -241,6 +247,10 @@ export async function POST(request: NextRequest) {
         },
       },
     })
+
+    console.log('✅ Itinerary created successfully in database!')
+    console.log('Itinerary ID:', itinerary.id)
+    console.log('Created at:', itinerary.createdAt)
 
     const parsedItinerary = {
       ...itinerary,
