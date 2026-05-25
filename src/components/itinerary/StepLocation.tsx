@@ -142,16 +142,46 @@ export default function StepLocation() {
     loc.name.toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleSelect = (locationName: string) => {
-    setWizardData({ location: locationName })
+  // Get selected locations as array
+  const selectedLocations: string[] = Array.isArray(wizardData.location) 
+    ? wizardData.location 
+    : wizardData.location ? [wizardData.location] : []
+
+  const handleToggleLocation = (locationName: string) => {
+    const currentLocations = Array.isArray(wizardData.location) 
+      ? [...wizardData.location] 
+      : wizardData.location ? [wizardData.location] : []
+    
+    const index = currentLocations.indexOf(locationName)
+    if (index > -1) {
+      // Remove location
+      currentLocations.splice(index, 1)
+    } else {
+      // Add location
+      currentLocations.push(locationName)
+    }
+    
+    setWizardData({ location: currentLocations })
   }
 
   const handleAddCustom = () => {
     if (customLocation.trim()) {
-      setWizardData({ location: customLocation.trim() })
+      const currentLocations = Array.isArray(wizardData.location) 
+        ? [...wizardData.location] 
+        : wizardData.location ? [wizardData.location] : []
+      
+      currentLocations.push(customLocation.trim())
+      setWizardData({ location: currentLocations })
       setCustomLocation('')
       setShowCustom(false)
     }
+  }
+
+  const handleRemoveLocation = (locationName: string) => {
+    const currentLocations = Array.isArray(wizardData.location) 
+      ? wizardData.location.filter(loc => loc !== locationName)
+      : []
+    setWizardData({ location: currentLocations })
   }
 
   return (
@@ -179,29 +209,39 @@ export default function StepLocation() {
 
       {/* Popular Locations */}
       <div>
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-          Popular in {wizardData.country || 'this region'}
-        </p>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            Popular in {wizardData.country || 'this region'}
+          </p>
+          {selectedLocations.length > 0 && (
+            <span className="text-xs text-[#5CA5CD] font-medium">
+              {selectedLocations.length} selected
+            </span>
+          )}
+        </div>
         <div className="grid grid-cols-2 gap-2">
-          {filteredLocations.map((loc) => (
-            <button
-              key={loc.name}
-              onClick={() => handleSelect(loc.name)}
-              className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
-                wizardData.location === loc.name
-                  ? 'border-[#2F5C9B] bg-[#2F5C9B]/5 shadow-sm'
-                  : 'border-gray-100 bg-white hover:border-gray-200 hover:bg-gray-50'
-              }`}
-            >
-              <span className="text-2xl">{loc.emoji}</span>
-              <span className="text-sm font-medium text-foreground flex-1 text-left">
-                {loc.name}
-              </span>
-              {wizardData.location === loc.name && (
-                <Check className="size-4 text-[#2F5C9B] shrink-0" />
-              )}
-            </button>
-          ))}
+          {filteredLocations.map((loc) => {
+            const isSelected = selectedLocations.includes(loc.name)
+            return (
+              <button
+                key={loc.name}
+                onClick={() => handleToggleLocation(loc.name)}
+                className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
+                  isSelected
+                    ? 'border-[#2F5C9B] bg-[#2F5C9B]/5 shadow-sm'
+                    : 'border-gray-100 bg-white hover:border-gray-200 hover:bg-gray-50'
+                }`}
+              >
+                <span className="text-2xl">{loc.emoji}</span>
+                <span className="text-sm font-medium text-foreground flex-1 text-left">
+                  {loc.name}
+                </span>
+                {isSelected && (
+                  <Check className="size-4 text-[#2F5C9B] shrink-0" />
+                )}
+              </button>
+            )
+          })}
         </div>
       </div>
 
@@ -238,14 +278,35 @@ export default function StepLocation() {
         </div>
       )}
 
-      {/* Selected Location Display */}
-      {wizardData.location && (
+      {/* Selected Locations Display */}
+      {selectedLocations.length > 0 && (
         <div className="space-y-3">
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5 border border-[#2F5C9B]/20">
-            <MapPin className="size-5 text-[#2F5C9B]" />
-            <div>
-              <p className="text-sm font-semibold text-foreground">{wizardData.location}</p>
-              <p className="text-xs text-muted-foreground">{wizardData.country}</p>
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-[#2F5C9B]/5 to-[#5CA5CD]/5 border border-[#2F5C9B]/20">
+            <MapPin className="size-5 text-[#2F5C9B] shrink-0" />
+            <div className="flex-1">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                Selected Destinations ({selectedLocations.length})
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {selectedLocations.map((loc) => {
+                  const locationData = locations.find(l => l.name === loc)
+                  return (
+                    <span
+                      key={loc}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white border border-[#2F5C9B]/20 text-xs font-medium text-foreground"
+                    >
+                      {locationData?.emoji || '📍'} {loc}
+                      <button
+                        onClick={() => handleRemoveLocation(loc)}
+                        className="ml-1 text-gray-400 hover:text-[#FF6B6B] transition-colors"
+                        aria-label={`Remove ${loc}`}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>

@@ -65,7 +65,13 @@ export default function ItineraryWizard() {
     if (wizardStep >= 9) return false
     switch (wizardStep) {
       case 0: return !!(wizardData.title.trim() && wizardData.country)
-      case 1: return !!wizardData.location
+      case 1: {
+        // Check if at least one location is selected
+        const locations = Array.isArray(wizardData.location) 
+          ? wizardData.location 
+          : wizardData.location ? [wizardData.location] : []
+        return locations.length > 0
+      }
       case 2: return !!(wizardData.departureDate && wizardData.returnDate)
       case 3: return wizardData.budget > 0
       case 4: return true // Travel details are optional

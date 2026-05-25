@@ -98,7 +98,7 @@ export interface Itinerary {
   id: string
   title: string
   country: string
-  location: string
+  location: string | string[]  // Support single or multiple locations
   departureDate?: string | null
   returnDate?: string | null
   budget: number
@@ -234,7 +234,7 @@ export interface SearchUserType extends User {
 export interface WizardData {
   title: string
   country: string
-  location: string
+  location: string | string[]  // Support single or multiple locations
   departureDate: string
   returnDate: string
   departureTime: string
@@ -251,7 +251,7 @@ export interface WizardData {
 export const defaultWizardData: WizardData = {
   title: '',
   country: '',
-  location: '',
+  location: [],  // Start with empty array
   departureDate: '',
   returnDate: '',
   departureTime: '',
